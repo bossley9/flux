@@ -1,13 +1,13 @@
 import {useEffect, useState} from 'react'
-import {Button, StyleSheet, Text, TextInput} from 'react-native';
-import {useQuery} from '@tanstack/react-query'
-import {fetchUser} from '../networking/fetchers'
+import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
+import {StatusBar} from 'expo-status-bar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import type {NativeStackScreenProps} from '@react-navigation/native-stack';
+import type {StackParamList} from '../../_app'
 
-export function TestComponent() {
+export function TestComponent({navigation}: NativeStackScreenProps<StackParamList, 'Login'>) {
   const [serverUrl, setServerUrl] = useState('https://reader.miniflux.app')
   const [apiKey, setApiKey] = useState('')
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
 
   async function handlePress() {
     console.log('authenticating...')
@@ -24,27 +24,13 @@ export function TestComponent() {
         console.log('apiKey could not be saved')
         // saving error
       }
-      setIsAuthenticated(true)
       console.log('authenticated')
+      navigation.navigate('Profile')
     }
     else {
       console.log('server url or api key is invalid.')
       // display error
     }
-  }
-
-  function handleLogOut() {
-    setIsAuthenticated(false)
-  }
-
-  const {data, isLoading, refetch} = useQuery({
-    queryKey: ['user'],
-    queryFn: fetchUser,
-    enabled: isAuthenticated
-  })
-
-  function handleRefetch() {
-    refetch()
   }
 
   async function autofillStoredLoginData() {
@@ -66,27 +52,24 @@ export function TestComponent() {
 
   return (
     <>
-      <Text>This is a test component!</Text>
-      {!isAuthenticated && (
-        <>
-          <TextInput style={styles.input} onChangeText={setServerUrl} value={serverUrl} placeholder="Miniflux server url" />
-          <TextInput style={styles.input} onChangeText={setApiKey} value={apiKey} secureTextEntry placeholder="Miniflux API key" />
-          <Button title="login" onPress={handlePress} />
-        </>
-      )}
-      {isAuthenticated && (
-        <>
-          {isLoading ? <Text>fetching data...</Text> : <Text>data is {JSON.stringify(data)}</Text>}
-          <Button title="fetch again" onPress={handleRefetch} />
-          <Button title="reset" onPress={handleLogOut} />
-        </>
-      )}
-
+      <StatusBar style="auto" />
+      <View style={styles.container}>
+        <Text>This is a test component!</Text>
+        <TextInput style={styles.input} onChangeText={setServerUrl} value={serverUrl} placeholder="Miniflux server url" />
+        <TextInput style={styles.input} onChangeText={setApiKey} value={apiKey} secureTextEntry placeholder="Miniflux API key" />
+        <Button title="login" onPress={handlePress} />
+      </View>
     </>
   )
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   input: {
     height: 40,
     margin: 12,
