@@ -3,10 +3,12 @@
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "expo start --port 19000",
     "android": "expo start --port 19000 --android",
     "ios": "expo start --port 19000 --ios",
-    "web": "expo start --port 19000 --web"
+    "web": "expo start --port 19000 --web",
+    "expo": "expo start --port 19000",
+    "start": "npm run android",
+    "build": "npx eas-cli build --platform android --profile local"
   },
   "dependencies": {
     "@tanstack/react-query": "^4.23.0",
