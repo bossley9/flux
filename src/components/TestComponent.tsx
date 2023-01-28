@@ -10,7 +10,7 @@ export function TestComponent({navigation}: NativeStackScreenProps<StackParamLis
   const [apiKey, setApiKey] = useState('')
 
   async function handlePress() {
-    console.log('authenticating...')
+    // console.log('authenticating...')
     if (serverUrl.length > 0 && apiKey.length > 0) {
       try {
         await AsyncStorage.setItem('serverUrl', serverUrl)
@@ -24,11 +24,11 @@ export function TestComponent({navigation}: NativeStackScreenProps<StackParamLis
         console.log('apiKey could not be saved')
         // saving error
       }
-      console.log('authenticated')
+      // console.log('authenticated')
       navigation.navigate('Profile')
     }
     else {
-      console.log('server url or api key is invalid.')
+      // console.log('server url or api key is invalid.')
       // display error
     }
   }

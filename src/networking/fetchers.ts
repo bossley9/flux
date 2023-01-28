@@ -1,16 +1,10 @@
-import {getServerUrl, getHeaders} from './utils'
-
-async function request(method: RequestInit['method'], path: string) {
-  const url = (await getServerUrl()).replace(/\/$/, '') + '/' + path
-  const options: RequestInit = {
-    method,
-    headers: await getHeaders(),
-  }
-
-  return fetch(url, options)
-    .then(res => res.json())
-}
+import {request} from './utils'
+import * as API from './types'
 
 export function fetchUser() {
-  return request('GET', 'v1/me')
+  return request<any>('GET', 'v1/me')
+}
+
+export function fetchFeeds() {
+  return request<API.Feed[]>('GET', 'v1/feeds')
 }
