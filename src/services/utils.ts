@@ -1,4 +1,4 @@
-import { getItem, StorageKey } from '../storage'
+import { getItem, StorageKey } from '@/storage'
 
 async function getHeaders(): Promise<RequestInit['headers']> {
   const apiKey = (await getItem(StorageKey.apiKey)) ?? ''

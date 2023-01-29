@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native'
-import type { Entry } from '../networking/types'
+import type { Entry } from '@/services/types'
 
 type Props = {
   entry: Entry

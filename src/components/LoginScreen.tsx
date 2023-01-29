@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
-import { getItem, storeItem, StorageKey } from '../storage'
+import { getItem, storeItem, StorageKey } from '@/storage'
 import type { NativeStackScreenProps } from '@react-navigation/native-stack'
-import type { StackParamList } from '../_app'
+import type { StackParamList } from '@/_app'
 
 export function LoginScreen({
   navigation,
@@ -17,15 +17,12 @@ export function LoginScreen({
         await storeItem(StorageKey.serverUrl, serverUrl)
       } catch {
         console.log('serverUrl could not be saved')
-        // saving error
       }
       try {
         await storeItem(StorageKey.apiKey, apiKey)
       } catch {
         console.log('apiKey could not be saved')
-        // saving error
       }
-      // console.log('authenticated')
       navigation.navigate('Profile')
     } else {
       // console.log('server url or api key is invalid.')

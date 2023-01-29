@@ -1,10 +1,10 @@
 import { Button, ScrollView, StyleSheet, Text } from 'react-native'
 import { FeedCard } from './FeedCard'
 import { useQueryClient } from '@tanstack/react-query'
-import { useQueryFeeds } from '../networking/queries'
-import { getFeedsQueryKey } from '../networking/keys'
+import { useQueryFeeds } from '@/services/queries'
+import { getFeedsQueryKey } from '@/services/keys'
 import type { NativeStackScreenProps } from '@react-navigation/native-stack'
-import type { StackParamList } from '../_app'
+import type { StackParamList } from '@/_app'
 
 export function DataComponent({
   navigation,

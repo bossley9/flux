@@ -1,5 +1,5 @@
-import { LoginScreen } from './components/LoginScreen'
-import { DataComponent } from './components/DataComponent'
+import { LoginScreen } from '@components/LoginScreen'
+import { DataComponent } from '@components/DataComponent'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'

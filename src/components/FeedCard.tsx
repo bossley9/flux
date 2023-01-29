@@ -1,7 +1,7 @@
 import { Text, View } from 'react-native'
 import { FeedEntry } from './FeedEntry'
-import { useQueryFeedEntries } from '../networking/queries'
-import type { Feed } from '../networking/types'
+import { useQueryFeedEntries } from '@/services/queries'
+import type { Feed } from '@/services/types'
 
 type Props = {
   feed: Feed
