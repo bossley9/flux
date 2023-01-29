@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosRequestConfig } from 'axios'
 import { getItem, StorageKey } from '@/storage'
 
 async function getHeaders(): Promise<Record<string, string>> {
@@ -13,13 +13,15 @@ async function getHeaders(): Promise<Record<string, string>> {
 
 export async function request<T>(
   method: RequestInit['method'],
-  path: string
+  path: string,
+  options?: Partial<AxiosRequestConfig>
 ): Promise<T> {
   const serverUrl = (await getItem(StorageKey.serverUrl)) ?? ''
   const headers = await getHeaders()
   const url = serverUrl.replace(/\/$/, '') + '/' + path
 
   return axios.request({
+    ...options,
     method,
     url,
     headers,
