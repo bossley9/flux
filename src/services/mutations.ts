@@ -2,8 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useQueryUser } from './queries'
 import { storeItem, StorageKey } from '@/storage'
 import { isMinifluxError, isAxiosError } from './errors'
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import type { StackParamList } from '@/Index'
+import { Screen, ScreenNavigationProp } from '@/navigation'
 import type { GenericError } from './errors'
 
 type LoginFormData = {
@@ -12,7 +11,7 @@ type LoginFormData = {
 }
 
 export function useMutationLogin(
-  navigation: NativeStackNavigationProp<StackParamList, 'Login'>
+  navigation: ScreenNavigationProp<Screen.Login>
 ) {
   const queryClient = useQueryClient()
 
@@ -39,11 +38,11 @@ export function useMutationLogin(
       }
 
       try {
-        await queryClient.fetchQuery({
+        await queryClient.prefetchQuery({
           queryFn: useQueryUser.fetcher,
           queryKey: useQueryUser.getKey(),
         })
-        navigation.navigate('Profile')
+        navigation.navigate(Screen.Unread)
       } catch (e) {
         if (isMinifluxError(e)) {
           const message = e.response.data.error_message

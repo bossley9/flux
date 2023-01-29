@@ -1,24 +1,23 @@
 import { Text, View } from 'react-native'
 import { useEffect } from 'react'
 import { getItem, StorageKey } from '@/storage'
-import type { NativeStackScreenProps } from '@react-navigation/native-stack'
-import type { StackParamList } from '@/Index'
+import { Screen, ScreenProps } from '@/navigation'
 
-type Props = NativeStackScreenProps<StackParamList, 'AppLoading'>
-
-export function AppLoadingScreen({ navigation }: Props) {
+export function AppInitLoadingScreen({
+  navigation,
+}: ScreenProps<Screen.AppInitLoading>) {
   async function readStoredData() {
     try {
       const storedServerUrl = await getItem(StorageKey.serverUrl)
       const storedApiKey = await getItem(StorageKey.apiKey)
 
       if (storedServerUrl !== null && storedApiKey !== null) {
-        navigation.navigate('Profile')
+        navigation.navigate(Screen.Unread)
       } else {
-        navigation.navigate('Login')
+        navigation.navigate(Screen.Login)
       }
     } catch {
-      navigation.navigate('Login')
+      navigation.navigate(Screen.Login)
     }
   }
 

@@ -1,15 +1,11 @@
-import { AppLoadingScreen } from '@/screens/AppLoadingScreen'
-import { LoginScreen } from '@/components/LoginScreen'
-import { DataComponent } from '@/components/DataComponent'
+import { AppInitLoadingScreen } from '@/screens/AppInitLoadingScreen'
+import { LoginScreen } from '@/screens/LoginScreen'
+import { UnreadScreen } from '@/screens/UnreadScreen'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-
-export type StackParamList = {
-  AppLoading: undefined
-  Login: undefined
-  Profile: undefined
-}
+import { Screen } from '@/navigation'
+import type { StackParamList } from '@/navigation'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -25,9 +21,12 @@ export function Index() {
     <NavigationContainer>
       <QueryClientProvider client={queryClient}>
         <Stack.Navigator>
-          <Stack.Screen name="AppLoading" component={AppLoadingScreen} />
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Profile" component={DataComponent} />
+          <Stack.Screen
+            name={Screen.AppInitLoading}
+            component={AppInitLoadingScreen}
+          />
+          <Stack.Screen name={Screen.Login} component={LoginScreen} />
+          <Stack.Screen name={Screen.Unread} component={UnreadScreen} />
         </Stack.Navigator>
       </QueryClientProvider>
     </NavigationContainer>

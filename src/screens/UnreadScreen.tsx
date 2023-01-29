@@ -1,14 +1,11 @@
 import { Button, ScrollView, StyleSheet, Text } from 'react-native'
-import { FeedCard } from './FeedCard'
+import { FeedCard } from '@/components/FeedCard'
 import { useQueryClient } from '@tanstack/react-query'
 import { useUserId, useQueryUser, useQueryFeeds } from '@/services/queries'
 import { removeItem, StorageKey } from '@/storage'
-import type { NativeStackScreenProps } from '@react-navigation/native-stack'
-import type { StackParamList } from '@/Index'
+import { Screen, ScreenProps } from '@/navigation'
 
-export function DataComponent({
-  navigation,
-}: NativeStackScreenProps<StackParamList, 'Profile'>) {
+export function UnreadScreen({ navigation }: ScreenProps<Screen.Unread>) {
   const queryClient = useQueryClient()
 
   const userId = useUserId()
@@ -28,7 +25,7 @@ export function DataComponent({
       removeItem(StorageKey.apiKey),
     ])
 
-    navigation.navigate('Login')
+    navigation.navigate(Screen.Login)
   }
 
   return (

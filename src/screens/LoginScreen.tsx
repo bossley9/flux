@@ -1,12 +1,9 @@
 import { useRef, useState } from 'react'
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native'
 import { useMutationLogin } from '@/services/mutations'
-import type { NativeStackScreenProps } from '@react-navigation/native-stack'
-import type { StackParamList } from '@/Index'
+import type { Screen, ScreenProps } from '@/navigation'
 
-export function LoginScreen({
-  navigation,
-}: NativeStackScreenProps<StackParamList, 'Login'>) {
+export function LoginScreen({ navigation }: ScreenProps<Screen.Login>) {
   const apiKeyInputRef = useRef<TextInput>(null)
   const [serverUrl, setServerUrl] = useState('https://reader.miniflux.app')
   const [apiKey, setApiKey] = useState('')
