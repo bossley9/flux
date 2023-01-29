@@ -4,7 +4,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useUserId, useQueryUser, useQueryFeeds } from '@/services/queries'
 import { removeItem, StorageKey } from '@/storage'
 import type { NativeStackScreenProps } from '@react-navigation/native-stack'
-import type { StackParamList } from '@/_app'
+import type { StackParamList } from '@/Index'
 
 export function DataComponent({
   navigation,

@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native'
 import { useMutationLogin } from '@/services/mutations'
 import type { NativeStackScreenProps } from '@react-navigation/native-stack'
-import type { StackParamList } from '@/_app'
+import type { StackParamList } from '@/Index'
 
 export function LoginScreen({
   navigation,

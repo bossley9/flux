@@ -2,7 +2,7 @@ import { Text, View } from 'react-native'
 import { useEffect } from 'react'
 import { getItem, StorageKey } from '@/storage'
 import type { NativeStackScreenProps } from '@react-navigation/native-stack'
-import type { StackParamList } from '@/_app'
+import type { StackParamList } from '@/Index'
 
 type Props = NativeStackScreenProps<StackParamList, 'AppLoading'>
 

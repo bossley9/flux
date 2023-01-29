@@ -3,7 +3,7 @@ import { useQueryUser } from './queries'
 import { storeItem, StorageKey } from '@/storage'
 import { isMinifluxError, isAxiosError } from './errors'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import type { StackParamList } from '@/_app'
+import type { StackParamList } from '@/Index'
 import type { GenericError } from './errors'
 
 type LoginFormData = {

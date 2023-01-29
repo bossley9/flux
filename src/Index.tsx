@@ -20,7 +20,7 @@ const queryClient = new QueryClient({
 })
 const Stack = createNativeStackNavigator<StackParamList>()
 
-export function App() {
+export function Index() {
   return (
     <NavigationContainer>
       <QueryClientProvider client={queryClient}>

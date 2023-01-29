@@ -1,5 +1,5 @@
-import { App as AppInner } from './src/_app'
+import { Index } from './src/Index'
 
 export default function App() {
-  return <AppInner />
+  return <Index />
 }
