@@ -1,10 +1,12 @@
-import { LoginScreen } from '@components/LoginScreen'
-import { DataComponent } from '@components/DataComponent'
+import { AppLoadingScreen } from '@/screens/AppLoadingScreen'
+import { LoginScreen } from '@/components/LoginScreen'
+import { DataComponent } from '@/components/DataComponent'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 export type StackParamList = {
+  Loading: undefined
   Login: undefined
   Profile: undefined
 }
@@ -23,6 +25,7 @@ export function App() {
     <NavigationContainer>
       <QueryClientProvider client={queryClient}>
         <Stack.Navigator>
+          <Stack.Screen name="AppLoading" component={AppLoadingScreen} />
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Profile" component={DataComponent} />
         </Stack.Navigator>

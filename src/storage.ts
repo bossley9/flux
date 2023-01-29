@@ -12,3 +12,7 @@ export async function getItem(key: StorageKey) {
 export async function storeItem(key: StorageKey, value: string) {
   return AsyncStorage.setItem(key, value)
 }
+
+export async function removeItem(key: StorageKey) {
+  return AsyncStorage.removeItem(key)
+}

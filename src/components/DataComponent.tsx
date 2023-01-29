@@ -3,6 +3,7 @@ import { FeedCard } from './FeedCard'
 import { useQueryClient } from '@tanstack/react-query'
 import { useQueryFeeds } from '@/services/queries'
 import { getFeedsQueryKey } from '@/services/keys'
+import { removeItem, StorageKey } from '@/storage'
 import type { NativeStackScreenProps } from '@react-navigation/native-stack'
 import type { StackParamList } from '@/_app'
 
@@ -17,8 +18,13 @@ export function DataComponent({
     queryClient.invalidateQueries(getFeedsQueryKey())
   }
 
-  function handleLogout() {
-    // TODO clear async storage items
+  async function handleLogout() {
+    console.log('remove it all')
+    // TODO switch to multi remove
+    await Promise.all([
+      removeItem(StorageKey.serverUrl),
+      removeItem(StorageKey.apiKey),
+    ])
     navigation.navigate('Login')
   }
 

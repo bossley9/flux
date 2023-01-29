@@ -1,75 +1,46 @@
-import { useEffect, useState } from 'react'
+import { useRef, useState } from 'react'
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native'
-import { StatusBar } from 'expo-status-bar'
-import { getItem, storeItem, StorageKey } from '@/storage'
+import { useMutationLogin } from '@/services/mutations'
 import type { NativeStackScreenProps } from '@react-navigation/native-stack'
 import type { StackParamList } from '@/_app'
 
 export function LoginScreen({
   navigation,
 }: NativeStackScreenProps<StackParamList, 'Login'>) {
+  const apiKeyInputRef = useRef<TextInput>(null)
   const [serverUrl, setServerUrl] = useState('https://reader.miniflux.app')
   const [apiKey, setApiKey] = useState('')
 
-  async function handlePress() {
-    if (serverUrl.length > 0 && apiKey.length > 0) {
-      try {
-        await storeItem(StorageKey.serverUrl, serverUrl)
-      } catch {
-        console.log('serverUrl could not be saved')
-      }
-      try {
-        await storeItem(StorageKey.apiKey, apiKey)
-      } catch {
-        console.log('apiKey could not be saved')
-      }
-      navigation.navigate('Profile')
-    } else {
-      // console.log('server url or api key is invalid.')
-      // display error
-    }
-  }
+  const { error, mutate: login } = useMutationLogin(navigation)
 
-  async function autofillStoredLoginData() {
-    try {
-      const storedServerUrl = await getItem(StorageKey.serverUrl)
-      if (storedServerUrl !== null) {
-        setServerUrl(storedServerUrl)
-      }
-      const storedApiKey = await getItem(StorageKey.apiKey)
-      if (storedApiKey !== null) {
-        setApiKey(storedApiKey)
-      }
-    } catch {
-      // TODO handle error
-    }
+  function handleLogin() {
+    login({ serverUrl, apiKey })
   }
-
-  useEffect(() => {
-    autofillStoredLoginData()
-  }, [])
 
   return (
-    <>
-      <StatusBar style="auto" />
-      <View style={styles.container}>
-        <Text>This is a test component!</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={setServerUrl}
-          value={serverUrl}
-          placeholder="Miniflux server url"
-        />
-        <TextInput
-          style={styles.input}
-          onChangeText={setApiKey}
-          value={apiKey}
-          secureTextEntry
-          placeholder="Miniflux API key"
-        />
-        <Button title="login" onPress={handlePress} />
-      </View>
-    </>
+    <View style={styles.container}>
+      {error && <Text style={styles.error}>{error.message}</Text>}
+      <TextInput
+        style={styles.input}
+        placeholder="Miniflux server URL"
+        value={serverUrl}
+        onChangeText={setServerUrl}
+        inputMode="url"
+        returnKeyType="next"
+        blurOnSubmit={false}
+        onSubmitEditing={() => apiKeyInputRef.current?.focus()}
+      />
+      <TextInput
+        style={styles.input}
+        ref={apiKeyInputRef}
+        placeholder="Miniflux API key"
+        value={apiKey}
+        onChangeText={setApiKey}
+        secureTextEntry
+        onSubmitEditing={handleLogin}
+      />
+      <Button title="Login" onPress={handleLogin} />
+    </View>
   )
 }
 
@@ -79,6 +50,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  error: {
+    color: 'red',
   },
   input: {
     height: 40,

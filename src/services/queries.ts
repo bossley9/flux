@@ -9,6 +9,8 @@ export function useQueryFeeds() {
     queryFn: fetchFeeds,
   })
 }
+useQueryFeeds.fetcher = fetchFeeds
+useQueryFeeds.getKey = getFeedsQueryKey
 
 export function useQueryFeedEntries(feed: Feed) {
   return useQuery({
