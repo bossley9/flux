@@ -1,5 +1,5 @@
-import {App as AppInner} from './_app'
+import { App as AppInner } from './src/_app'
 
 export default function App() {
-  return <AppInner />;
+  return <AppInner />
 }

@@ -1,11 +1,13 @@
-import {useEffect, useState} from 'react'
-import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
-import {StatusBar} from 'expo-status-bar';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import type {NativeStackScreenProps} from '@react-navigation/native-stack';
-import type {StackParamList} from '../../_app'
+import { useEffect, useState } from 'react'
+import { Button, StyleSheet, Text, TextInput, View } from 'react-native'
+import { StatusBar } from 'expo-status-bar'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import type { NativeStackScreenProps } from '@react-navigation/native-stack'
+import type { StackParamList } from '../_app'
 
-export function LoginScreen({navigation}: NativeStackScreenProps<StackParamList, 'Login'>) {
+export function LoginScreen({
+  navigation,
+}: NativeStackScreenProps<StackParamList, 'Login'>) {
   const [serverUrl, setServerUrl] = useState('https://reader.miniflux.app')
   const [apiKey, setApiKey] = useState('')
 
@@ -26,8 +28,7 @@ export function LoginScreen({navigation}: NativeStackScreenProps<StackParamList,
       }
       // console.log('authenticated')
       navigation.navigate('Profile')
-    }
-    else {
+    } else {
       // console.log('server url or api key is invalid.')
       // display error
     }
@@ -35,15 +36,17 @@ export function LoginScreen({navigation}: NativeStackScreenProps<StackParamList,
 
   async function autofillStoredLoginData() {
     try {
-      const storedServerUrl = await AsyncStorage.getItem('serverUrl');
+      const storedServerUrl = await AsyncStorage.getItem('serverUrl')
       if (storedServerUrl !== null) {
         setServerUrl(storedServerUrl)
       }
-      const storedApiKey = await AsyncStorage.getItem('apiKey');
+      const storedApiKey = await AsyncStorage.getItem('apiKey')
       if (storedApiKey !== null) {
         setApiKey(storedApiKey)
       }
-    } catch {}
+    } catch {
+      // TODO handle error
+    }
   }
 
   useEffect(() => {
@@ -55,8 +58,19 @@ export function LoginScreen({navigation}: NativeStackScreenProps<StackParamList,
       <StatusBar style="auto" />
       <View style={styles.container}>
         <Text>This is a test component!</Text>
-        <TextInput style={styles.input} onChangeText={setServerUrl} value={serverUrl} placeholder="Miniflux server url" />
-        <TextInput style={styles.input} onChangeText={setApiKey} value={apiKey} secureTextEntry placeholder="Miniflux API key" />
+        <TextInput
+          style={styles.input}
+          onChangeText={setServerUrl}
+          value={serverUrl}
+          placeholder="Miniflux server url"
+        />
+        <TextInput
+          style={styles.input}
+          onChangeText={setApiKey}
+          value={apiKey}
+          secureTextEntry
+          placeholder="Miniflux API key"
+        />
         <Button title="login" onPress={handlePress} />
       </View>
     </>
@@ -76,4 +90,4 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
   },
-});
+})
