@@ -1,4 +1,4 @@
-import {TestComponent} from './src/components/TestComponent'
+import {LoginScreen} from './src/components/LoginScreen'
 import {DataComponent} from './src/components/DataComponent'
 import {
   QueryClientProvider,
@@ -22,8 +22,8 @@ export function App() {
         <Stack.Navigator>
           <Stack.Screen
             name="Login"
-            component={TestComponent}
-            options={{title: 'Log in here'}}
+            component={LoginScreen}
+            options={{title: 'Login'}}
           />
           <Stack.Screen name="Profile" component={DataComponent} />
         </Stack.Navigator>

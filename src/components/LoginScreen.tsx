@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import type {StackParamList} from '../../_app'
 
-export function TestComponent({navigation}: NativeStackScreenProps<StackParamList, 'Login'>) {
+export function LoginScreen({navigation}: NativeStackScreenProps<StackParamList, 'Login'>) {
   const [serverUrl, setServerUrl] = useState('https://reader.miniflux.app')
   const [apiKey, setApiKey] = useState('')
 

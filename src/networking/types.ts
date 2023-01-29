@@ -22,7 +22,38 @@ export type Feed = {
 	cookie: string
 	username: string
 	password: string
-	category?: any // TODO category type
+	category?: Category
 	hide_globally: boolean
 }
 
+export type Category = {
+	id?: number
+	title?: string
+	user_id?: number
+}
+
+export type Entries = {
+	total: number
+	entries: Entry[]
+}
+
+export type Entry = {
+	id: number
+	user_id: number
+	feed_id: number
+	status: string
+	hash: string
+	title: string
+	url: string
+	comments_url: string
+	published_at: string
+	created_at: string
+	changed_at: string
+	content: string
+	author: string
+	share_code: string
+	starred: boolean
+	reading_time: number
+	enclosures?: never
+	feed?: Feed
+}

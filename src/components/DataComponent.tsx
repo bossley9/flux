@@ -1,6 +1,7 @@
 import {Button, ScrollView, StyleSheet, Text, View} from "react-native";
 import {useQuery} from '@tanstack/react-query'
-import {fetchUser, fetchFeeds} from '../networking/fetchers'
+import {fetchUser, fetchFeeds, fetchEntries} from '../networking/fetchers'
+import {useQueryEntries} from '../networking/queries'
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import type {StackParamList} from '../../_app'
 
@@ -15,6 +16,8 @@ export function DataComponent({navigation}: NativeStackScreenProps<StackParamLis
     queryFn: fetchFeeds,
   })
 
+  const {data: feedEntries, isLoading: isEntriesLoading} = useQueryEntries(feedData?.[0] ?? null)
+
   function handleRefetch() {
     refetchUser()
     refetchFeeds()
@@ -27,8 +30,13 @@ export function DataComponent({navigation}: NativeStackScreenProps<StackParamLis
 
   return (
     <ScrollView style={styles.scrollView}>
-      <Button title="fetch again" onPress={handleRefetch} />
+      <Button title="refresh" onPress={handleRefetch} />
       <Button title="logout" onPress={handleLogout} />
+      {isEntriesLoading ? (
+        <Text>loading...</Text>
+      ) : (
+        <Text style={styles.entry}>{JSON.stringify(feedEntries?.entries?.[0])}</Text>
+      )}
       {isUserLoading || isFeedsLoading ? <Text>fetching data...</Text> : (
         <View>
           <Text>user is {JSON.stringify(userData)}</Text>
@@ -49,6 +57,9 @@ export function DataComponent({navigation}: NativeStackScreenProps<StackParamLis
 }
 
 const styles = StyleSheet.create({
+  entry: {
+    fontWeight: 'bold'
+  },
   scrollView: {
     backgroundColor: 'pink',
   },
