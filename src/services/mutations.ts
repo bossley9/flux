@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useQueryFeeds } from './queries'
+import { useQueryUser } from './queries'
 import { storeItem, StorageKey } from '@/storage'
 import { isMinifluxError, isAxiosError } from './errors'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
@@ -21,6 +21,7 @@ export function useMutationLogin(
       if (serverUrl.length === 0 || apiKey.length === 0) {
         throw new Error('Server URL and API key are required.')
       }
+
       // TODO switch to multi set
       try {
         await storeItem(StorageKey.serverUrl, serverUrl)
@@ -39,8 +40,8 @@ export function useMutationLogin(
 
       try {
         await queryClient.fetchQuery({
-          queryFn: useQueryFeeds.fetcher,
-          queryKey: useQueryFeeds.getKey(),
+          queryFn: useQueryUser.fetcher,
+          queryKey: useQueryUser.getKey(),
         })
         navigation.navigate('Profile')
       } catch (e) {

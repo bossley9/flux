@@ -1,9 +1,19 @@
 import type { Feed } from './types'
 
-export function getFeedsQueryKey() {
-  return ['feeds'] as const
+export function getUserQueryKey() {
+  return ['user']
 }
 
-export function getFeedEntriesQueryKey({ feedId }: { feedId: Feed['id'] }) {
-  return ['feeds', { feedId }] as const
+export function getFeedsQueryKey({ userId }: { userId: number | null }) {
+  return [userId, 'feeds'] as const
+}
+
+export function getFeedEntriesQueryKey({
+  userId,
+  feedId,
+}: {
+  userId: number | null
+  feedId: Feed['id']
+}) {
+  return [userId, 'feeds', { feedId }] as const
 }

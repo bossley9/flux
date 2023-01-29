@@ -5,6 +5,32 @@ import type { QueryFunctionContext } from '@tanstack/react-query'
 export type Context<T extends (...args: any) => readonly any[]> =
   QueryFunctionContext<ReturnType<T>>
 
+export type User = {
+  id: number
+  username: string
+  password?: string
+  is_admin: boolean
+  theme: string
+  language: string
+  timezone: string
+  entry_sorting_direction: string
+  entry_sorting_order: string
+  stylesheet: string
+  google_id: string
+  openid_connect_id: string
+  entries_per_page: number
+  keyboard_shortcuts: boolean
+  show_reading_time: boolean
+  entry_swipe: boolean
+  double_tap: boolean
+  last_login_at: string
+  display_mode: string
+  default_reading_speed: number
+  cjk_reading_speed: number
+  default_home_page: string
+  categories_sorting_order: string
+}
+
 export type Feed = {
   id: number
   user_id: number
