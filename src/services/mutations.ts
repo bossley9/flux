@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useQueryUser } from './queries'
-import { storeItems, StorageKey } from '@/storage'
+import { useQueryUser, useUserId } from './queries'
+import { storeItems, removeItems, StorageKey } from '@/storage'
 import { isMinifluxError, isAxiosError } from './errors'
 import { Screen, ScreenNavigationProp } from '@/navigation'
 import type { GenericError } from './errors'
@@ -10,8 +10,8 @@ type LoginFormData = {
   apiKey: string
 }
 
-export function useMutationLogin(
-  navigation: ScreenNavigationProp<Screen.Login>
+export function useMutationLogin<T extends Screen>(
+  navigation: ScreenNavigationProp<T>
 ) {
   const queryClient = useQueryClient()
 
@@ -53,6 +53,24 @@ export function useMutationLogin(
           throw new Error(JSON.stringify(e))
         }
       }
+    },
+  })
+}
+
+export function useMutationLogout<T extends Screen>(
+  navigation: ScreenNavigationProp<T>
+) {
+  const queryClient = useQueryClient()
+  const userId = useUserId()
+
+  return useMutation({
+    mutationFn: async () => {
+      navigation.navigate(Screen.Login)
+
+      await removeItems([StorageKey.serverUrl, StorageKey.apiKey])
+
+      queryClient.removeQueries({ queryKey: [userId] })
+      queryClient.removeQueries({ queryKey: useQueryUser.getKey() })
     },
   })
 }
