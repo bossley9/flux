@@ -39,7 +39,7 @@ export type Category = {
   user_id?: number
 }
 
-export type Entries = {
+export type EntryList = {
   total: number
   entries: Entry[]
 }
@@ -48,7 +48,7 @@ export type Entry = {
   id: number
   user_id: number
   feed_id: number
-  status: string
+  status: EntryStatus
   hash: string
   title: string
   url: string
@@ -64,3 +64,5 @@ export type Entry = {
   enclosures?: never
   feed?: Feed
 }
+
+export type EntryStatus = 'unread' | 'read' | 'removed'

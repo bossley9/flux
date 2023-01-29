@@ -1,5 +1,5 @@
-import { Button, ScrollView, StyleSheet, Text, View } from 'react-native'
-import { DataInnerComponent } from './DataInnerComponent'
+import { Button, ScrollView, StyleSheet, Text } from 'react-native'
+import { FeedCard } from './FeedCard'
 import { useQueryClient } from '@tanstack/react-query'
 import { useQueryFeeds } from '../networking/queries'
 import { getFeedsQueryKey } from '../networking/keys'
@@ -11,7 +11,7 @@ export function DataComponent({
 }: NativeStackScreenProps<StackParamList, 'Profile'>) {
   const queryClient = useQueryClient()
 
-  const { data: feedData, isFetching: isFeedsLoading } = useQueryFeeds()
+  const { data, isLoading, isFetching } = useQueryFeeds()
 
   function handleRefetch() {
     queryClient.invalidateQueries(getFeedsQueryKey())
@@ -26,34 +26,22 @@ export function DataComponent({
     <ScrollView style={styles.scrollView}>
       <Button title="refresh" onPress={handleRefetch} />
       <Button title="logout" onPress={handleLogout} />
-      {feedData?.[0] && <DataInnerComponent feed={feedData[0]} />}
-      {isFeedsLoading ? (
-        <Text>fetching data...</Text>
-      ) : (
-        <View>
-          <View>
-            {feedData?.map((feed) => {
-              return (
-                <View key={feed.id}>
-                  <Text>
-                    feed title is {feed.title}{' '}
-                    {feed.disabled ? '(disabled)' : ''}
-                  </Text>
-                  {feed.keeplist_rules && (
-                    <Text>this feed is kept with {feed.keeplist_rules}</Text>
-                  )}
-                </View>
-              )
-            })}
-          </View>
-        </View>
+      {isFetching && (
+        <Text style={styles.loadingText}>is fetching in background...</Text>
       )}
+      {isLoading && <Text style={styles.loadingText}>loading...</Text>}
+      {data?.map((feed) => (
+        <FeedCard key={feed.id} feed={feed} />
+      ))}
     </ScrollView>
   )
 }
 
 const styles = StyleSheet.create({
+  loadingText: {
+    fontWeight: 'bold',
+  },
   scrollView: {
-    backgroundColor: 'pink',
+    backgroundColor: 'skyblue',
   },
 })

@@ -8,7 +8,7 @@ export function fetchFeeds(): Promise<API.Feed[]> {
 
 export async function fetchFeedEntries(
   context: API.Context<typeof getFeedEntriesQueryKey>
-): Promise<API.Entries> {
+): Promise<API.EntryList> {
   const [, { feedId }] = context.queryKey
-  return request<API.Entries>('GET', `v1/feeds/${feedId}/entries`)
+  return request<API.EntryList>('GET', `v1/feeds/${feedId}/entries`)
 }
