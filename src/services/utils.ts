@@ -1,6 +1,7 @@
+import axios from 'axios'
 import { getItem, StorageKey } from '@/storage'
 
-async function getHeaders(): Promise<RequestInit['headers']> {
+async function getHeaders(): Promise<Record<string, string>> {
   const apiKey = (await getItem(StorageKey.apiKey)) ?? ''
   return {
     'User-Agent': 'Miniflux Client Library',
@@ -18,9 +19,9 @@ export async function request<T>(
   const headers = await getHeaders()
   const url = serverUrl.replace(/\/$/, '') + '/' + path
 
-  const options: RequestInit = {
+  return axios.request({
     method,
+    url,
     headers,
-  }
-  return fetch(url, options).then((res) => res.json())
+  })
 }

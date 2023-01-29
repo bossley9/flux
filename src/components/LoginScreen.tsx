@@ -25,7 +25,6 @@ export function LoginScreen({
         placeholder="Miniflux server URL"
         value={serverUrl}
         onChangeText={setServerUrl}
-        inputMode="url"
         returnKeyType="next"
         blurOnSubmit={false}
         onSubmitEditing={() => apiKeyInputRef.current?.focus()}

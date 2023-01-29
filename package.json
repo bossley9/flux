@@ -10,6 +10,7 @@
     "start": "npm run android",
     "build": "npx eas-cli build --platform android --profile local",
     "lint": "npx eslint src",
+    "typecheck": "tsc --project tsconfig.json",
     "prepare": "husky install"
   },
   "dependencies": {
@@ -17,6 +18,7 @@
     "@react-navigation/native": "^6.1.2",
     "@react-navigation/native-stack": "^6.9.8",
     "@tanstack/react-query": "^4.23.0",
+    "axios": "^1.2.6",
     "expo": "^47.0.13",
     "expo-status-bar": "~1.4.2",
     "react": "^18.2.0",

@@ -4,7 +4,7 @@ import { getItem, StorageKey } from '@/storage'
 import type { NativeStackScreenProps } from '@react-navigation/native-stack'
 import type { StackParamList } from '@/_app'
 
-type Props = NativeStackScreenProps<StackParamList, 'Loading'>
+type Props = NativeStackScreenProps<StackParamList, 'AppLoading'>
 
 export function AppLoadingScreen({ navigation }: Props) {
   async function readStoredData() {

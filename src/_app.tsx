@@ -6,7 +6,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 export type StackParamList = {
-  Loading: undefined
+  AppLoading: undefined
   Login: undefined
   Profile: undefined
 }
