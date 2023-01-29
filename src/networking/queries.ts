@@ -1,12 +1,18 @@
 import { useQuery } from '@tanstack/react-query'
-import { fetchEntries } from './fetchers'
-import { getFeedEntriesQueryKey } from './keys'
+import { getFeedsQueryKey, getFeedEntriesQueryKey } from './keys'
+import { fetchFeeds, fetchFeedEntries } from './fetchers'
 import type { Feed } from './types'
 
-export function useQueryEntries(feed: Feed | null) {
+export function useQueryFeeds() {
   return useQuery({
-    queryKey: getFeedEntriesQueryKey({ feedId: feed?.id ?? 0 }),
-    queryFn: fetchEntries,
-    enabled: Boolean(feed),
+    queryKey: getFeedsQueryKey(),
+    queryFn: fetchFeeds,
+  })
+}
+
+export function useQueryFeedEntries(feed: Feed) {
+  return useQuery({
+    queryKey: getFeedEntriesQueryKey({ feedId: feed.id }),
+    queryFn: fetchFeedEntries,
   })
 }

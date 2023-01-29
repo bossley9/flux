@@ -1,4 +1,9 @@
-export type User = never
+import type { QueryFunctionContext } from '@tanstack/react-query'
+
+// query key creator functions can have any arguments and return any type of array elements
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type Context<T extends (...args: any) => readonly any[]> =
+  QueryFunctionContext<ReturnType<T>>
 
 export type Feed = {
   id: number

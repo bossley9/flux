@@ -1,38 +1,20 @@
 import { Button, ScrollView, StyleSheet, Text, View } from 'react-native'
-import { useQuery } from '@tanstack/react-query'
-import { fetchUser, fetchFeeds } from '../networking/fetchers'
-import { useQueryEntries } from '../networking/queries'
+import { DataInnerComponent } from './DataInnerComponent'
+import { useQueryClient } from '@tanstack/react-query'
+import { useQueryFeeds } from '../networking/queries'
+import { getFeedsQueryKey } from '../networking/keys'
 import type { NativeStackScreenProps } from '@react-navigation/native-stack'
 import type { StackParamList } from '../_app'
 
 export function DataComponent({
   navigation,
 }: NativeStackScreenProps<StackParamList, 'Profile'>) {
-  const {
-    data: userData,
-    isLoading: isUserLoading,
-    refetch: refetchUser,
-  } = useQuery({
-    queryKey: ['user'],
-    queryFn: fetchUser,
-  })
+  const queryClient = useQueryClient()
 
-  const {
-    data: feedData,
-    isLoading: isFeedsLoading,
-    refetch: refetchFeeds,
-  } = useQuery({
-    queryKey: ['feeds'],
-    queryFn: fetchFeeds,
-  })
-
-  const { data: feedEntries, isLoading: isEntriesLoading } = useQueryEntries(
-    feedData?.[0] ?? null
-  )
+  const { data: feedData, isFetching: isFeedsLoading } = useQueryFeeds()
 
   function handleRefetch() {
-    refetchUser()
-    refetchFeeds()
+    queryClient.invalidateQueries(getFeedsQueryKey())
   }
 
   function handleLogout() {
@@ -44,18 +26,11 @@ export function DataComponent({
     <ScrollView style={styles.scrollView}>
       <Button title="refresh" onPress={handleRefetch} />
       <Button title="logout" onPress={handleLogout} />
-      {isEntriesLoading ? (
-        <Text>loading...</Text>
-      ) : (
-        <Text style={styles.entry}>
-          {JSON.stringify(feedEntries?.entries?.[0])}
-        </Text>
-      )}
-      {isUserLoading || isFeedsLoading ? (
+      {feedData?.[0] && <DataInnerComponent feed={feedData[0]} />}
+      {isFeedsLoading ? (
         <Text>fetching data...</Text>
       ) : (
         <View>
-          <Text>user is {JSON.stringify(userData)}</Text>
           <View>
             {feedData?.map((feed) => {
               return (
@@ -78,9 +53,6 @@ export function DataComponent({
 }
 
 const styles = StyleSheet.create({
-  entry: {
-    fontWeight: 'bold',
-  },
   scrollView: {
     backgroundColor: 'pink',
   },

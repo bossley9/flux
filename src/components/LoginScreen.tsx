@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import { getItem, storeItem, StorageKey } from '../storage'
 import type { NativeStackScreenProps } from '@react-navigation/native-stack'
 import type { StackParamList } from '../_app'
 
@@ -12,16 +12,15 @@ export function LoginScreen({
   const [apiKey, setApiKey] = useState('')
 
   async function handlePress() {
-    // console.log('authenticating...')
     if (serverUrl.length > 0 && apiKey.length > 0) {
       try {
-        await AsyncStorage.setItem('serverUrl', serverUrl)
+        await storeItem(StorageKey.serverUrl, serverUrl)
       } catch {
         console.log('serverUrl could not be saved')
         // saving error
       }
       try {
-        await AsyncStorage.setItem('apiKey', apiKey)
+        await storeItem(StorageKey.apiKey, apiKey)
       } catch {
         console.log('apiKey could not be saved')
         // saving error
@@ -36,11 +35,11 @@ export function LoginScreen({
 
   async function autofillStoredLoginData() {
     try {
-      const storedServerUrl = await AsyncStorage.getItem('serverUrl')
+      const storedServerUrl = await getItem(StorageKey.serverUrl)
       if (storedServerUrl !== null) {
         setServerUrl(storedServerUrl)
       }
-      const storedApiKey = await AsyncStorage.getItem('apiKey')
+      const storedApiKey = await getItem(StorageKey.apiKey)
       if (storedApiKey !== null) {
         setApiKey(storedApiKey)
       }

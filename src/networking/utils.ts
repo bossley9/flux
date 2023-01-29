@@ -1,21 +1,12 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
-
-async function getServerUrl() {
-  const storedServerUrl = await AsyncStorage.getItem('serverUrl')
-  return storedServerUrl ?? ''
-}
-
-async function getApiKey() {
-  const storedApiKey = await AsyncStorage.getItem('apiKey')
-  return storedApiKey ?? ''
-}
+import { getItem, StorageKey } from '../storage'
 
 async function getHeaders(): Promise<RequestInit['headers']> {
+  const apiKey = (await getItem(StorageKey.apiKey)) ?? ''
   return {
     'User-Agent': 'Miniflux Client Library',
     'Content-Type': 'application/json',
     Accept: 'application/json',
-    'X-Auth-Token': await getApiKey(),
+    'X-Auth-Token': apiKey,
   }
 }
 
@@ -23,7 +14,7 @@ export async function request<T>(
   method: RequestInit['method'],
   path: string
 ): Promise<T> {
-  const serverUrl = await getServerUrl()
+  const serverUrl = (await getItem(StorageKey.serverUrl)) ?? ''
   const headers = await getHeaders()
   const url = serverUrl.replace(/\/$/, '') + '/' + path
 
