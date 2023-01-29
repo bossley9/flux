@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useQueryUser } from './queries'
-import { storeItem, StorageKey } from '@/storage'
+import { storeItems, StorageKey } from '@/storage'
 import { isMinifluxError, isAxiosError } from './errors'
 import { Screen, ScreenNavigationProp } from '@/navigation'
 import type { GenericError } from './errors'
@@ -18,22 +18,17 @@ export function useMutationLogin(
   return useMutation<void, GenericError, LoginFormData>({
     mutationFn: async ({ serverUrl, apiKey }) => {
       if (serverUrl.length === 0 || apiKey.length === 0) {
-        throw new Error('Server URL and API key are required.')
+        throw new Error('Server URL and API key are both required.')
       }
 
-      // TODO switch to multi set
       try {
-        await storeItem(StorageKey.serverUrl, serverUrl)
+        await storeItems({
+          [StorageKey.serverUrl]: serverUrl,
+          [StorageKey.apiKey]: apiKey,
+        })
       } catch {
         throw new Error(
-          'Server URL could not be saved. Check your app permissions and make sure storage is enabled.'
-        )
-      }
-      try {
-        await storeItem(StorageKey.apiKey, apiKey)
-      } catch {
-        throw new Error(
-          'API key could not be saved. Check your app permissions and make sure storage is enabled.'
+          'Server URL and API key could not be saved. Check your app permissions and make sure storage is enabled.'
         )
       }
 

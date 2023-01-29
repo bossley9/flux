@@ -9,10 +9,10 @@ export async function getItem(key: StorageKey) {
   return AsyncStorage.getItem(key)
 }
 
-export async function storeItem(key: StorageKey, value: string) {
-  return AsyncStorage.setItem(key, value)
+export async function storeItems(items: Partial<Record<StorageKey, string>>) {
+  return AsyncStorage.multiSet(Object.entries(items))
 }
 
-export async function removeItem(key: StorageKey) {
-  return AsyncStorage.removeItem(key)
+export async function removeItems(keys: StorageKey[]) {
+  return AsyncStorage.multiRemove(keys)
 }

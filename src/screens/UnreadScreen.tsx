@@ -2,7 +2,7 @@ import { Button, ScrollView, StyleSheet, Text } from 'react-native'
 import { FeedCard } from '@/components/FeedCard'
 import { useQueryClient } from '@tanstack/react-query'
 import { useUserId, useQueryUser, useQueryFeeds } from '@/services/queries'
-import { removeItem, StorageKey } from '@/storage'
+import { removeItems, StorageKey } from '@/storage'
 import { Screen, ScreenProps } from '@/navigation'
 
 export function UnreadScreen({ navigation }: ScreenProps<Screen.Unread>) {
@@ -19,11 +19,7 @@ export function UnreadScreen({ navigation }: ScreenProps<Screen.Unread>) {
     queryClient.removeQueries({ queryKey: [userId] })
     queryClient.removeQueries({ queryKey: useQueryUser.getKey() })
 
-    // TODO switch to multi remove
-    await Promise.all([
-      removeItem(StorageKey.serverUrl),
-      removeItem(StorageKey.apiKey),
-    ])
+    await removeItems([StorageKey.serverUrl, StorageKey.apiKey])
 
     navigation.navigate(Screen.Login)
   }
