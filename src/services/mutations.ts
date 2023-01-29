@@ -33,7 +33,8 @@ export function useMutationLogin(
       }
 
       try {
-        await queryClient.prefetchQuery({
+        // keep fetchQuery to catch errors
+        await queryClient.fetchQuery({
           queryFn: useQueryUser.fetcher,
           queryKey: useQueryUser.getKey(),
         })
