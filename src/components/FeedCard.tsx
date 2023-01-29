@@ -1,6 +1,7 @@
-import { Text, View } from 'react-native'
-import { FeedEntry } from './FeedEntry'
+import { StyleSheet, Text, View } from 'react-native'
+import { EntryCard } from './EntryCard'
 import { useQueryFeedEntries } from '@/services/queries'
+import { tokens } from '@/styles'
 import type { Feed } from '@/services/types'
 
 type Props = {
@@ -16,8 +17,16 @@ export function FeedCard({ feed }: Props) {
       {data?.entries
         .filter((entry) => entry.status === 'unread')
         .map((entry) => (
-          <FeedEntry key={entry.id} entry={entry} />
+          <View key={entry.id} style={styles.entryWrapper}>
+            <EntryCard entry={entry} />
+          </View>
         ))}
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  entryWrapper: {
+    marginBottom: tokens.space,
+  },
+})
