@@ -12,7 +12,7 @@ import type { StackParamList } from '@/navigation'
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 30_000,
+      staleTime: 30000,
     },
   },
 })
