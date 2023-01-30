@@ -18,7 +18,7 @@ const queryClient = new QueryClient({
 })
 const Stack = createNativeStackNavigator<StackParamList>()
 
-export function Index() {
+export function Root() {
   const screenOptions: NativeStackNavigationOptions = {
     headerShown: false,
     headerStyle: {
