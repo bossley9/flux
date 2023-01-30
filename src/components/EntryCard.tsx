@@ -1,16 +1,16 @@
 import { Button, StyleSheet, Text, View } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 import { tokens } from '@/styles'
 import type { Entry } from '@/services/types'
-import { Screen, ScreenNavigationProp } from '@/navigation'
+import { RootScreen, ScreenNavigationProp } from '@/navigation'
 
-type Props<T extends Screen> = {
-  entry: Entry
-  navigation: ScreenNavigationProp<T>
-}
+type Props = { entry: Entry }
 
-export function EntryCard<T extends Screen>({ entry, navigation }: Props<T>) {
+export function EntryCard({ entry }: Props) {
+  const navigation = useNavigation<ScreenNavigationProp<RootScreen.Main>>()
+
   const handleOpenEntry = () => {
-    navigation.navigate(Screen.Entry, { entry })
+    navigation.navigate(RootScreen.Entry, { entry })
   }
 
   return (

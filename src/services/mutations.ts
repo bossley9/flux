@@ -1,8 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useQueryUser, useUserId } from './queries'
+import { useNavigation } from '@react-navigation/native'
 import { storeItems, removeItems, StorageKey } from '@/storage'
 import { isMinifluxError, isAxiosError } from './errors'
-import { Screen, ScreenNavigationProp } from '@/navigation'
+import { RootScreen, ScreenNavigationProp } from '@/navigation'
 import type { GenericError } from './errors'
 
 type LoginFormData = {
@@ -10,10 +11,9 @@ type LoginFormData = {
   apiKey: string
 }
 
-export function useMutationLogin<T extends Screen>(
-  navigation: ScreenNavigationProp<T>
-) {
+export function useMutationLogin() {
   const queryClient = useQueryClient()
+  const navigation = useNavigation<ScreenNavigationProp<RootScreen.Login>>()
 
   return useMutation<void, GenericError, LoginFormData>({
     mutationFn: async ({ serverUrl, apiKey }) => {
@@ -38,7 +38,7 @@ export function useMutationLogin<T extends Screen>(
           queryFn: useQueryUser.fetcher,
           queryKey: useQueryUser.getKey(),
         })
-        navigation.replace(Screen.Unread)
+        navigation.replace(RootScreen.Main)
       } catch (e) {
         if (isMinifluxError(e)) {
           const message = e.response.data.error_message
@@ -57,15 +57,14 @@ export function useMutationLogin<T extends Screen>(
   })
 }
 
-export function useMutationLogout<T extends Screen>(
-  navigation: ScreenNavigationProp<T>
-) {
+export function useMutationLogout() {
   const queryClient = useQueryClient()
   const userId = useUserId()
+  const navigation = useNavigation<ScreenNavigationProp<RootScreen.Main>>()
 
   return useMutation({
     mutationFn: async () => {
-      navigation.replace(Screen.Login)
+      navigation.replace(RootScreen.Login)
 
       await removeItems([StorageKey.serverUrl, StorageKey.apiKey])
 

@@ -28,6 +28,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 40 + tokens.space, // phone notification/camera offset
-    marginBottom: 16 + tokens.space, // navigation bar offset
+    backgroundColor: tokens.backgroundColor,
   },
 })

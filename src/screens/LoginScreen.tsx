@@ -2,14 +2,13 @@ import { ScreenContainer } from '@/components/ScreenContainer'
 import { useRef, useState } from 'react'
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native'
 import { useMutationLogin } from '@/services/mutations'
-import type { Screen, ScreenProps } from '@/navigation'
 
-export function LoginScreen({ navigation }: ScreenProps<Screen.Login>) {
+export function LoginScreen() {
   const apiKeyInputRef = useRef<TextInput>(null)
   const [serverUrl, setServerUrl] = useState('https://reader.miniflux.app')
   const [apiKey, setApiKey] = useState('')
 
-  const { error, mutate: login } = useMutationLogin(navigation)
+  const { error, mutate: login } = useMutationLogin()
 
   function handleLogin() {
     login({ serverUrl, apiKey })

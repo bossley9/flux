@@ -1,23 +1,23 @@
 import { ScreenContainer } from '@/components/ScreenContainer'
 import { useEffect } from 'react'
 import { getItem, StorageKey } from '@/storage'
-import { Screen, ScreenProps } from '@/navigation'
+import { RootScreen, ScreenProps } from '@/navigation'
 
 export function AppInitLoadingScreen({
   navigation,
-}: ScreenProps<Screen.AppInitLoading>) {
+}: ScreenProps<RootScreen.AppInitLoading>) {
   async function readStoredData() {
     try {
       const storedServerUrl = await getItem(StorageKey.serverUrl)
       const storedApiKey = await getItem(StorageKey.apiKey)
 
       if (storedServerUrl !== null && storedApiKey !== null) {
-        navigation.replace(Screen.Unread)
+        navigation.replace(RootScreen.Main)
       } else {
-        navigation.replace(Screen.Login)
+        navigation.replace(RootScreen.Login)
       }
     } catch {
-      navigation.replace(Screen.Login)
+      navigation.replace(RootScreen.Login)
     }
   }
 

@@ -5,16 +5,15 @@ import { useUserId, useQueryFeeds } from '@/services/queries'
 import { useQueryUnreadEntries } from '@/services/hooks'
 import { useMutationLogout } from '@/services/mutations'
 import { tokens } from '@/styles'
-import { Screen, ScreenProps } from '@/navigation'
 import { EntryCard } from '@/components/EntryCard'
 
-export function UnreadScreen({ navigation }: ScreenProps<Screen.Unread>) {
+export function UnreadScreen() {
   const queryClient = useQueryClient()
 
   const userId = useUserId()
   const { data: entries, isLoading, isFetching } = useQueryUnreadEntries()
 
-  const { mutate } = useMutationLogout(navigation)
+  const { mutate } = useMutationLogout()
 
   function handleRefresh() {
     queryClient.invalidateQueries(useQueryFeeds.getKey({ userId }))
@@ -33,7 +32,7 @@ export function UnreadScreen({ navigation }: ScreenProps<Screen.Unread>) {
       )}
       {isLoading && <Text style={styles.loadingText}>loading...</Text>}
       {entries?.map((entry) => (
-        <EntryCard key={entry.id} entry={entry} navigation={navigation} />
+        <EntryCard key={entry.id} entry={entry} />
       ))}
     </ScreenContainer>
   )

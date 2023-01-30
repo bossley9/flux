@@ -4,26 +4,24 @@ import type {
 } from '@react-navigation/native-stack'
 import type { Entry } from '@/services/types'
 
-export enum Screen {
+export enum RootScreen {
   AppInitLoading = 'AppInitLoading',
   Login = 'Login',
-  Unread = 'Unread',
+  Main = 'Main',
   Entry = 'Entry',
 }
 
 export type StackParamList = {
-  [Screen.AppInitLoading]: undefined
-  [Screen.Login]: undefined
-  [Screen.Unread]: undefined
-  [Screen.Entry]: { entry: Entry }
+  [RootScreen.AppInitLoading]: undefined
+  [RootScreen.Login]: undefined
+  [RootScreen.Main]: undefined
+  [RootScreen.Entry]: { entry: Entry }
 }
 
-export type ScreenProps<T extends Screen> = NativeStackScreenProps<
+export type ScreenProps<T extends RootScreen> = NativeStackScreenProps<
   StackParamList,
   T
 >
 
-export type ScreenNavigationProp<T extends Screen> = NativeStackNavigationProp<
-  StackParamList,
-  T
->
+export type ScreenNavigationProp<T extends RootScreen> =
+  NativeStackNavigationProp<StackParamList, T>
