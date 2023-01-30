@@ -35,7 +35,7 @@ export function UnreadScreen({ navigation }: ScreenProps<Screen.Unread>) {
         {isLoading && <Text style={styles.loadingText}>loading...</Text>}
         <ScrollView style={styles.entryList}>
           {entries?.map((entry) => (
-            <EntryCard key={entry.id} entry={entry} />
+            <EntryCard key={entry.id} entry={entry} navigation={navigation} />
           ))}
         </ScrollView>
       </View>
