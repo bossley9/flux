@@ -1,25 +1,33 @@
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, ScrollView } from 'react-native'
 import { useEffect } from 'react'
 import * as NavigationBar from 'expo-navigation-bar'
+import { tokens } from '@/styles'
 
-type Props = { children?: React.ReactNode }
+type Props = {
+  style?: object
+  children?: React.ReactNode
+}
 
 function setupNavigationBar() {
   NavigationBar.setBackgroundColorAsync('#00000000')
   NavigationBar.setPositionAsync('absolute')
 }
 
-export function ScreenContainer({ children }: Props) {
+export function ScreenContainer({ style, children }: Props) {
   useEffect(() => {
     setupNavigationBar()
   }, [])
-  return <View style={styles.container}>{children}</View>
+  return (
+    <ScrollView style={{ ...styles.container, ...style }}>
+      {children}
+    </ScrollView>
+  )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 40, // phone notification/camera offset
-    marginBottom: 16, // navigation bar offset
+    marginTop: 40 + tokens.space, // phone notification/camera offset
+    marginBottom: 16 + tokens.space, // navigation bar offset
   },
 })

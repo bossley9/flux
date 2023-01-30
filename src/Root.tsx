@@ -25,6 +25,7 @@ export function Root() {
     headerStyle: {
       backgroundColor: tokens.backgroundColor,
     },
+    statusBarStyle: 'dark',
   }
   return (
     <NavigationContainer>
