@@ -8,6 +8,14 @@ export function getFeedsQueryKey({ userId }: { userId: number | null }) {
   return [userId, 'feeds'] as const
 }
 
+export function getUnreadEntriesQueryKey({
+  userId,
+}: {
+  userId: number | null
+}) {
+  return [...getFeedsQueryKey({ userId }), 'unread'] as const
+}
+
 export function getFeedEntriesQueryKey({
   userId,
   feedId,
@@ -15,5 +23,5 @@ export function getFeedEntriesQueryKey({
   userId: number | null
   feedId: Feed['id']
 }) {
-  return [userId, 'feeds', { feedId }] as const
+  return [...getFeedsQueryKey({ userId }), { feedId }] as const
 }

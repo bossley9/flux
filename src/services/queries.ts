@@ -38,3 +38,5 @@ export function useQueryFeedEntries(feed: Feed) {
     queryFn: fetchFeedEntries,
   })
 }
+useQueryFeedEntries.getKey = getFeedEntriesQueryKey
+useQueryFeedEntries.fetcher = fetchFeedEntries

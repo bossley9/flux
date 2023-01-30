@@ -1,16 +1,17 @@
 import { Button, ScrollView, StyleSheet, Text, View } from 'react-native'
-import { FeedCard } from '@/components/FeedCard'
 import { useQueryClient } from '@tanstack/react-query'
 import { useUserId, useQueryFeeds } from '@/services/queries'
+import { useQueryUnreadEntries } from '@/services/hooks'
 import { useMutationLogout } from '@/services/mutations'
 import { tokens } from '@/styles'
 import { Screen, ScreenProps } from '@/navigation'
+import { EntryCard } from '@/components/EntryCard'
 
 export function UnreadScreen({ navigation }: ScreenProps<Screen.Unread>) {
   const queryClient = useQueryClient()
 
   const userId = useUserId()
-  const { data, isLoading, isFetching } = useQueryFeeds()
+  const { data: entries, isLoading, isFetching } = useQueryUnreadEntries()
 
   const { mutate } = useMutationLogout(navigation)
 
@@ -31,8 +32,8 @@ export function UnreadScreen({ navigation }: ScreenProps<Screen.Unread>) {
           <Text style={styles.loadingText}>is fetching in background...</Text>
         )}
         {isLoading && <Text style={styles.loadingText}>loading...</Text>}
-        {data?.map((feed) => (
-          <FeedCard key={feed.id} feed={feed} />
+        {entries?.map((entry) => (
+          <EntryCard key={entry.id} entry={entry} />
         ))}
       </ScrollView>
     </View>
