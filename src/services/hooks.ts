@@ -32,6 +32,7 @@ export function useQueryUnreadEntries() {
         })
       )
     })
+    // TODO asynchronously return entries
     const entryLists = await Promise.all(entryListPromises)
 
     let entries: Entry[] = []
@@ -47,6 +48,7 @@ export function useQueryUnreadEntries() {
     return entries.sort(sortEntriesByDate)
   }
 
+  // TODO replace with useInfiniteQuery for paging
   return useQuery({
     queryKey: getUnreadEntriesQueryKey({ userId }),
     queryFn: fetchUnreadEntries,

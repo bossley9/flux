@@ -1,4 +1,4 @@
-import { Text, View } from 'react-native'
+import { ScreenContainer } from '@/components/ScreenContainer'
 import { useEffect } from 'react'
 import { getItem, StorageKey } from '@/storage'
 import { Screen, ScreenProps } from '@/navigation'
@@ -12,12 +12,12 @@ export function AppInitLoadingScreen({
       const storedApiKey = await getItem(StorageKey.apiKey)
 
       if (storedServerUrl !== null && storedApiKey !== null) {
-        navigation.navigate(Screen.Unread)
+        navigation.replace(Screen.Unread)
       } else {
-        navigation.navigate(Screen.Login)
+        navigation.replace(Screen.Login)
       }
     } catch {
-      navigation.navigate(Screen.Login)
+      navigation.replace(Screen.Login)
     }
   }
 
@@ -25,9 +25,5 @@ export function AppInitLoadingScreen({
     readStoredData()
   }, [])
 
-  return (
-    <View>
-      <Text>loading...</Text>
-    </View>
-  )
+  return <ScreenContainer />
 }

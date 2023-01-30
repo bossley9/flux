@@ -38,7 +38,7 @@ export function useMutationLogin<T extends Screen>(
           queryFn: useQueryUser.fetcher,
           queryKey: useQueryUser.getKey(),
         })
-        navigation.navigate(Screen.Unread)
+        navigation.replace(Screen.Unread)
       } catch (e) {
         if (isMinifluxError(e)) {
           const message = e.response.data.error_message
@@ -65,7 +65,7 @@ export function useMutationLogout<T extends Screen>(
 
   return useMutation({
     mutationFn: async () => {
-      navigation.navigate(Screen.Login)
+      navigation.replace(Screen.Login)
 
       await removeItems([StorageKey.serverUrl, StorageKey.apiKey])
 
