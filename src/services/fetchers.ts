@@ -22,19 +22,6 @@ export async function fetchFeeds({
   return response.data
 }
 
-export async function fetchFeedEntries({
-  queryKey,
-  signal,
-}: API.Context<typeof keys.getFeedEntriesQueryKey>): Promise<API.EntryList> {
-  const [, , { feedId }] = queryKey
-  const response = await request<Wrapped<API.EntryList>>(
-    'GET',
-    `v1/feeds/${feedId}/entries`,
-    { signal }
-  )
-  return response.data
-}
-
 export async function fetchEntries({
   queryKey,
   signal,
@@ -50,26 +37,7 @@ export async function fetchEntries({
   return response.data
 }
 
-export async function fetchReadEntries({
-  signal,
-}: API.Context<typeof keys.getReadEntriesQueryKey>): Promise<API.EntryList> {
-  const response = await request<Wrapped<API.EntryList>>(
-    'GET',
-    'v1/entries?status=read&limit=3&direction=desc',
-    { signal }
-  )
-  return response.data
-}
-
-export async function fetchUnreadFeedEntries({
-  queryKey,
-  signal,
-}: API.Context<typeof keys.getFeedEntriesQueryKey>): Promise<API.EntryList> {
-  const [, , { feedId }] = queryKey
-  const response = await request<Wrapped<API.EntryList>>(
-    'GET',
-    `v1/feeds/${feedId}/entries?status=unread`,
-    { signal }
-  )
+export async function fetchVersion(): Promise<string> {
+  const response = await request<Wrapped<string>>('GET', 'version')
   return response.data
 }

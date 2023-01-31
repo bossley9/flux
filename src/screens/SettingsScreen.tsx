@@ -1,10 +1,12 @@
-import { Button, StyleSheet } from 'react-native'
+import { Button, StyleSheet, Text } from 'react-native'
 import { ScreenContainer } from '@/components/ScreenContainer'
+import { useQueryVersion } from '@/services/queries'
 import { useMutationLogout } from '@/services/mutations'
 import { tokens } from '@/styles'
 
 export function SettingsScreen() {
   const { mutate: logout } = useMutationLogout()
+  const { data } = useQueryVersion()
 
   function handleLogout() {
     logout()
@@ -13,6 +15,7 @@ export function SettingsScreen() {
   return (
     <ScreenContainer style={styles.container}>
       <Button title="logout" onPress={handleLogout} />
+      <Text>version {data}</Text>
     </ScreenContainer>
   )
 }
