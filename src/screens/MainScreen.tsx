@@ -3,6 +3,7 @@ import { StarredScreen } from '@/screens/StarredScreen'
 import { UnreadScreen } from '@/screens/UnreadScreen'
 import { HistoryScreen } from '@/screens/HistoryScreen'
 import { SettingsScreen } from '@/screens/SettingsScreen'
+import { Text } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { tokens } from '@/styles'
@@ -31,8 +32,31 @@ export function MainScreen() {
       backgroundColor: tokens.backgroundColor,
       elevation: 0,
     },
-    tabBarIcon: ({ color, size }) => {
+    tabBarLabel: ({ focused }) => {
+      let tabName: string
+      const color = focused ? tokens.primaryColor : tokens.lightColor
+      switch (route.name) {
+        case MainScreenType.Feeds:
+          tabName = 'Feeds'
+          break
+        case MainScreenType.Starred:
+          tabName = 'Starred'
+          break
+        case MainScreenType.Unread:
+          tabName = 'Unread'
+          break
+        case MainScreenType.History:
+          tabName = 'History'
+          break
+        case MainScreenType.Settings:
+        default:
+          tabName = 'Settings'
+      }
+      return <Text style={{ color, fontSize: 11 }}>{tabName}</Text>
+    },
+    tabBarIcon: ({ focused, size }) => {
       let iconName: string
+      const iconColor = focused ? tokens.primaryColor : tokens.lightColor
       switch (route.name) {
         case MainScreenType.Feeds:
           iconName = 'rss-feed'
@@ -50,7 +74,7 @@ export function MainScreen() {
         default:
           iconName = 'settings'
       }
-      return <Icon name={iconName} size={size} color={color} />
+      return <Icon name={iconName} size={size} color={iconColor} />
     },
   })
   return (

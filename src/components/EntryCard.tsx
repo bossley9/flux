@@ -24,8 +24,8 @@ export function EntryCard({ entry }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'skyblue',
     padding: tokens.space,
+    backgroundColor: tokens.primaryColor,
     marginBottom: 30,
   },
   title: {
