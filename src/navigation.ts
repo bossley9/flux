@@ -28,7 +28,7 @@ export type RootScreenNavigationProp<T extends RootScreen> =
 
 export enum MainScreen {
   Feeds = 'Feeds',
-  Read = 'Read',
+  Starred = 'Starred',
   Unread = 'Unread',
   History = 'History',
   Settings = 'Settings',
@@ -36,7 +36,7 @@ export enum MainScreen {
 
 export type MainTabParamList = {
   [MainScreen.Feeds]: undefined
-  [MainScreen.Read]: undefined
+  [MainScreen.Starred]: undefined
   [MainScreen.Unread]: undefined
   [MainScreen.History]: undefined
   [MainScreen.Settings]: undefined

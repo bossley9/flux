@@ -1,5 +1,5 @@
 import { FeedsScreen } from '@/screens/FeedsScreen'
-import { ReadScreen } from '@/screens/ReadScreen'
+import { StarredScreen } from '@/screens/StarredScreen'
 import { UnreadScreen } from '@/screens/UnreadScreen'
 import { HistoryScreen } from '@/screens/HistoryScreen'
 import { SettingsScreen } from '@/screens/SettingsScreen'
@@ -37,11 +37,11 @@ export function MainScreen() {
         case MainScreenType.Feeds:
           iconName = 'rss-feed'
           break
-        case MainScreenType.Read:
-          iconName = 'mail'
+        case MainScreenType.Starred:
+          iconName = 'star'
           break
         case MainScreenType.Unread:
-          iconName = 'mark-email-unread'
+          iconName = 'mail'
           break
         case MainScreenType.History:
           iconName = 'history'
@@ -59,7 +59,7 @@ export function MainScreen() {
       screenOptions={screenOptions}
     >
       <Tab.Screen name={MainScreenType.Feeds} component={FeedsScreen} />
-      <Tab.Screen name={MainScreenType.Read} component={ReadScreen} />
+      <Tab.Screen name={MainScreenType.Starred} component={StarredScreen} />
       <Tab.Screen name={MainScreenType.Unread} component={UnreadScreen} />
       <Tab.Screen name={MainScreenType.History} component={HistoryScreen} />
       <Tab.Screen name={MainScreenType.Settings} component={SettingsScreen} />
