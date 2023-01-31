@@ -1,32 +1,23 @@
-import { Button, StyleSheet, Text } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { ScreenContainer } from '@/components/ScreenContainer'
-import { useQueryClient } from '@tanstack/react-query'
-import { useUserId, useQueryEntries } from '@/services/queries'
+import { useQueryEntries } from '@/services/queries'
 import { tokens } from '@/styles'
 import { EntryCard } from '@/components/EntryCard'
 import type { FetchEntriesOptions } from '@/services/keys'
 
 export function UnreadScreen() {
-  const queryClient = useQueryClient()
-  const userId = useUserId()
   const entryOptions: FetchEntriesOptions = {
     status: 'unread',
   }
-  const { data, isLoading, isFetching } = useQueryEntries(entryOptions)
-
-  function handleRefresh() {
-    queryClient.invalidateQueries(
-      useQueryEntries.getKey({ userId, ...entryOptions })
-    )
-  }
+  const { data, isFetching, refetch } = useQueryEntries(entryOptions)
 
   return (
-    <ScreenContainer style={styles.container}>
-      <Button title="refresh" onPress={handleRefresh} />
-      {isFetching && (
-        <Text style={styles.loadingText}>is fetching in background...</Text>
-      )}
-      {isLoading && <Text style={styles.loadingText}>loading...</Text>}
+    <ScreenContainer
+      style={styles.container}
+      refreshEnabled
+      refreshing={isFetching}
+      onRefresh={refetch}
+    >
       {data?.entries.map((entry) => (
         <EntryCard key={entry.id} entry={entry} />
       ))}
