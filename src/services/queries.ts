@@ -1,16 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
-import {
-  getUserQueryKey,
-  getFeedsQueryKey,
-  getReadEntriesQueryKey,
-  getFeedEntriesQueryKey,
-} from './keys'
-import {
-  fetchUser,
-  fetchFeeds,
-  fetchReadEntries,
-  fetchFeedEntries,
-} from './fetchers'
+import * as keys from './keys'
+import * as fetchers from './fetchers'
+import type { FetchEntriesOptions } from './keys'
 import type { Feed } from './types'
 
 export function useUserId() {
@@ -20,38 +11,51 @@ export function useUserId() {
 
 export function useQueryUser() {
   return useQuery({
-    queryKey: getUserQueryKey(),
-    queryFn: fetchUser,
+    queryKey: keys.getUserQueryKey(),
+    queryFn: fetchers.fetchUser,
   })
 }
-useQueryUser.getKey = getUserQueryKey
-useQueryUser.fetcher = fetchUser
+useQueryUser.getKey = keys.getUserQueryKey
+useQueryUser.fetcher = fetchers.fetchUser
 
 export function useQueryFeeds() {
   const userId = useUserId()
   return useQuery({
-    queryKey: getFeedsQueryKey({ userId }),
-    queryFn: fetchFeeds,
+    queryKey: keys.getFeedsQueryKey({ userId }),
+    queryFn: fetchers.fetchFeeds,
   })
 }
-useQueryFeeds.getKey = getFeedsQueryKey
-useQueryFeeds.fetcher = fetchFeeds
+useQueryFeeds.getKey = keys.getFeedsQueryKey
+useQueryFeeds.fetcher = fetchers.fetchFeeds
+
+export function useQueryEntries(options?: FetchEntriesOptions) {
+  const userId = useUserId()
+  const filterOptions: FetchEntriesOptions = {
+    direction: 'desc',
+    ...options,
+  }
+  return useQuery({
+    queryKey: keys.getEntriesQueryKey({ userId, ...filterOptions }),
+    queryFn: fetchers.fetchEntries,
+  })
+}
+useQueryEntries.getKey = keys.getEntriesQueryKey
 
 export function useQueryFeedEntries(feed: Feed) {
   const userId = useUserId()
   return useQuery({
-    queryKey: getFeedEntriesQueryKey({ userId, feedId: feed.id }),
-    queryFn: fetchFeedEntries,
+    queryKey: keys.getFeedEntriesQueryKey({ userId, feedId: feed.id }),
+    queryFn: fetchers.fetchFeedEntries,
   })
 }
-useQueryFeedEntries.getKey = getFeedEntriesQueryKey
-useQueryFeedEntries.fetcher = fetchFeedEntries
+useQueryFeedEntries.getKey = keys.getFeedEntriesQueryKey
+useQueryFeedEntries.fetcher = fetchers.fetchFeedEntries
 
 export function useQueryReadEntries() {
   const userId = useUserId()
   return useQuery({
-    queryKey: getReadEntriesQueryKey({ userId }),
-    queryFn: fetchReadEntries,
+    queryKey: keys.getReadEntriesQueryKey({ userId }),
+    queryFn: fetchers.fetchReadEntries,
   })
 }
-useQueryReadEntries.getKey = getReadEntriesQueryKey
+useQueryReadEntries.getKey = keys.getReadEntriesQueryKey

@@ -1,24 +1,32 @@
 import { Button, StyleSheet, Text } from 'react-native'
 import { ScreenContainer } from '@/components/ScreenContainer'
-import { EntryCard } from '@/components/EntryCard'
-import { useQueryReadEntries } from '@/services/queries'
+import { useQueryClient } from '@tanstack/react-query'
+import { useUserId, useQueryEntries } from '@/services/queries'
 import { tokens } from '@/styles'
+import { EntryCard } from '@/components/EntryCard'
+import type { FetchEntriesOptions } from '@/services/keys'
 
 export function HistoryScreen() {
-  const { data, isLoading, refetch, error } = useQueryReadEntries()
+  const queryClient = useQueryClient()
+  const userId = useUserId()
+  const entryOptions: FetchEntriesOptions = {
+    status: 'read',
+  }
+  const { data, isFetching } = useQueryEntries(entryOptions)
 
   function handleRefresh() {
-    refetch()
+    queryClient.invalidateQueries(
+      useQueryEntries.getKey({ userId, ...entryOptions })
+    )
   }
 
   return (
     <ScreenContainer style={styles.container}>
       <Button title="refresh" onPress={handleRefresh} />
-      {isLoading && <Text>loading...</Text>}
+      {isFetching && <Text>fetching...</Text>}
       {data?.entries.map((entry) => (
         <EntryCard key={entry.id} entry={entry} />
       ))}
-      {Boolean(error) && <Text>{JSON.stringify(error)}</Text>}
     </ScreenContainer>
   )
 }

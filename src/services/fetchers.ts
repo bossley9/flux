@@ -35,6 +35,21 @@ export async function fetchFeedEntries({
   return response.data
 }
 
+export async function fetchEntries({
+  queryKey,
+  signal,
+}: API.Context<typeof keys.getEntriesQueryKey>): Promise<API.EntryList> {
+  const [, , options] = queryKey
+
+  const response = await request<Wrapped<API.EntryList>>(
+    'GET',
+    'v1/entries',
+    { signal },
+    options
+  )
+  return response.data
+}
+
 export async function fetchReadEntries({
   signal,
 }: API.Context<typeof keys.getReadEntriesQueryKey>): Promise<API.EntryList> {
