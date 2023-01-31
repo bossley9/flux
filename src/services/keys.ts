@@ -12,6 +12,7 @@ export type FetchEntriesOptions = {
   status?: EntryStatus
   direction?: 'desc' | 'asc'
   order?: 'id' | 'status' | 'published_at' | 'category_title' | 'category_id'
+  starred?: 'true' | 'false'
 }
 
 export function getEntriesQueryKey({

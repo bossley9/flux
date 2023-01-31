@@ -1,6 +1,7 @@
 import { AppInitLoadingScreen } from '@/screens/AppInitLoadingScreen'
 import { LoginScreen } from '@/screens/LoginScreen'
 import { MainScreen } from '@/screens/MainScreen'
+import { FeedScreen } from '@/screens/FeedScreen'
 import { EntryScreen } from '@/screens/EntryScreen'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import { NavigationContainer } from '@react-navigation/native'
@@ -41,6 +42,7 @@ export function Root() {
           />
           <Stack.Screen name={RootScreen.Login} component={LoginScreen} />
           <Stack.Screen name={RootScreen.Main} component={MainScreen} />
+          <Stack.Screen name={RootScreen.Feed} component={FeedScreen} />
           <Stack.Screen name={RootScreen.Entry} component={EntryScreen} />
         </Stack.Navigator>
       </QueryClientProvider>

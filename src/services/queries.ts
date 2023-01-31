@@ -31,6 +31,7 @@ export function useQueryEntries(options?: FetchEntriesOptions) {
   const userId = useUserId()
   const filterOptions: FetchEntriesOptions = {
     direction: 'desc',
+    order: 'published_at',
     ...options,
   }
   return useQuery({

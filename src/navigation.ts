@@ -2,12 +2,13 @@ import type {
   NativeStackScreenProps,
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack'
-import type { Entry } from '@/services/types'
+import type { Feed, Entry } from '@/services/types'
 
 export enum RootScreen {
   AppInitLoading = 'AppInitLoading',
   Login = 'Login',
   Main = 'Main',
+  Feed = 'Feed',
   Entry = 'Entry',
 }
 
@@ -15,6 +16,7 @@ export type RootStackParamList = {
   [RootScreen.AppInitLoading]: undefined
   [RootScreen.Login]: undefined
   [RootScreen.Main]: undefined
+  [RootScreen.Feed]: { feed: Feed }
   [RootScreen.Entry]: { entry: Entry }
 }
 

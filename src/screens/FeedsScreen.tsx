@@ -1,7 +1,8 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text } from 'react-native'
 import { ScreenContainer } from '@/components/ScreenContainer'
 import { useQueryFeeds } from '@/services/queries'
 import { tokens } from '@/styles'
+import { FeedCard } from '@/components/FeedCard'
 
 export function FeedsScreen() {
   const { data, isLoading } = useQueryFeeds()
@@ -9,9 +10,7 @@ export function FeedsScreen() {
     <ScreenContainer style={styles.container}>
       {isLoading && <Text>loading...</Text>}
       {data?.map((feed) => (
-        <View key={feed.id}>
-          <Text>feed is {feed.title}</Text>
-        </View>
+        <FeedCard key={feed.id} feed={feed} />
       ))}
     </ScreenContainer>
   )
