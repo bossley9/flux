@@ -1,11 +1,24 @@
-import { StyleSheet, Text } from 'react-native'
+import { Button, StyleSheet, Text } from 'react-native'
 import { ScreenContainer } from '@/components/ScreenContainer'
+import { EntryCard } from '@/components/EntryCard'
+import { useQueryReadEntries } from '@/services/queries'
 import { tokens } from '@/styles'
 
 export function ReadScreen() {
+  const { data, isLoading, refetch, error } = useQueryReadEntries()
+
+  function handleRefresh() {
+    refetch()
+  }
+
   return (
     <ScreenContainer style={styles.container}>
-      <Text>test text</Text>
+      <Button title="refresh" onPress={handleRefresh} />
+      {isLoading && <Text>loading...</Text>}
+      {data?.entries.map((entry) => (
+        <EntryCard key={entry.id} entry={entry} />
+      ))}
+      {Boolean(error) && <Text>{JSON.stringify(error)}</Text>}
     </ScreenContainer>
   )
 }

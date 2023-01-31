@@ -16,7 +16,7 @@ export function EntryCard({ entry }: Props) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{entry.title}</Text>
-      <Text>by {entry.author}</Text>
+      <Text>by {entry.feed?.title || entry.author}</Text>
       <Button title="open entry" onPress={handleOpenEntry} />
     </View>
   )

@@ -2,9 +2,15 @@ import { useQuery } from '@tanstack/react-query'
 import {
   getUserQueryKey,
   getFeedsQueryKey,
+  getReadEntriesQueryKey,
   getFeedEntriesQueryKey,
 } from './keys'
-import { fetchUser, fetchFeeds, fetchFeedEntries } from './fetchers'
+import {
+  fetchUser,
+  fetchFeeds,
+  fetchReadEntries,
+  fetchFeedEntries,
+} from './fetchers'
 import type { Feed } from './types'
 
 export function useUserId() {
@@ -40,3 +46,12 @@ export function useQueryFeedEntries(feed: Feed) {
 }
 useQueryFeedEntries.getKey = getFeedEntriesQueryKey
 useQueryFeedEntries.fetcher = fetchFeedEntries
+
+export function useQueryReadEntries() {
+  const userId = useUserId()
+  return useQuery({
+    queryKey: getReadEntriesQueryKey({ userId }),
+    queryFn: fetchReadEntries,
+  })
+}
+useQueryReadEntries.getKey = getReadEntriesQueryKey

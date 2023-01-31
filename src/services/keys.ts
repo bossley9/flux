@@ -13,7 +13,11 @@ export function getUnreadEntriesQueryKey({
 }: {
   userId: number | null
 }) {
-  return [...getFeedsQueryKey({ userId }), 'unread'] as const
+  return [...getFeedsQueryKey({ userId }), 'unread entries'] as const
+}
+
+export function getReadEntriesQueryKey({ userId }: { userId: number | null }) {
+  return [userId, 'entries', 'read'] as const
 }
 
 export function getFeedEntriesQueryKey({
