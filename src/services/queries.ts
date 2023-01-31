@@ -27,6 +27,14 @@ export function useQueryFeeds() {
 useQueryFeeds.getKey = keys.getFeedsQueryKey
 useQueryFeeds.fetcher = fetchers.fetchFeeds
 
+export function useQueryFeedEntries({ feedId }: { feedId: number }) {
+  const userId = useUserId()
+  return useQuery({
+    queryKey: keys.getFeedEntriesQueryKey({ userId, feedId }),
+    queryFn: fetchers.fetchFeedEntries,
+  })
+}
+
 export function useQueryEntries(options?: FetchEntriesOptions) {
   const userId = useUserId()
   const filterOptions: FetchEntriesOptions = {

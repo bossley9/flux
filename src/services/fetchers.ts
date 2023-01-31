@@ -22,6 +22,19 @@ export async function fetchFeeds({
   return response.data
 }
 
+export async function fetchFeedEntries({
+  queryKey,
+  signal,
+}: API.Context<typeof keys.getFeedEntriesQueryKey>): Promise<API.EntryList> {
+  const [, { feedId }] = queryKey
+  const response = await request<Wrapped<API.EntryList>>(
+    'GET',
+    `v1/feeds/${feedId}/entries?direction=desc`,
+    { signal }
+  )
+  return response.data
+}
+
 export async function fetchEntries({
   queryKey,
   signal,

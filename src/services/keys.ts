@@ -8,6 +8,13 @@ export function getFeedsQueryKey({ userId }: { userId: number | null }) {
   return [userId, 'feeds'] as const
 }
 
+export function getFeedEntriesQueryKey({
+  userId,
+  feedId,
+}: { userId: number | null } & { feedId: number }) {
+  return [userId, { feedId }] as const
+}
+
 export type FetchEntriesOptions = {
   status?: EntryStatus
   direction?: 'desc' | 'asc'
