@@ -3,7 +3,6 @@ import { ScreenContainer } from '@/components/ScreenContainer'
 import { useQueryClient } from '@tanstack/react-query'
 import { useUserId, useQueryFeeds } from '@/services/queries'
 import { useQueryUnreadEntries } from '@/services/hooks'
-import { useMutationLogout } from '@/services/mutations'
 import { tokens } from '@/styles'
 import { EntryCard } from '@/components/EntryCard'
 
@@ -13,20 +12,13 @@ export function UnreadScreen() {
   const userId = useUserId()
   const { data: entries, isLoading, isFetching } = useQueryUnreadEntries()
 
-  const { mutate } = useMutationLogout()
-
   function handleRefresh() {
     queryClient.invalidateQueries(useQueryFeeds.getKey({ userId }))
-  }
-
-  function handleLogout() {
-    mutate()
   }
 
   return (
     <ScreenContainer style={styles.container}>
       <Button title="refresh" onPress={handleRefresh} />
-      <Button title="logout" onPress={handleLogout} />
       {isFetching && (
         <Text style={styles.loadingText}>is fetching in background...</Text>
       )}

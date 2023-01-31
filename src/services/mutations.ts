@@ -3,7 +3,7 @@ import { useQueryUser, useUserId } from './queries'
 import { useNavigation } from '@react-navigation/native'
 import { storeItems, removeItems, StorageKey } from '@/storage'
 import { isMinifluxError, isAxiosError } from './errors'
-import { RootScreen, ScreenNavigationProp } from '@/navigation'
+import { RootScreen, RootScreenNavigationProp } from '@/navigation'
 import type { GenericError } from './errors'
 
 type LoginFormData = {
@@ -13,7 +13,7 @@ type LoginFormData = {
 
 export function useMutationLogin() {
   const queryClient = useQueryClient()
-  const navigation = useNavigation<ScreenNavigationProp<RootScreen.Login>>()
+  const navigation = useNavigation<RootScreenNavigationProp<RootScreen.Login>>()
 
   return useMutation<void, GenericError, LoginFormData>({
     mutationFn: async ({ serverUrl, apiKey }) => {
@@ -60,7 +60,7 @@ export function useMutationLogin() {
 export function useMutationLogout() {
   const queryClient = useQueryClient()
   const userId = useUserId()
-  const navigation = useNavigation<ScreenNavigationProp<RootScreen.Main>>()
+  const navigation = useNavigation<RootScreenNavigationProp<RootScreen.Main>>()
 
   return useMutation({
     mutationFn: async () => {

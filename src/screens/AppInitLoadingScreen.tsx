@@ -1,11 +1,11 @@
 import { ScreenContainer } from '@/components/ScreenContainer'
 import { useEffect } from 'react'
 import { getItem, StorageKey } from '@/storage'
-import { RootScreen, ScreenProps } from '@/navigation'
+import { RootScreen, RootScreenProps } from '@/navigation'
 
 export function AppInitLoadingScreen({
   navigation,
-}: ScreenProps<RootScreen.AppInitLoading>) {
+}: RootScreenProps<RootScreen.AppInitLoading>) {
   async function readStoredData() {
     try {
       const storedServerUrl = await getItem(StorageKey.serverUrl)

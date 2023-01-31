@@ -8,7 +8,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { RootScreen } from '@/navigation'
 import { tokens } from '@/styles'
 import type { NativeStackNavigationOptions } from '@react-navigation/native-stack'
-import type { StackParamList } from '@/navigation'
+import type { RootStackParamList } from '@/navigation'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,7 +17,7 @@ const queryClient = new QueryClient({
     },
   },
 })
-const Stack = createNativeStackNavigator<StackParamList>()
+const Stack = createNativeStackNavigator<RootStackParamList>()
 
 export function Root() {
   const screenOptions: NativeStackNavigationOptions = {

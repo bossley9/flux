@@ -1,9 +1,9 @@
 import { StyleSheet, Text } from 'react-native'
 import { ScreenContainer } from '@/components/ScreenContainer'
-import { RootScreen, ScreenProps } from '@/navigation'
+import { RootScreen, RootScreenProps } from '@/navigation'
 import { tokens } from '@/styles'
 
-type Props = ScreenProps<RootScreen.Entry>
+type Props = RootScreenProps<RootScreen.Entry>
 
 export function EntryScreen({ route }: Props) {
   const { entry } = route.params
