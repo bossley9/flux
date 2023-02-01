@@ -3,6 +3,7 @@ import { useQueryUser, useUserId } from './queries'
 import { useNavigation } from '@react-navigation/native'
 import { storeItems, removeItems, StorageKey } from '@/storage'
 import { isMinifluxError, isAxiosError } from './errors'
+import * as keys from './keys'
 import { RootScreen, RootScreenNavigationProp } from '@/navigation'
 import type { GenericError } from './errors'
 
@@ -66,11 +67,12 @@ export function useMutationLogout() {
     mutationFn: async () => {
       navigation.replace(RootScreen.Login)
 
-      // TODO erase cached data
       await removeItems([StorageKey.serverUrl, StorageKey.apiKey])
 
+      // remove all queries from cache
+      queryClient.removeQueries({ queryKey: keys.getUserQueryKey() })
+      queryClient.removeQueries({ queryKey: keys.getVersionQueryKey() })
       queryClient.removeQueries({ queryKey: [userId] })
-      queryClient.removeQueries({ queryKey: useQueryUser.getKey() })
     },
   })
 }

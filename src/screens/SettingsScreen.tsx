@@ -10,7 +10,6 @@ export function SettingsScreen() {
   const { data } = useQueryVersion()
 
   function handleLogout() {
-    // TODO add confirmation dialog before logout
     logout()
   }
 
