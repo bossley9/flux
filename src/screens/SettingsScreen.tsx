@@ -1,6 +1,6 @@
-import { Button, StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { ScreenContainer } from '@/components/ScreenContainer'
-import { P } from '@/html'
+import { P, MainButton } from '@/html'
 import { useQueryVersion } from '@/services/queries'
 import { useMutationLogout } from '@/services/mutations'
 import { tokens } from '@/styles'
@@ -19,7 +19,7 @@ export function SettingsScreen() {
       style={styles.container}
       contentContainerStyle={styles.contentContainer}
     >
-      <Button title="Logout" onPress={handleLogout} />
+      <MainButton onPress={handleLogout}>Logout</MainButton>
       <P align="center">Miniflux version {data ?? '0.0.00'}</P>
     </ScreenContainer>
   )
