@@ -1,6 +1,6 @@
-import { Button, StyleSheet, Text, View } from 'react-native'
+import { Button, StyleSheet, Text } from 'react-native'
+import { CardContainer } from '@/components/CardContainer'
 import { useNavigation } from '@react-navigation/native'
-import { tokens } from '@/styles'
 import type { Entry } from '@/services/types'
 import { RootScreen, RootScreenNavigationProp } from '@/navigation'
 
@@ -14,20 +14,15 @@ export function EntryCard({ entry }: Props) {
   }
 
   return (
-    <View style={styles.container}>
+    <CardContainer>
       <Text style={styles.title}>{entry.title}</Text>
       <Text>by {entry.feed?.title || entry.author}</Text>
       <Button title="open entry" onPress={handleOpenEntry} />
-    </View>
+    </CardContainer>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    padding: tokens.space,
-    backgroundColor: tokens.primaryColor,
-    marginBottom: 30,
-  },
   title: {
     fontWeight: 'bold',
   },

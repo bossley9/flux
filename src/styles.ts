@@ -4,4 +4,5 @@ export const tokens = {
   lightColor: '#898d93',
   primaryColor: '#88c0d0',
   space: 10,
+  radius: 8,
 }

@@ -1,6 +1,6 @@
-import { Button, StyleSheet, Text, View } from 'react-native'
+import { Button, Text } from 'react-native'
+import { CardContainer } from '@/components/CardContainer'
 import { useNavigation } from '@react-navigation/native'
-import { tokens } from '@/styles'
 import { RootScreen, RootScreenNavigationProp } from '@/navigation'
 import type { Feed } from '@/services/types'
 
@@ -14,17 +14,9 @@ export function FeedCard({ feed }: Props) {
   }
 
   return (
-    <View style={styles.container}>
+    <CardContainer>
       <Text>{feed.title}</Text>
       <Button title="open feed" onPress={handleOpenFeed} />
-    </View>
+    </CardContainer>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'skyblue',
-    padding: tokens.space,
-    marginBottom: 30,
-  },
-})
