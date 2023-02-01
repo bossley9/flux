@@ -3,7 +3,9 @@ import { useEffect } from 'react'
 import * as NavigationBar from 'expo-navigation-bar'
 import { tokens } from '@/styles'
 
-type Props = {
+type ScrollViewProps = React.ComponentProps<typeof ScrollView>
+
+type Props = Omit<ScrollViewProps, 'refreshControl'> & {
   style?: object
   children?: React.ReactNode
   refreshEnabled?: boolean
@@ -22,13 +24,24 @@ export function ScreenContainer({
   refreshEnabled,
   refreshing,
   onRefresh,
+  ...restProps
 }: Props) {
   useEffect(() => {
     setupNavigationBar()
   }, [])
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      marginTop: 40 + tokens.space, // phone notification/camera offset
+      backgroundColor: tokens.backgroundColor,
+      ...style,
+    },
+  })
+
   return (
     <ScrollView
-      style={{ ...styles.container, ...style }}
+      style={styles.container}
       refreshControl={
         <RefreshControl
           enabled={Boolean(refreshEnabled)}
@@ -38,16 +51,9 @@ export function ScreenContainer({
           colors={[tokens.lightColor]}
         />
       }
+      {...restProps}
     >
       {children}
     </ScrollView>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: 40 + tokens.space, // phone notification/camera offset
-    backgroundColor: tokens.backgroundColor,
-  },
-})

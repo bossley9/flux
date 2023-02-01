@@ -1,4 +1,4 @@
-import { StyleSheet, Text } from 'react-native'
+import { StyleSheet, Button, Text } from 'react-native'
 import { ScreenContainer } from '@/components/ScreenContainer'
 import { useQueryFeedEntries } from '@/services/queries'
 import { RootScreen, RootScreenProps } from '@/navigation'
