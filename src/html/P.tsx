@@ -4,11 +4,17 @@ import { tokens } from '@/styles'
 type Props = {
   children?: React.ReactNode
   align?: TextStyle['textAlign']
+  color?: TextStyle['color']
 }
 
-export function P({ children, align = 'left' }: Props) {
+export function P({
+  children,
+  align = 'left',
+  color = tokens.foregroundColor,
+}: Props) {
   const style: TextStyle = {
-    color: tokens.foregroundColor,
+    fontSize: 14,
+    color,
     textAlign: align,
   }
   return <Text style={style}>{children}</Text>
