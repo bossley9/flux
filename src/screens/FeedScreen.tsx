@@ -11,9 +11,14 @@ export function FeedScreen({ route }: Props) {
   const { feed } = route.params
   const { data, isFetching } = useQueryFeedEntries({ feedId: feed.id })
 
+  function handleRefetchFeed() {
+    // TODO add mutation to refetch feed, then invalidate (or update) query
+  }
+
   return (
     <ScreenContainer style={styles.container}>
       <Text>{feed.title}</Text>
+      <Button title="Refetch feed" onPress={handleRefetchFeed} />
       <Text>This is entry {feed.id}</Text>
       {isFetching && <Text>fetching...</Text>}
       {data?.entries.map((entry) => (

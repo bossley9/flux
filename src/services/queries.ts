@@ -17,6 +17,7 @@ export function useQueryUser() {
 useQueryUser.getKey = keys.getUserQueryKey
 useQueryUser.fetcher = fetchers.fetchUser
 
+// TODO replace list queries with useInfiniteQuery
 export function useQueryFeeds() {
   const userId = useUserId()
   return useQuery({

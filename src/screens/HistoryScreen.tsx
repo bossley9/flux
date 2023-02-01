@@ -9,6 +9,7 @@ export function HistoryScreen() {
   const entryOptions: FetchEntriesOptions = {
     status: 'read',
   }
+  // TODO find a way to sort entries by last read
   const { data, isFetching, refetch } = useQueryEntries(entryOptions)
 
   return (

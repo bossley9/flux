@@ -66,6 +66,7 @@ export function useMutationLogout() {
     mutationFn: async () => {
       navigation.replace(RootScreen.Login)
 
+      // TODO erase cached data
       await removeItems([StorageKey.serverUrl, StorageKey.apiKey])
 
       queryClient.removeQueries({ queryKey: [userId] })

@@ -10,6 +10,7 @@ export function EntryCard({ entry }: Props) {
   const navigation = useNavigation<RootScreenNavigationProp<RootScreen.Main>>()
 
   const handleOpenEntry = () => {
+    // TODO mark entry as read
     navigation.navigate(RootScreen.Entry, { entry })
   }
 

@@ -11,6 +11,7 @@ export function FeedsScreen() {
       style={styles.container}
       refreshEnabled
       refreshing={isFetching}
+      // TODO replace hard refreshes with query invalidation
       onRefresh={refetch}
     >
       {data?.map((feed) => (
