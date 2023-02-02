@@ -16,7 +16,11 @@ export function MainButton({ onPress, disabled, children }: Props) {
       android_disableSound={true}
       style={buttonStyles}
     >
-      <P align="center" color={disabled ? tokens.lightColor : undefined}>
+      <P
+        align="center"
+        color={disabled ? tokens.lightColor : undefined}
+        margin={0}
+      >
         {children}
       </P>
     </Pressable>

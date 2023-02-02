@@ -19,7 +19,9 @@ export function SettingsScreen() {
       contentContainerStyle={styles.contentContainer}
     >
       <MainButton onPress={handleLogout}>Logout</MainButton>
-      <P align="center">Miniflux version {data ?? '0.0.00'}</P>
+      <P align="center" margin={0}>
+        Miniflux version {data ?? '0.0.00'}
+      </P>
     </ScreenContainer>
   )
 }

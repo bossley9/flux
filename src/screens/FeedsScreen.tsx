@@ -1,19 +1,24 @@
-import { StyleSheet } from 'react-native'
+import { ViewStyle } from 'react-native'
 import { ScreenContainer } from '@/components/ScreenContainer'
 import { useQueryFeeds } from '@/services/queries'
+import { Heading } from '@/html'
 import { tokens } from '@/styles'
 import { FeedCard } from '@/components/FeedCard'
 
 export function FeedsScreen() {
   const { data, isFetching, refetch } = useQueryFeeds()
+
   return (
     <ScreenContainer
-      style={styles.container}
+      style={styles}
       refreshEnabled
       refreshing={isFetching}
       // TODO replace hard refreshes with query invalidation
       onRefresh={refetch}
     >
+      <Heading level={1}>
+        Feeds {data?.length ? `(${data.length})` : ''}
+      </Heading>
       {data?.map((feed) => (
         <FeedCard key={feed.id} feed={feed} />
       ))}
@@ -21,10 +26,8 @@ export function FeedsScreen() {
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingLeft: tokens.space,
-    paddingRight: tokens.space,
-  },
-})
+const styles: ViewStyle = {
+  flex: 1,
+  paddingLeft: tokens.space,
+  paddingRight: tokens.space,
+}

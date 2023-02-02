@@ -1,6 +1,7 @@
-import { StyleSheet } from 'react-native'
+import { ViewStyle } from 'react-native'
 import { ScreenContainer } from '@/components/ScreenContainer'
 import { useQueryEntries } from '@/services/queries'
+import { Heading } from '@/html'
 import { tokens } from '@/styles'
 import { EntryCard } from '@/components/EntryCard'
 import type { FetchEntriesOptions } from '@/services/keys'
@@ -13,11 +14,14 @@ export function StarredScreen() {
 
   return (
     <ScreenContainer
-      style={styles.container}
+      style={styles}
       refreshEnabled
       refreshing={isFetching}
       onRefresh={refetch}
     >
+      <Heading level={1}>
+        Starred {data?.total ? `(${data.total})` : ''}
+      </Heading>
       {data?.entries.map((entry) => (
         <EntryCard key={entry.id} entry={entry} />
       ))}
@@ -25,10 +29,8 @@ export function StarredScreen() {
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingLeft: tokens.space,
-    paddingRight: tokens.space,
-  },
-})
+const styles: ViewStyle = {
+  flex: 1,
+  paddingLeft: tokens.space,
+  paddingRight: tokens.space,
+}

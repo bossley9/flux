@@ -1,4 +1,4 @@
-import { P } from '@/html'
+import { P } from './P'
 import { Text, TextStyle } from 'react-native'
 
 type Props = {
