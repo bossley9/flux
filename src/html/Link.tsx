@@ -2,12 +2,17 @@ import { Linking, Pressable, Text, TextStyle } from 'react-native'
 import { Heading } from './Heading'
 import { tokens } from '@/styles'
 
-type Props = {
+const styles: TextStyle = {
+  color: tokens.linkColor,
+  textDecorationLine: 'underline',
+}
+
+type LinkProps = {
   href: string
   children?: React.ReactNode
 }
 
-export function Link({ href, children }: Props) {
+export function Link({ href, children }: LinkProps) {
   function handlePress() {
     Linking.openURL(href)
   }
@@ -18,18 +23,39 @@ export function Link({ href, children }: Props) {
   )
 }
 
-const styles: TextStyle = {
-  color: tokens.linkColor,
-  textDecorationLine: 'underline',
+type HeadingLinkProps = LinkProps & {
+  marginBottom?: TextStyle['margin']
 }
 
-export function HeadingLink({ href, children }: Props) {
+export function HeadingLink({
+  href,
+  marginBottom,
+  children,
+}: HeadingLinkProps) {
   function handlePress() {
     Linking.openURL(href)
   }
   return (
     <Pressable onPress={handlePress}>
-      <Heading color={tokens.linkColor}>{children}</Heading>
+      <Heading color={tokens.linkColor} marginBottom={marginBottom}>
+        {children}
+      </Heading>
+    </Pressable>
+  )
+}
+
+type TextButtonProps = {
+  onPress: () => void
+  children?: React.ReactNode
+}
+
+export function TextButton({ onPress, children }: TextButtonProps) {
+  function handlePress() {
+    onPress()
+  }
+  return (
+    <Pressable onPress={handlePress}>
+      <Text style={styles}>{children}</Text>
     </Pressable>
   )
 }

@@ -1,6 +1,6 @@
 export { ErrorText } from './ErrorText'
 export { Heading } from './Heading'
 export { Input } from './Input'
-export { Link, HeadingLink } from './Link'
+export { Link, HeadingLink, TextButton } from './Link'
 export { MainButton } from './MainButton'
 export { P } from './P'
