@@ -1,6 +1,7 @@
-import { Text } from 'react-native'
 import { CardContainer } from '@/components/CardContainer'
 import { useNavigation } from '@react-navigation/native'
+import { Heading, P } from '@/html'
+import { formatPubDate } from '@/utils'
 import { RootScreen, RootScreenNavigationProp } from '@/navigation'
 import type { Feed } from '@/services/types'
 
@@ -15,7 +16,13 @@ export function FeedCard({ feed }: Props) {
 
   return (
     <CardContainer onPress={handleOpenFeed}>
-      <Text>{feed.title}</Text>
+      <Heading level={3} marginBottom={0}>
+        {feed.title}
+      </Heading>
+      <P marginBottom={0}>{feed.site_url}</P>
+      {feed.checked_at && (
+        <P marginBottom={0}>Last updated {formatPubDate(feed.checked_at)}</P>
+      )}
     </CardContainer>
   )
 }

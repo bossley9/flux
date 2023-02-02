@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { CardContainer } from '@/components/CardContainer'
 import { useNavigation } from '@react-navigation/native'
 import { Heading, P } from '@/html'
@@ -21,11 +21,7 @@ export function EntryCard({ entry }: Props) {
       <View style={styles.wrapper}>
         <Heading level={3}>{entry.title}</Heading>
         <View style={styles.footer}>
-          <P margin={0}>
-            <Text style={styles.author}>
-              {entry.feed?.title || entry.author}
-            </Text>
-          </P>
+          <P margin={0}>{entry.feed?.title || entry.author}</P>
           <P margin={0}>{formatPubDate(entry.published_at)}</P>
         </View>
       </View>
@@ -41,8 +37,5 @@ const styles = StyleSheet.create({
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  author: {
-    fontWeight: 'bold',
   },
 })
