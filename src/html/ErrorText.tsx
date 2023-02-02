@@ -1,4 +1,4 @@
-import { P } from '@/html'
+import { P } from './P'
 import { Text } from 'react-native'
 import { tokens } from '@/styles'
 

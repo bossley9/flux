@@ -1,6 +1,8 @@
-import { Button, StyleSheet, Text } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import { CardContainer } from '@/components/CardContainer'
 import { useNavigation } from '@react-navigation/native'
+import { Heading, P } from '@/html'
+import { formatPubDate } from '@/utils'
 import type { Entry } from '@/services/types'
 import { RootScreen, RootScreenNavigationProp } from '@/navigation'
 
@@ -15,16 +17,32 @@ export function EntryCard({ entry }: Props) {
   }
 
   return (
-    <CardContainer>
-      <Text style={styles.title}>{entry.title}</Text>
-      <Text>by {entry.feed?.title || entry.author}</Text>
-      <Button title="open entry" onPress={handleOpenEntry} />
+    <CardContainer onPress={handleOpenEntry}>
+      <View style={styles.wrapper}>
+        <Heading level={3}>{entry.title}</Heading>
+        <View style={styles.footer}>
+          <P margin={0}>
+            <Text style={styles.author}>
+              {entry.feed?.title || entry.author}
+            </Text>
+          </P>
+          <P margin={0}>{formatPubDate(entry.published_at)}</P>
+        </View>
+      </View>
     </CardContainer>
   )
 }
 
 const styles = StyleSheet.create({
-  title: {
+  wrapper: {
+    flex: 1,
+    justifyContent: 'space-between',
+  },
+  footer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  author: {
     fontWeight: 'bold',
   },
 })

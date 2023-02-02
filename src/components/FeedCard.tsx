@@ -1,4 +1,4 @@
-import { Button, Text } from 'react-native'
+import { Text } from 'react-native'
 import { CardContainer } from '@/components/CardContainer'
 import { useNavigation } from '@react-navigation/native'
 import { RootScreen, RootScreenNavigationProp } from '@/navigation'
@@ -14,9 +14,8 @@ export function FeedCard({ feed }: Props) {
   }
 
   return (
-    <CardContainer>
+    <CardContainer onPress={handleOpenFeed}>
       <Text>{feed.title}</Text>
-      <Button title="open feed" onPress={handleOpenFeed} />
     </CardContainer>
   )
 }
