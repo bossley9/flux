@@ -10,10 +10,11 @@ type Props = RootScreenProps<RootScreen.Entry>
 
 export function EntryScreen({ route, navigation }: Props) {
   const { entry } = route.params
+  const feed = entry.feed ?? null
 
   function handleOpenFeed() {
-    if (entry.feed) {
-      navigation.navigate(RootScreen.Feed, { feed: entry.feed })
+    if (feed) {
+      navigation.navigate(RootScreen.Feed, { feed })
     } else {
       navigation.navigate(RootScreen.Main)
     }
@@ -35,7 +36,7 @@ export function EntryScreen({ route, navigation }: Props) {
       <View style={styles.meta}>
         <P>by </P>
         <TextButton onPress={handleOpenFeed}>
-          {entry.author} ({formatPubDate(entry.published_at)})
+          {feed?.title ?? entry.author} ({formatPubDate(entry.published_at)})
         </TextButton>
       </View>
 
