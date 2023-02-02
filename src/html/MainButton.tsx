@@ -5,10 +5,25 @@ import { tokens } from '@/styles'
 type Props = {
   onPress: PressableProps['onPress']
   disabled?: PressableProps['disabled']
+  horizontalMargin?: ViewStyle['margin']
   children: string
 }
 
-export function MainButton({ onPress, disabled, children }: Props) {
+export function MainButton({
+  onPress,
+  disabled,
+  horizontalMargin = tokens.space * 4,
+  children,
+}: Props) {
+  const buttonStyles: ViewStyle = {
+    backgroundColor: tokens.primaryColor,
+    padding: tokens.space,
+    borderRadius: tokens.radius,
+    marginTop: tokens.space,
+    marginBottom: tokens.space,
+    marginLeft: horizontalMargin,
+    marginRight: horizontalMargin,
+  }
   return (
     <Pressable
       onPress={onPress}
@@ -25,14 +40,4 @@ export function MainButton({ onPress, disabled, children }: Props) {
       </P>
     </Pressable>
   )
-}
-
-const buttonStyles: ViewStyle = {
-  backgroundColor: tokens.primaryColor,
-  padding: tokens.space,
-  borderRadius: tokens.radius,
-  marginTop: tokens.space,
-  marginBottom: tokens.space,
-  marginLeft: tokens.space * 4,
-  marginRight: tokens.space * 4,
 }

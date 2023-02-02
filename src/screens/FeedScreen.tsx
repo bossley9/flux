@@ -1,5 +1,6 @@
-import { StyleSheet, Button, Text } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { ScreenContainer } from '@/components/ScreenContainer'
+import { HeadingLink, MainButton } from '@/html'
 import { useQueryFeedEntries } from '@/services/queries'
 import { RootScreen, RootScreenProps } from '@/navigation'
 import { tokens } from '@/styles'
@@ -13,14 +14,22 @@ export function FeedScreen({ route }: Props) {
 
   function handleRefetchFeed() {
     // TODO add mutation to refetch feed, then invalidate (or update) query
+    console.log('refetch feed')
   }
 
   return (
-    <ScreenContainer style={styles.container}>
-      <Text>{feed.title}</Text>
-      <Button title="Refetch feed" onPress={handleRefetchFeed} />
-      <Text>This is entry {feed.id}</Text>
-      {isFetching && <Text>fetching...</Text>}
+    <ScreenContainer
+      style={styles.container}
+      refreshEnabled
+      refreshing={isFetching}
+      onRefresh={handleRefetchFeed}
+    >
+      <HeadingLink href={feed.site_url}>{feed.title}</HeadingLink>
+      <View style={styles.buttonWrapper}>
+        <MainButton onPress={handleRefetchFeed} horizontalMargin={0}>
+          Refetch feed
+        </MainButton>
+      </View>
       {data?.entries.map((entry) => (
         <EntryCard key={entry.id} entry={entry} />
       ))}
@@ -30,6 +39,11 @@ export function FeedScreen({ route }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    padding: tokens.space,
+    flex: 1,
+    paddingLeft: tokens.space,
+    paddingRight: tokens.space,
+  },
+  buttonWrapper: {
+    marginBottom: tokens.space * 3,
   },
 })
