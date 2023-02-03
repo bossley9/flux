@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, View } from 'react-native'
 import { ScreenContainer } from '@/components/ScreenContainer'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import { HeadingLink, P, TextButton } from '@/html'
+import { HeadingLink, P, TextButton, RenderHtml } from '@/html'
 import { useState } from 'react'
 import { useMutationToggleStar } from '@/services/mutations'
 import { RootScreen, RootScreenProps } from '@/navigation'
@@ -70,6 +70,10 @@ export function EntryScreen({ route, navigation }: Props) {
       </View>
 
       <P>{entry.content}</P>
+      <HeadingLink href={entry.url} marginBottom={0}>
+        {entry.title}
+      </HeadingLink>
+      <RenderHtml source={entry.content} />
     </ScreenContainer>
   )
 }

@@ -2,7 +2,7 @@ import { Linking, Pressable, Text, TextStyle } from 'react-native'
 import { Heading } from './Heading'
 import { tokens } from '@/styles'
 
-const styles: TextStyle = {
+export const linkStyles: TextStyle = {
   color: tokens.linkColor,
   textDecorationLine: 'underline',
 }
@@ -44,7 +44,7 @@ export function TextButton({ onPress, children }: TextButtonProps) {
   }
   return (
     <Pressable onPress={handlePress}>
-      <Text style={styles}>{children}</Text>
+      <Text style={linkStyles}>{children}</Text>
     </Pressable>
   )
 }

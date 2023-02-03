@@ -8,6 +8,7 @@ type Props = {
   margin?: TextStyle['margin']
   marginTop?: TextStyle['margin']
   marginBottom?: TextStyle['margin']
+  style?: TextStyle
 }
 
 export function P({
@@ -17,6 +18,7 @@ export function P({
   margin = tokens.space,
   marginTop,
   marginBottom,
+  style: overrideStyles,
 }: Props) {
   const style: TextStyle = {
     fontSize: 14,
@@ -24,6 +26,7 @@ export function P({
     textAlign: align,
     marginTop: marginTop ?? margin,
     marginBottom: marginBottom ?? margin,
+    ...overrideStyles,
   }
   return <Text style={style}>{children}</Text>
 }
