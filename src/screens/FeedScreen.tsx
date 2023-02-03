@@ -5,23 +5,24 @@ import { useQueryFeedEntries } from '@/services/queries'
 import { RootScreen, RootScreenProps } from '@/navigation'
 import { tokens } from '@/styles'
 import { EntryCard } from '@/components/EntryCard'
+import { useMutationRefreshFeed } from '@/services/mutations'
 
 type Props = RootScreenProps<RootScreen.Feed>
 
 export function FeedScreen({ route }: Props) {
   const { feed } = route.params
   const { data, isFetching } = useQueryFeedEntries({ feedId: feed.id })
+  const { mutate: refreshFeed, isLoading } = useMutationRefreshFeed()
 
   function handleRefetchFeed() {
-    // TODO add mutation to refetch feed, then invalidate (or update) query
-    console.log('refetch feed')
+    refreshFeed(feed.id)
   }
 
   return (
     <ScreenContainer
       style={styles.container}
       refreshEnabled
-      refreshing={isFetching}
+      refreshing={isFetching || isLoading}
       onRefresh={handleRefetchFeed}
     >
       <HeadingLink href={feed.site_url}>{feed.title}</HeadingLink>

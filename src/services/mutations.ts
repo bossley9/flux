@@ -17,3 +17,21 @@ export function useMutationToggleStar() {
     },
   })
 }
+
+export function useMutationRefreshFeed() {
+  const queryClient = useQueryClient()
+  const userId = useUserId()
+  return useMutation({
+    mutationFn: function (feedId: number) {
+      return request<void>('PUT', `v1/feeds/${feedId}/refresh`)
+    },
+    onSettled: function (_data, _error, feedId) {
+      queryClient.invalidateQueries(
+        keys.getFeedEntriesQueryKey({ userId, feedId })
+      )
+      // invalidate all filtered entries queries
+      const [user, entriesKey] = keys.getEntriesQueryKey({ userId })
+      queryClient.invalidateQueries([user, entriesKey])
+    },
+  })
+}
