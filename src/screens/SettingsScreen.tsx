@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native'
 import { ScreenContainer } from '@/components/ScreenContainer'
 import { P, MainButton } from '@/html'
 import { useQueryVersion } from '@/services/queries'
-import { useMutationLogout } from '@/services/mutations'
+import { useMutationLogout } from '@/services/auth'
 import { tokens } from '@/styles'
 
 export function SettingsScreen() {

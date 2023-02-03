@@ -2,6 +2,8 @@ import { Pressable, StyleSheet, View } from 'react-native'
 import { ScreenContainer } from '@/components/ScreenContainer'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { HeadingLink, P, TextButton } from '@/html'
+import { useState } from 'react'
+import { useMutationToggleStar } from '@/services/mutations'
 import { RootScreen, RootScreenProps } from '@/navigation'
 import { formatPubDate } from '@/utils'
 import { tokens } from '@/styles'
@@ -11,6 +13,9 @@ type Props = RootScreenProps<RootScreen.Entry>
 export function EntryScreen({ route, navigation }: Props) {
   const { entry } = route.params
   const feed = entry.feed ?? null
+
+  const [starred, setStarred] = useState(entry.starred)
+  const { mutate: starEntry } = useMutationToggleStar()
 
   function handleOpenFeed() {
     if (feed) {
@@ -25,7 +30,8 @@ export function EntryScreen({ route, navigation }: Props) {
   }
 
   function handleToggleStar() {
-    console.log('toggle star')
+    starEntry(entry.id)
+    setStarred(!starred)
   }
 
   return (
@@ -44,11 +50,11 @@ export function EntryScreen({ route, navigation }: Props) {
         <Pressable style={styles.iconTextPair} onPress={handleToggleStar}>
           <Icon
             style={{ marginRight: tokens.space / 4 }}
-            name={entry.starred ? 'star' : 'star-outline'}
+            name={starred ? 'star' : 'star-outline'}
             size={32}
             color={tokens.primaryColor}
           />
-          <P color={tokens.primaryColor}>{entry.starred ? 'Unstar' : 'Star'}</P>
+          <P color={tokens.primaryColor}>{starred ? 'Unstar' : 'Star'}</P>
         </Pressable>
         <Pressable style={styles.iconTextPair} onPress={handleToggleRead}>
           <Icon
