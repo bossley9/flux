@@ -1,20 +1,27 @@
 import { ViewStyle } from 'react-native'
 import { ScreenContainer } from '@/components/ScreenContainer'
-import { useQueryFeeds } from '@/services/queries'
 import { Heading } from '@/html'
+import { useQueryClient } from '@tanstack/react-query'
+import { useQueryFeeds, useUserId } from '@/services/queries'
+import * as keys from '@/services/keys'
 import { tokens } from '@/styles'
 import { FeedCard } from '@/components/FeedCard'
 
 export function FeedsScreen() {
-  const { data, isFetching, refetch } = useQueryFeeds()
+  const { data, isFetching } = useQueryFeeds()
+  const queryClient = useQueryClient()
+  const userId = useUserId()
+
+  function handleRefresh() {
+    queryClient.invalidateQueries(keys.getFeedsQueryKey({ userId }))
+  }
 
   return (
     <ScreenContainer
       style={styles}
       refreshEnabled
       refreshing={isFetching}
-      // TODO replace hard refreshes with query invalidation
-      onRefresh={refetch}
+      onRefresh={handleRefresh}
     >
       <Heading level={1}>
         Feeds {data?.length ? `(${data.length})` : ''}

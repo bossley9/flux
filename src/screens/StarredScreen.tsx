@@ -1,7 +1,9 @@
 import { ViewStyle } from 'react-native'
 import { ScreenContainer } from '@/components/ScreenContainer'
-import { useQueryEntries } from '@/services/queries'
 import { Heading } from '@/html'
+import { useQueryClient } from '@tanstack/react-query'
+import { useQueryEntries, useUserId } from '@/services/queries'
+import * as keys from '@/services/keys'
 import { tokens } from '@/styles'
 import { EntryCard } from '@/components/EntryCard'
 import type { FetchEntriesOptions } from '@/services/keys'
@@ -10,14 +12,22 @@ export function StarredScreen() {
   const entryOptions: FetchEntriesOptions = {
     starred: 'true',
   }
-  const { data, isFetching, refetch } = useQueryEntries(entryOptions)
+  const { data, isFetching } = useQueryEntries(entryOptions)
+  const queryClient = useQueryClient()
+  const userId = useUserId()
+
+  function handleRefresh() {
+    queryClient.invalidateQueries(
+      keys.getEntriesQueryKey({ userId, ...entryOptions })
+    )
+  }
 
   return (
     <ScreenContainer
       style={styles}
       refreshEnabled
       refreshing={isFetching}
-      onRefresh={refetch}
+      onRefresh={handleRefresh}
     >
       <Heading level={1}>
         Starred {data?.total ? `(${data.total})` : ''}
