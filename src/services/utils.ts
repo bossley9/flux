@@ -11,7 +11,7 @@ async function getHeaders(): Promise<Record<string, string>> {
   }
 }
 
-export function constructURL(
+function constructURL(
   baseURL: string,
   path: string,
   queryStringParams?: Record<string, string | undefined>

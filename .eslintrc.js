@@ -17,7 +17,6 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: ['react', '@typescript-eslint'],
-  // TODO add eslint/TS rule for unused variables and exports
   rules: {
     'linebreak-style': ['error', 'unix'],
     quotes: ['error', 'single'],

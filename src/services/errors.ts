@@ -1,12 +1,12 @@
 export type GenericError = { message: string }
 
-export type ApiError<T> = {
+type ApiError<T> = {
   response: { data: T }
 }
 
-export type AxiosError = { message: string; name: 'AxiosError' }
+type AxiosError = { message: string; name: 'AxiosError' }
 
-export type MinifluxError = ApiError<{ error_message: string }>
+type MinifluxError = ApiError<{ error_message: string }>
 
 function isApiError<T>(error: unknown): error is ApiError<T> {
   return (

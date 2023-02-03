@@ -12,17 +12,6 @@ type LinkProps = {
   children?: React.ReactNode
 }
 
-export function Link({ href, children }: LinkProps) {
-  function handlePress() {
-    Linking.openURL(href)
-  }
-  return (
-    <Pressable onPress={handlePress}>
-      <Text style={styles}>{children}</Text>
-    </Pressable>
-  )
-}
-
 type HeadingLinkProps = LinkProps & {
   marginBottom?: TextStyle['margin']
 }
