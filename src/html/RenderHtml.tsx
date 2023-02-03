@@ -75,11 +75,13 @@ function renderElementNode(node: Node, index: number): ReactNode {
   }
 }
 
-function renderTextNode(node: Node): ReactNode {
+function renderTextNode(node: Node, index: number): ReactNode {
   if (node.text.trim().length === 0) {
     return null
   }
-  return node.text
+  // sanity check - we shouldn't need a wrapper but sometimes
+  // special elements such as iframes break the rendering
+  return <P key={index}>{node.text}</P>
 }
 
 function renderNode(node: Node, index: number): ReactNode {
@@ -88,7 +90,7 @@ function renderNode(node: Node, index: number): ReactNode {
       return renderElementNode(node, index)
 
     case NodeType.TEXT_NODE:
-      return renderTextNode(node)
+      return renderTextNode(node, index)
 
     case NodeType.COMMENT_NODE:
     default:
@@ -101,5 +103,9 @@ type Props = { source: string }
 export function RenderHtml({ source }: Props) {
   const root = parse(source)
 
-  return <View>{root.childNodes.map(renderNode)}</View>
+  return (
+    <View style={{ marginBottom: tokens.space * 4 }}>
+      {root.childNodes.map(renderNode)}
+    </View>
+  )
 }
