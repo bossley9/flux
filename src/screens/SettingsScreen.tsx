@@ -3,7 +3,7 @@ import { ScreenContainer } from '@/components/ScreenContainer'
 import { P, MainButton } from '@/html'
 import { useQueryVersion } from '@/services/queries'
 import { useMutationLogout } from '@/services/auth'
-import { tokens } from '@/styles'
+import { tokens } from '@/tokens'
 
 export function SettingsScreen() {
   const { mutate: logout } = useMutationLogout()

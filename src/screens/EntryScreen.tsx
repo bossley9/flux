@@ -6,7 +6,7 @@ import { useState } from 'react'
 import { useMutationToggleStar } from '@/services/mutations'
 import { RootScreen, RootScreenProps } from '@/navigation'
 import { formatPubDate } from '@/utils'
-import { tokens } from '@/styles'
+import { tokens } from '@/tokens'
 
 type Props = RootScreenProps<RootScreen.Entry>
 

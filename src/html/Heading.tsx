@@ -1,6 +1,6 @@
 import { P } from './P'
 import { Text, TextStyle } from 'react-native'
-import { tokens } from '@/styles'
+import { tokens } from '@/tokens'
 
 type Props = {
   level?: 1 | 2 | 3 | 4 | 5 | 6
@@ -20,23 +20,23 @@ export function Heading({
   let fontSize: number
   switch (level) {
     case 6:
-      fontSize = 11.2
+      fontSize = tokens.fontSize.base0
       break
     case 5:
-      fontSize = 14
+      fontSize = tokens.fontSize.base
       break
     case 4:
-      fontSize = 17.5
+      fontSize = tokens.fontSize.base1
       break
     case 3:
-      fontSize = 21.88
+      fontSize = tokens.fontSize.base2
       break
     case 2:
-      fontSize = 27.34
+      fontSize = tokens.fontSize.base3
       break
     case 1:
     default:
-      fontSize = 34.1
+      fontSize = tokens.fontSize.base4
   }
   const styles: TextStyle = {
     fontWeight: 'bold',

@@ -6,7 +6,7 @@ import { SettingsScreen } from '@/screens/SettingsScreen'
 import { Text } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { tokens } from '@/styles'
+import { tokens } from '@/tokens'
 import { MainScreen as MainScreenType } from '@/navigation'
 import type { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs'
 import type {

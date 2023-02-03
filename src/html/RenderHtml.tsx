@@ -3,7 +3,7 @@ import { View, Linking, Text } from 'react-native'
 import { P } from './P'
 import { linkStyles } from './Link'
 import { parse, Node, NodeType } from 'node-html-parser'
-import { tokens } from '@/styles'
+import { tokens } from '@/tokens'
 
 function getNodeAttribute(node: Node, attr: string): string | null {
   const src = node.toString()

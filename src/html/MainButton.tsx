@@ -1,6 +1,6 @@
 import { Pressable, PressableProps, ViewStyle } from 'react-native'
 import { P } from './P'
-import { tokens } from '@/styles'
+import { tokens } from '@/tokens'
 
 type Props = {
   onPress: PressableProps['onPress']

@@ -1,6 +1,6 @@
 import { Linking, Pressable, Text, TextStyle } from 'react-native'
 import { Heading } from './Heading'
-import { tokens } from '@/styles'
+import { tokens } from '@/tokens'
 
 export const linkStyles: TextStyle = {
   color: tokens.linkColor,

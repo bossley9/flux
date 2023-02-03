@@ -1,7 +1,7 @@
 import { RefreshControl, StyleSheet, ScrollView } from 'react-native'
 import { useEffect } from 'react'
 import * as NavigationBar from 'expo-navigation-bar'
-import { tokens } from '@/styles'
+import { tokens } from '@/tokens'
 
 type ScrollViewProps = React.ComponentProps<typeof ScrollView>
 

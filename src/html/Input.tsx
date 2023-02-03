@@ -1,7 +1,7 @@
 import { ForwardedRef, forwardRef } from 'react'
 import { TextInput, TextInputProps, ViewStyle } from 'react-native'
 import { P } from './P'
-import { tokens } from '@/styles'
+import { tokens } from '@/tokens'
 
 type Props = TextInputProps & {
   name: string

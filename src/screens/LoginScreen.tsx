@@ -3,7 +3,7 @@ import { useRef, useState } from 'react'
 import { StyleSheet, TextInput, View } from 'react-native'
 import { ErrorText, Heading, Input, MainButton, P } from '@/html'
 import { useMutationLogin } from '@/services/auth'
-import { tokens } from '@/styles'
+import { tokens } from '@/tokens'
 
 export function LoginScreen() {
   const apiKeyInputRef = useRef<TextInput>(null)

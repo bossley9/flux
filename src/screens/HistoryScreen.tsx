@@ -4,7 +4,7 @@ import { Heading } from '@/html'
 import { useQueryClient } from '@tanstack/react-query'
 import { useQueryEntries, useUserId } from '@/services/queries'
 import * as keys from '@/services/keys'
-import { tokens } from '@/styles'
+import { tokens } from '@/tokens'
 import { EntryCard } from '@/components/EntryCard'
 import type { FetchEntriesOptions } from '@/services/keys'
 

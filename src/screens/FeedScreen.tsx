@@ -3,7 +3,7 @@ import { ScreenContainer } from '@/components/ScreenContainer'
 import { HeadingLink, MainButton } from '@/html'
 import { useQueryFeedEntries } from '@/services/queries'
 import { RootScreen, RootScreenProps } from '@/navigation'
-import { tokens } from '@/styles'
+import { tokens } from '@/tokens'
 import { EntryCard } from '@/components/EntryCard'
 import { useMutationRefreshFeed } from '@/services/mutations'
 

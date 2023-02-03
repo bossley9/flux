@@ -1,6 +1,6 @@
 import { P } from './P'
 import { Text } from 'react-native'
-import { tokens } from '@/styles'
+import { tokens } from '@/tokens'
 
 type Props = { children?: React.ReactNode }
 

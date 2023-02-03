@@ -1,5 +1,5 @@
 import { Text, TextStyle } from 'react-native'
-import { tokens } from '@/styles'
+import { tokens } from '@/tokens'
 
 type Props = {
   children?: React.ReactNode
@@ -21,7 +21,7 @@ export function P({
   style: overrideStyles,
 }: Props) {
   const style: TextStyle = {
-    fontSize: 14,
+    fontSize: tokens.fontSize.base,
     color,
     textAlign: align,
     marginTop: marginTop ?? margin,

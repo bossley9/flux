@@ -7,7 +7,7 @@ import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { RootScreen } from '@/navigation'
-import { tokens } from '@/styles'
+import { tokens } from '@/tokens'
 import type { NativeStackNavigationOptions } from '@react-navigation/native-stack'
 import type { RootStackParamList } from '@/navigation'
 
