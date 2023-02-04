@@ -1,7 +1,7 @@
 import { Fragment } from 'react'
-import { ViewStyle, Button } from 'react-native'
+import { View, ViewStyle } from 'react-native'
 import { ScreenContainer } from '@/components/ScreenContainer'
-import { Heading } from '@/html'
+import { Heading, MainButton } from '@/html'
 import { useQueryClient } from '@tanstack/react-query'
 import { useInfiniteQueryEntries, useUserId } from '@/services/queries'
 import * as keys from '@/services/keys'
@@ -42,12 +42,14 @@ export function StarredScreen() {
         </Fragment>
       ))}
       {hasNextPage && (
-        <Button
+        <MainButton
           onPress={() => fetchNextPage()}
           disabled={isFetchingNextPage}
-          title={isFetchingNextPage ? 'Loading...' : 'Load more'}
-        />
+        >
+          {isFetchingNextPage ? 'Loading...' : 'Load more'}
+        </MainButton>
       )}
+      <View style={{ height: tokens.space * (hasNextPage ? 2 : 4) }} />
     </ScreenContainer>
   )
 }

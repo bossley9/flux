@@ -1,5 +1,5 @@
 import { Fragment } from 'react'
-import { StyleSheet, View, Button } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { ScreenContainer } from '@/components/ScreenContainer'
 import { HeadingLink, MainButton } from '@/html'
 import { useInfiniteQueryFeedEntries } from '@/services/queries'
@@ -43,12 +43,14 @@ export function FeedScreen({ route }: Props) {
         </Fragment>
       ))}
       {hasNextPage && (
-        <Button
+        <MainButton
           onPress={() => fetchNextPage()}
           disabled={isFetchingNextPage}
-          title={isFetchingNextPage ? 'Loading...' : 'Load more'}
-        />
+        >
+          {isFetchingNextPage ? 'Loading...' : 'Load more'}
+        </MainButton>
       )}
+      <View style={{ height: tokens.space * (hasNextPage ? 2 : 4) }} />
       <View style={styles.footer} />
     </ScreenContainer>
   )
