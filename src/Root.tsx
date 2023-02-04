@@ -14,7 +14,7 @@ import type { RootStackParamList } from '@/navigation'
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 30 * 1000,
+      staleTime: 30 * 60 * 1000,
       retry: false,
       cacheTime: Infinity,
     },

@@ -22,7 +22,7 @@ export function useQueryFeeds() {
   return useQuery({
     queryKey: keys.getFeedsQueryKey({ userId }),
     queryFn: fetchers.fetchFeeds,
-    staleTime: 1000 * 60 * 24,
+    staleTime: 1000 * 60 * 60 * 24,
   })
 }
 useQueryFeeds.getKey = keys.getFeedsQueryKey
@@ -66,5 +66,6 @@ export function useQueryVersion() {
   return useQuery({
     queryKey: keys.getVersionQueryKey(),
     queryFn: fetchers.fetchVersion,
+    placeholderData: '1.0.00',
   })
 }
