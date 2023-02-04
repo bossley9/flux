@@ -3,15 +3,20 @@ import { tokens } from '@/tokens'
 
 type Props = {
   onPress: () => void
+  style?: ViewStyle
   children?: React.ReactNode
 }
 
-export function CardContainer({ onPress, children }: Props) {
+export function CardContainer({
+  onPress,
+  style: overrideStyles,
+  children,
+}: Props) {
   function handlePress() {
     onPress()
   }
   return (
-    <Pressable onPress={handlePress} style={styles}>
+    <Pressable onPress={handlePress} style={{ ...styles, ...overrideStyles }}>
       {children}
     </Pressable>
   )

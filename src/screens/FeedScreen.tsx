@@ -38,7 +38,7 @@ export function FeedScreen({ route }: Props) {
       {data?.pages?.map((page, i) => (
         <Fragment key={i}>
           {page.entries.map((entry) => (
-            <EntryCard key={entry.id} entry={entry} />
+            <EntryCard key={entry.id} entry={entry} displayStatus />
           ))}
         </Fragment>
       ))}
