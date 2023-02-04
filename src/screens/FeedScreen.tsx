@@ -1,7 +1,8 @@
-import { StyleSheet, View } from 'react-native'
+import { Fragment } from 'react'
+import { StyleSheet, View, Button } from 'react-native'
 import { ScreenContainer } from '@/components/ScreenContainer'
 import { HeadingLink, MainButton } from '@/html'
-import { useQueryFeedEntries } from '@/services/queries'
+import { useInfiniteQueryFeedEntries } from '@/services/queries'
 import { RootScreen, RootScreenProps } from '@/navigation'
 import { tokens } from '@/tokens'
 import { EntryCard } from '@/components/EntryCard'
@@ -11,7 +12,8 @@ type Props = RootScreenProps<RootScreen.Feed>
 
 export function FeedScreen({ route }: Props) {
   const { feed } = route.params
-  const { data, isFetching } = useQueryFeedEntries({ feedId: feed.id })
+  const { data, isFetchingNextPage, hasNextPage, fetchNextPage } =
+    useInfiniteQueryFeedEntries({ feedId: feed.id })
   const { mutate: refreshFeed, isLoading } = useMutationRefreshFeed()
 
   function handleRefetchFeed() {
@@ -22,18 +24,32 @@ export function FeedScreen({ route }: Props) {
     <ScreenContainer
       style={styles.container}
       refreshEnabled
-      refreshing={isFetching || isLoading}
+      refreshing={isFetchingNextPage || isLoading}
       onRefresh={handleRefetchFeed}
     >
-      <HeadingLink href={feed.site_url}>{feed.title}</HeadingLink>
+      <HeadingLink href={feed.site_url}>
+        {feed.title} {data?.pages?.[0].total ? `(${data.pages[0].total})` : ''}
+      </HeadingLink>
       <View style={styles.buttonWrapper}>
         <MainButton onPress={handleRefetchFeed} horizontalMargin={0}>
           Refetch feed
         </MainButton>
       </View>
-      {data?.entries.map((entry) => (
-        <EntryCard key={entry.id} entry={entry} />
+      {data?.pages?.map((page, i) => (
+        <Fragment key={i}>
+          {page.entries.map((entry) => (
+            <EntryCard key={entry.id} entry={entry} />
+          ))}
+        </Fragment>
       ))}
+      {hasNextPage && (
+        <Button
+          onPress={() => fetchNextPage()}
+          disabled={isFetchingNextPage}
+          title={isFetchingNextPage ? 'Loading...' : 'Load more'}
+        />
+      )}
+      <View style={styles.footer} />
     </ScreenContainer>
   )
 }
@@ -46,5 +62,8 @@ const styles = StyleSheet.create({
   },
   buttonWrapper: {
     marginBottom: tokens.space * 3,
+  },
+  footer: {
+    height: tokens.space * 4,
   },
 })

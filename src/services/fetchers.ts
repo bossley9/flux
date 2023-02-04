@@ -22,14 +22,20 @@ export async function fetchFeeds({
   return response.data
 }
 
-export async function fetchFeedEntries({
+export async function fetchInfiniteFeedEntries({
   queryKey,
   signal,
-}: API.Context<typeof keys.getFeedEntriesQueryKey>): Promise<API.EntryList> {
-  const [, { feedId }] = queryKey
+  pageParam = 0,
+}: API.Context<
+  typeof keys.getFeedEntriesInfiniteQueryKey,
+  number
+>): Promise<API.EntryList> {
+  const [, { feedId, limit }] = queryKey
   const response = await request<Wrapped<API.EntryList>>(
     'GET',
-    `v1/feeds/${feedId}/entries?direction=desc`,
+    `v1/feeds/${feedId}/entries?direction=desc&limit=${limit}&offset=${
+      pageParam * limit
+    }`,
     { signal }
   )
   return response.data

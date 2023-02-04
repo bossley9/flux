@@ -26,12 +26,10 @@ export function useMutationRefreshFeed() {
       return request<void>('PUT', `v1/feeds/${feedId}/refresh`)
     },
     onSettled: function (_data, _error, feedId) {
-      queryClient.invalidateQueries(
-        keys.getFeedEntriesQueryKey({ userId, feedId })
-      )
+      queryClient.invalidateQueries([userId, { feedId }])
       // invalidate all filtered entries queries
-      const [user, entriesKey] = keys.getEntriesInfiniteQueryKey({ userId })
-      queryClient.invalidateQueries([user, entriesKey])
+      const [, entriesKey] = keys.getEntriesInfiniteQueryKey({ userId })
+      queryClient.invalidateQueries([userId, entriesKey])
     },
   })
 }

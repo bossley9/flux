@@ -17,7 +17,6 @@ export function useQueryUser() {
 useQueryUser.getKey = keys.getUserQueryKey
 useQueryUser.fetcher = fetchers.fetchUser
 
-// TODO replace list queries with useInfiniteQuery
 export function useQueryFeeds() {
   const userId = useUserId()
   return useQuery({
@@ -29,11 +28,17 @@ export function useQueryFeeds() {
 useQueryFeeds.getKey = keys.getFeedsQueryKey
 useQueryFeeds.fetcher = fetchers.fetchFeeds
 
-export function useQueryFeedEntries({ feedId }: { feedId: number }) {
+export function useInfiniteQueryFeedEntries({ feedId }: { feedId: number }) {
   const userId = useUserId()
-  return useQuery({
-    queryKey: keys.getFeedEntriesQueryKey({ userId, feedId }),
-    queryFn: fetchers.fetchFeedEntries,
+  const limit = 20
+  return useInfiniteQuery({
+    queryKey: keys.getFeedEntriesInfiniteQueryKey({ userId, feedId, limit }),
+    queryFn: fetchers.fetchInfiniteFeedEntries,
+    getNextPageParam: function (firstPage, pages) {
+      const total = firstPage.total
+      const entriesRendered = pages.length * limit
+      return entriesRendered < total ? pages.length : undefined
+    },
   })
 }
 

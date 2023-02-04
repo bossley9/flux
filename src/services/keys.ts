@@ -8,11 +8,16 @@ export function getFeedsQueryKey({ userId }: { userId: number | null }) {
   return [userId, 'feeds'] as const
 }
 
-export function getFeedEntriesQueryKey({
+export function getFeedEntriesInfiniteQueryKey({
   userId,
   feedId,
-}: { userId: number | null } & { feedId: number }) {
-  return [userId, { feedId }] as const
+  limit,
+}: {
+  userId: number | null
+  feedId: number
+  limit: number
+}) {
+  return [userId, { feedId, limit }] as const
 }
 
 export type FetchEntriesOptions = {
