@@ -136,7 +136,11 @@ function renderElementNode(node: Node, index: number): ReactNode {
 function renderTextNode(node: Node, index: number): ReactNode {
   // sanity check - we shouldn't need a wrapper but sometimes
   // special elements such as iframes break the rendering
-  return <Text key={getKey(node, index)}>{node.text}</Text>
+  return (
+    <Text key={getKey(node, index)}>
+      {node.text.replace(/\n/g, '').replace(/ {2}/g, ' ')}
+    </Text>
+  )
 }
 
 function renderNode(node: Node, index: number): ReactNode {
@@ -161,7 +165,7 @@ export function RenderHtml({ source }: Props) {
   const root = parse(source)
 
   return (
-    <View style={{ marginBottom: tokens.space * 4 }}>
+    <View style={{ marginBottom: tokens.space * 8 }}>
       {root.childNodes.map(renderNode)}
     </View>
   )
