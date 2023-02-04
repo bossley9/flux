@@ -17,6 +17,8 @@ export function EntryScreen({ route, navigation }: Props) {
   const [starred, setStarred] = useState(entry.starred)
   const { mutate: starEntry } = useMutationToggleStar()
 
+  const [read, setRead] = useState(entry.status === 'read')
+
   function handleOpenFeed() {
     if (feed) {
       navigation.navigate(RootScreen.Feed, { feed })
@@ -27,6 +29,7 @@ export function EntryScreen({ route, navigation }: Props) {
 
   function handleToggleRead() {
     console.log('toggle read')
+    setRead(!read)
   }
 
   function handleToggleStar() {
@@ -59,13 +62,11 @@ export function EntryScreen({ route, navigation }: Props) {
         <Pressable style={styles.iconTextPair} onPress={handleToggleRead}>
           <Icon
             style={{ marginRight: tokens.space / 2 }}
-            name={entry.status === 'read' ? 'mail-outline' : 'mail'}
+            name={read ? 'mail' : 'mail-outline'}
             size={32}
             color={tokens.primaryColor}
           />
-          <P color={tokens.primaryColor}>
-            Mark {entry.status === 'read' ? 'unread' : 'read'}
-          </P>
+          <P color={tokens.primaryColor}>Mark {read ? 'unread' : 'read'}</P>
         </Pressable>
       </View>
 
