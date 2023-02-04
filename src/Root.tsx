@@ -30,7 +30,10 @@ export function Root() {
     },
     statusBarColor: tokens.backgroundColor,
     statusBarStyle: 'dark',
-    animation: 'slide_from_right',
+    animation: 'none',
+    orientation: 'portrait',
+    // prevent unnecessary rerenders
+    freezeOnBlur: true,
   }
   return (
     <NavigationContainer>

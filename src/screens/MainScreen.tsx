@@ -32,6 +32,9 @@ export function MainScreen() {
       backgroundColor: tokens.backgroundColor,
       elevation: 0,
     },
+    orientation: 'portrait',
+    // prevent unnecessary rerenders
+    freezeOnBlur: true,
     tabBarLabel: ({ focused }) => {
       let tabName: string
       const color = focused ? tokens.primaryColor : tokens.lightColor
