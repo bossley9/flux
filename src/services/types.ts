@@ -1,9 +1,11 @@
 import type { QueryFunctionContext } from '@tanstack/react-query'
 
-// query key creator functions can have any arguments and return any type of array elements
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type Context<T extends (...args: any) => readonly any[]> =
-  QueryFunctionContext<ReturnType<T>>
+export type Context<
+  // query key creator functions can have any arguments and return any type of array elements
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  T extends (...args: any) => readonly any[],
+  P = number
+> = QueryFunctionContext<ReturnType<T>, P>
 
 export type User = {
   id: number

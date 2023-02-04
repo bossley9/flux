@@ -12,7 +12,7 @@ export function useMutationToggleStar() {
     },
     onSettled: function () {
       // invalidate all filtered entries queries
-      const [user, entriesKey] = keys.getEntriesQueryKey({ userId })
+      const [user, entriesKey] = keys.getEntriesInfiniteQueryKey({ userId })
       queryClient.invalidateQueries([user, entriesKey])
     },
   })
@@ -30,7 +30,7 @@ export function useMutationRefreshFeed() {
         keys.getFeedEntriesQueryKey({ userId, feedId })
       )
       // invalidate all filtered entries queries
-      const [user, entriesKey] = keys.getEntriesQueryKey({ userId })
+      const [user, entriesKey] = keys.getEntriesInfiniteQueryKey({ userId })
       queryClient.invalidateQueries([user, entriesKey])
     },
   })

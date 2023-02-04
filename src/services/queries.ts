@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useInfiniteQuery } from '@tanstack/react-query'
 import * as keys from './keys'
 import * as fetchers from './fetchers'
 import type { FetchEntriesOptions } from './keys'
@@ -23,6 +23,7 @@ export function useQueryFeeds() {
   return useQuery({
     queryKey: keys.getFeedsQueryKey({ userId }),
     queryFn: fetchers.fetchFeeds,
+    staleTime: 1000 * 60 * 24,
   })
 }
 useQueryFeeds.getKey = keys.getFeedsQueryKey
@@ -36,19 +37,25 @@ export function useQueryFeedEntries({ feedId }: { feedId: number }) {
   })
 }
 
-export function useQueryEntries(options?: FetchEntriesOptions) {
+export function useInfiniteQueryEntries(options?: FetchEntriesOptions) {
   const userId = useUserId()
+  const batchNum = 20
   const filterOptions: FetchEntriesOptions = {
     direction: 'desc',
     order: 'published_at',
     ...options,
+    limit: batchNum,
   }
-  return useQuery({
-    queryKey: keys.getEntriesQueryKey({ userId, ...filterOptions }),
-    queryFn: fetchers.fetchEntries,
+  return useInfiniteQuery({
+    queryKey: keys.getEntriesInfiniteQueryKey({ userId, ...filterOptions }),
+    queryFn: fetchers.fetchInfiniteEntries,
+    getNextPageParam: function (firstPage, pages) {
+      const total = firstPage.total
+      const entriesRendered = pages.length * batchNum
+      return entriesRendered < total ? pages.length : undefined
+    },
   })
 }
-useQueryEntries.getKey = keys.getEntriesQueryKey
 
 export function useQueryVersion() {
   return useQuery({

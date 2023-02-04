@@ -35,17 +35,26 @@ export async function fetchFeedEntries({
   return response.data
 }
 
-export async function fetchEntries({
+export async function fetchInfiniteEntries({
   queryKey,
   signal,
-}: API.Context<typeof keys.getEntriesQueryKey>): Promise<API.EntryList> {
+  pageParam = 0,
+}: API.Context<
+  typeof keys.getEntriesInfiniteQueryKey,
+  number
+>): Promise<API.EntryList> {
   const [, , options] = queryKey
+  const { limit = 0, ...restOptions } = options
 
   const response = await request<Wrapped<API.EntryList>>(
     'GET',
     'v1/entries',
     { signal },
-    options
+    {
+      ...restOptions,
+      limit: String(limit),
+      offset: String(pageParam * limit),
+    }
   )
   return response.data
 }

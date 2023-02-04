@@ -20,9 +20,10 @@ export type FetchEntriesOptions = {
   direction?: 'desc' | 'asc'
   order?: 'id' | 'status' | 'published_at' | 'category_title' | 'category_id'
   starred?: 'true' | 'false'
+  limit?: number
 }
 
-export function getEntriesQueryKey({
+export function getEntriesInfiniteQueryKey({
   userId,
   ...options
 }: { userId: number | null } & FetchEntriesOptions) {
