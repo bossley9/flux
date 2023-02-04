@@ -9,7 +9,14 @@ function getKey(node: Node, index: number): string {
   return node.range[0] + '-' + node.range[1] + '-' + index
 }
 
-function isWhitespaceNode(node: Node): boolean {
+function isBlankNode(node: Node): boolean {
+  const src = node.toString()
+  const hasNoChildren = node.childNodes.length === 0
+  const isIframe = src.indexOf('<iframe') === 0
+  return hasNoChildren && !isIframe
+}
+
+function isWhitespaceTextNode(node: Node): boolean {
   return node.nodeType === NodeType.TEXT_NODE && node.text.trim().length === 0
 }
 
@@ -57,7 +64,7 @@ function renderListItemNode(node: Node, index: number): ReactNode {
   const listIndex =
     parent.childNodes
       // filter out whitespace values
-      .filter((child) => !isWhitespaceNode(child))
+      .filter((child) => !isWhitespaceTextNode(child))
       .findIndex((child) => child === node) + 1
 
   switch (parentType) {
@@ -70,11 +77,7 @@ function renderListItemNode(node: Node, index: number): ReactNode {
 
     case 'ol':
       return (
-        <P
-          key={key}
-          margin={tokens.space / 4}
-          style={{ backgroundColor: 'yellow' }}
-        >
+        <P key={key} margin={tokens.space / 4}>
           {listIndex}. {node.childNodes.map(renderNode)}
         </P>
       )
@@ -87,7 +90,7 @@ function renderListItemNode(node: Node, index: number): ReactNode {
 
 function renderElementNode(node: Node, index: number): ReactNode {
   const children = node.childNodes
-  if (children.length === 0) {
+  if (isBlankNode(node)) {
     return null
   }
   const key = getKey(node, index)
@@ -115,7 +118,7 @@ function renderElementNode(node: Node, index: number): ReactNode {
     case 'ul':
     case 'ol':
       return (
-        <View key={key} style={{ paddingLeft: tokens.space }}>
+        <View key={key} style={{ paddingLeft: tokens.space * 1.5 }}>
           {children.map(renderNode)}
         </View>
       )
@@ -137,7 +140,7 @@ function renderTextNode(node: Node, index: number): ReactNode {
 }
 
 function renderNode(node: Node, index: number): ReactNode {
-  if (isWhitespaceNode(node)) return null
+  if (isWhitespaceTextNode(node)) return null
 
   switch (node.nodeType) {
     case NodeType.ELEMENT_NODE:
