@@ -4,6 +4,7 @@ import { ScreenContainer } from '@/components/ScreenContainer'
 import { Heading, MainButton } from '@/html'
 import { useQueryClient } from '@tanstack/react-query'
 import { useInfiniteQueryEntries, useUserId } from '@/services/queries'
+import { useAppFocusEffect } from '@/useAppFocusEffect'
 import * as keys from '@/services/keys'
 import { tokens } from '@/tokens'
 import { EntryCard } from '@/components/EntryCard'
@@ -17,6 +18,12 @@ export function UnreadScreen() {
     useInfiniteQueryEntries(entryOptions)
   const queryClient = useQueryClient()
   const userId = useUserId()
+
+  useAppFocusEffect(() => {
+    queryClient.invalidateQueries(
+      keys.getEntriesInfiniteQueryKey({ userId, ...entryOptions })
+    )
+  })
 
   function handleRefresh() {
     queryClient.invalidateQueries(
