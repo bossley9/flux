@@ -33,3 +33,28 @@ export function useMutationRefreshFeed() {
     },
   })
 }
+
+type SetReadMutationProps = {
+  entryId: number
+  read: boolean
+}
+
+export function useMutationSetEntryRead() {
+  const queryClient = useQueryClient()
+  const userId = useUserId()
+  return useMutation({
+    mutationFn: function ({ entryId, read }: SetReadMutationProps) {
+      return request<void>('PUT', 'v1/entries', {
+        data: {
+          entry_ids: [entryId],
+          status: read ? 'read' : 'unread',
+        },
+      })
+    },
+    onSettled: function () {
+      // invalidate all filtered entries queries
+      const [user, entriesKey] = keys.getEntriesInfiniteQueryKey({ userId })
+      queryClient.invalidateQueries([user, entriesKey])
+    },
+  })
+}

@@ -2,6 +2,7 @@ import { StyleSheet, View } from 'react-native'
 import { CardContainer } from '@/components/CardContainer'
 import { useNavigation } from '@react-navigation/native'
 import { Heading, P } from '@/html'
+import { useMutationSetEntryRead } from '@/services/mutations'
 import { formatPubDate } from '@/utils'
 import type { Entry } from '@/services/types'
 import { RootScreen, RootScreenNavigationProp } from '@/navigation'
@@ -10,9 +11,10 @@ type Props = { entry: Entry }
 
 export function EntryCard({ entry }: Props) {
   const navigation = useNavigation<RootScreenNavigationProp<RootScreen.Main>>()
+  const { mutate: setEntryRead } = useMutationSetEntryRead()
 
   const handleOpenEntry = () => {
-    // TODO mark entry as read
+    setEntryRead({ entryId: entry.id, read: true })
     navigation.navigate(RootScreen.Entry, { entry })
   }
 

@@ -78,8 +78,6 @@ export function MainScreen() {
     },
   })
   return (
-    // TODO switch bottom tab navigation for material top tab navigation
-    // with tabBarPosition set to bottom to allow horizontal swiping
     <Tab.Navigator
       initialRouteName={MainScreenType.Unread}
       screenOptions={screenOptions}
