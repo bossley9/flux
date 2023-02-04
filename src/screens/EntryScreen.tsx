@@ -48,7 +48,6 @@ export function EntryScreen({ route, navigation }: Props) {
           {feed?.title ?? entry.author} ({formatPubDate(entry.published_at)})
         </TextButton>
       </View>
-
       <View style={styles.actionBar}>
         <Pressable style={styles.iconTextPair} onPress={handleToggleStar}>
           <Icon
@@ -69,11 +68,6 @@ export function EntryScreen({ route, navigation }: Props) {
           <P color={tokens.primaryColor}>Mark {read ? 'unread' : 'read'}</P>
         </Pressable>
       </View>
-
-      <P>{entry.content}</P>
-      <HeadingLink href={entry.url} marginBottom={0}>
-        {entry.title}
-      </HeadingLink>
       <RenderHtml source={entry.content} />
     </ScreenContainer>
   )

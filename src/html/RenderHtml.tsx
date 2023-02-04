@@ -1,7 +1,8 @@
 import { ReactNode } from 'react'
-import { View, Linking, Text } from 'react-native'
+import { View, Linking, ScrollView, Text } from 'react-native'
 import { P } from './P'
 import { linkStyles } from './Link'
+import { Heading } from './Heading'
 import { parse, Node, NodeType } from 'node-html-parser'
 import { tokens } from '@/tokens'
 
@@ -56,6 +57,18 @@ function renderLinkNode(node: Node, index: number): ReactNode {
   )
 }
 
+function renderHeadingNode(
+  node: Node,
+  index: number,
+  level: 1 | 2 | 3 | 4 | 5 | 6
+): ReactNode {
+  return (
+    <Heading key={getKey(node, index)} level={level} marginBottom={0}>
+      {node.childNodes.map(renderNode)}
+    </Heading>
+  )
+}
+
 function renderListItemNode(node: Node, index: number): ReactNode {
   const parent = node.parentNode
   const parentType = parent.tagName.toLocaleLowerCase()
@@ -88,6 +101,34 @@ function renderListItemNode(node: Node, index: number): ReactNode {
   }
 }
 
+function renderPreNode(node: Node, index: number): ReactNode {
+  const rawSrc = node.toString()
+  let src = rawSrc.substring('<pre>'.length, rawSrc.length - '</pre>'.length)
+
+  if (src.indexOf('<code>') === 0) {
+    src = src.substring('<code>'.length, src.length - '</code>'.length)
+  }
+
+  src = src.replace(/\n$/, '')
+
+  return (
+    <ScrollView horizontal={true}>
+      <P
+        key={getKey(node, index)}
+        style={{
+          margin: 0,
+          padding: tokens.space,
+          backgroundColor: tokens.darkColor,
+          fontFamily: tokens.fontFamily.code,
+          fontSize: tokens.fontSize.code,
+        }}
+      >
+        {src}
+      </P>
+    </ScrollView>
+  )
+}
+
 function renderElementNode(node: Node, index: number): ReactNode {
   const children = node.childNodes
   if (isBlankNode(node)) {
@@ -115,6 +156,51 @@ function renderElementNode(node: Node, index: number): ReactNode {
           {children.map(renderNode)}
         </P>
       )
+    case 'em':
+      return (
+        <P key={key} style={{ fontWeight: 'bold', fontStyle: 'italic' }}>
+          {children.map(renderNode)}
+        </P>
+      )
+    case 'code':
+      return (
+        <P
+          key={key}
+          style={{
+            color: tokens.secondaryColor,
+            fontFamily: tokens.fontFamily.code,
+            fontSize: tokens.fontSize.code,
+          }}
+        >
+          {children.map(renderNode)}
+        </P>
+      )
+    case 'blockquote':
+      return (
+        <View style={{ flexDirection: 'row' }}>
+          <View
+            style={{
+              width: tokens.space / 2,
+              backgroundColor: tokens.darkColor,
+            }}
+          />
+          <View style={{ paddingLeft: tokens.space / 2 }}>
+            {children.map(renderNode)}
+          </View>
+        </View>
+      )
+    case 'h1':
+      return renderHeadingNode(node, index, 1)
+    case 'h2':
+      return renderHeadingNode(node, index, 2)
+    case 'h3':
+      return renderHeadingNode(node, index, 3)
+    case 'h4':
+      return renderHeadingNode(node, index, 4)
+    case 'h5':
+      return renderHeadingNode(node, index, 5)
+    case 'h6':
+      return renderHeadingNode(node, index, 6)
     case 'ul':
     case 'ol':
       return (
@@ -124,6 +210,14 @@ function renderElementNode(node: Node, index: number): ReactNode {
       )
     case 'li':
       return renderListItemNode(node, index)
+    case 'pre':
+      return renderPreNode(node, index)
+    case 'figure':
+      return <P margin={0}>{children.map(renderNode)}</P>
+    case 'picture':
+    case 'figcaption':
+    case 'table':
+    case 'iframe':
     default:
       return (
         <P key={key} color={tokens.errorColor}>
@@ -138,7 +232,7 @@ function renderTextNode(node: Node, index: number): ReactNode {
   // special elements such as iframes break the rendering
   return (
     <Text key={getKey(node, index)}>
-      {node.text.replace(/\n/g, '').replace(/ {2}/g, ' ')}
+      {node.text.replace(/\n/g, ' ').replace(/ {2}/g, ' ')}
     </Text>
   )
 }
