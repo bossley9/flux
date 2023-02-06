@@ -1,4 +1,4 @@
-import { View } from 'react-native'
+import { View, ViewStyle } from 'react-native'
 import { CardContainer } from '@/components/CardContainer'
 import { Heading, P } from '@/html'
 import { tokens } from '@/tokens'
@@ -10,19 +10,8 @@ type Props = {
 
 export function ListContainer({ title, children }: Props) {
   return (
-    <View
-      style={{
-        flex: 1,
-        marginTop: 40 + tokens.space, // phone notification/camera offset
-        backgroundColor: tokens.backgroundColor,
-      }}
-    >
-      <View
-        style={{
-          paddingLeft: tokens.space,
-          paddingRight: tokens.space,
-        }}
-      >
+    <View style={ListContainerOuterStyles}>
+      <View style={ListContainerHeaderStyles}>
         <Heading level={1} marginBottom={tokens.space}>
           {title}
         </Heading>
@@ -30,6 +19,16 @@ export function ListContainer({ title, children }: Props) {
       {children}
     </View>
   )
+}
+
+export const ListContainerOuterStyles: ViewStyle = {
+  flex: 1,
+  marginTop: 40 + tokens.space, // phone notification/camera offset
+  backgroundColor: tokens.backgroundColor,
+}
+export const ListContainerHeaderStyles: ViewStyle = {
+  paddingLeft: tokens.space,
+  paddingRight: tokens.space,
 }
 
 type ListEmptyPlaceholderProps = {
@@ -43,7 +42,8 @@ export function ListEmptyPlaceholder({
   return <P>{isLoading ? 'Loading...' : message}</P>
 }
 
-export function ListFooter({ showSkeleton }: { showSkeleton: boolean }) {
+type ListFooterProps = { showSkeleton: boolean }
+export function ListFooter({ showSkeleton }: ListFooterProps) {
   return showSkeleton ? (
     <CardContainer
       style={{

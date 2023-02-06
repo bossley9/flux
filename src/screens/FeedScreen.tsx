@@ -1,77 +1,92 @@
-import { StyleSheet, View } from 'react-native'
-import { ScrollScreenContainer } from '@/components/ScrollScreenContainer'
-import { HeadingLink, MainButton } from '@/html'
+import {
+  FlatList,
+  ListRenderItemInfo,
+  RefreshControl,
+  View,
+  ViewStyle,
+} from 'react-native'
+import {
+  ListContainerOuterStyles,
+  ListContainerHeaderStyles,
+  ListEmptyPlaceholder,
+  ListFooter,
+} from '@/components/ListContainer'
+import { HeadingLink } from '@/html'
 import { useInfiniteQueryFeedEntries } from '@/services/queries'
 import { RootScreen, RootScreenProps } from '@/navigation'
 import { tokens } from '@/tokens'
 import { EntryCard } from '@/components/EntryCard'
 import { useMutationRefreshFeed } from '@/services/mutations'
 import { flattenEntryLists } from '@/utils'
+import type { Entry } from '@/services/types'
 
 type Props = RootScreenProps<RootScreen.Feed>
 
 export function FeedScreen({ route }: Props) {
   const { feed } = route.params
-  const { data, isFetchingNextPage, hasNextPage, fetchNextPage } =
+  const { data, isFetching, hasNextPage, fetchNextPage } =
     useInfiniteQueryFeedEntries({ feedId: feed.id })
   const { mutate: refreshFeed, isLoading } = useMutationRefreshFeed()
 
-  function handleRefetchFeed() {
+  function handleRefresh() {
     refreshFeed(feed.id)
   }
 
-  const entryList = flattenEntryLists(data?.pages ?? [])
+  function handleOnEndReached() {
+    fetchNextPage()
+  }
 
+  function renderItem({
+    item: entry,
+  }: ListRenderItemInfo<Entry>): React.ReactElement {
+    return <EntryCard key={entry.id} entry={entry} displayStatus />
+  }
+
+  const entryList = flattenEntryLists(data?.pages ?? [])
   const unreadCount = entryList.entries.filter(
     (entry) => entry.status === 'unread'
   ).length
+  const title = `${feed.title} (${unreadCount}/${entryList.total})`
 
   return (
-    <ScrollScreenContainer
-      style={styles.container}
-      refreshEnabled
-      refreshing={isFetchingNextPage || isLoading}
-      onRefresh={handleRefetchFeed}
-    >
-      <HeadingLink
-        href={feed.site_url}
-        color={feed.disabled ? tokens.errorColor : undefined}
-      >
-        {feed.title}{' '}
-        {Boolean(entryList.total) && (
-          <>
-            ({unreadCount}/{entryList.total})
-          </>
-        )}
-      </HeadingLink>
-      <View style={styles.buttonWrapper}>
-        <MainButton onPress={handleRefetchFeed} horizontalMargin={0}>
-          Refetch feed
-        </MainButton>
-      </View>
-      {entryList.entries.map((entry) => (
-        <EntryCard key={entry.id} entry={entry} displayStatus />
-      ))}
-      {hasNextPage && (
-        <MainButton
-          onPress={() => fetchNextPage()}
-          disabled={isFetchingNextPage}
+    <View style={ListContainerOuterStyles}>
+      <View style={ListContainerHeaderStyles}>
+        <HeadingLink
+          href={feed.site_url}
+          color={feed.disabled ? tokens.errorColor : undefined}
+          marginBottom={tokens.space}
         >
-          {isFetchingNextPage ? 'Loading...' : 'Load more'}
-        </MainButton>
-      )}
-      <View style={{ height: tokens.space * (hasNextPage ? 2 : 4) }} />
-    </ScrollScreenContainer>
+          {title}
+        </HeadingLink>
+      </View>
+      <FlatList
+        style={styles}
+        data={entryList.entries}
+        renderItem={renderItem}
+        refreshControl={
+          <RefreshControl
+            refreshing={isFetching || isLoading}
+            onRefresh={handleRefresh}
+            progressBackgroundColor={tokens.backgroundColor}
+            colors={[tokens.lightColor]}
+          />
+        }
+        ListEmptyComponent={
+          <ListEmptyPlaceholder
+            isLoading={isFetching}
+            message="This feed has no entries."
+          />
+        }
+        onEndReached={handleOnEndReached}
+        ListFooterComponent={
+          <>
+            <ListFooter showSkeleton={Boolean(hasNextPage)} />
+            <View style={{ height: tokens.space * 2 }} />
+          </>
+        }
+      />
+    </View>
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingLeft: tokens.space,
-    paddingRight: tokens.space,
-  },
-  buttonWrapper: {
-    marginBottom: tokens.space * 3,
-  },
-})
+const styles: ViewStyle = { padding: tokens.space }
