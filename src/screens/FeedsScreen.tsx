@@ -1,6 +1,14 @@
-import { ViewStyle } from 'react-native'
-import { ScrollScreenContainer } from '@/components/ScrollScreenContainer'
-import { Heading } from '@/html'
+import {
+  FlatList,
+  RefreshControl,
+  ViewStyle,
+  ListRenderItemInfo,
+} from 'react-native'
+import {
+  ListContainer,
+  ListEmptyPlaceholder,
+  ListFooter,
+} from '@/components/ListContainer'
 import { useQueryClient } from '@tanstack/react-query'
 import { useQueryFeeds, useUserId } from '@/services/queries'
 import * as keys from '@/services/keys'
@@ -21,25 +29,39 @@ export function FeedsScreen() {
     queryClient.invalidateQueries(keys.getFeedsQueryKey({ userId }))
   }
 
+  function renderItem({
+    item: feed,
+  }: ListRenderItemInfo<Feed>): React.ReactElement {
+    return <FeedCard key={feed.id} feed={feed} />
+  }
+
+  const feeds = data?.sort(sortByTitle) ?? []
+  const title = `Feeds (${data?.length ?? 0})`
+
   return (
-    <ScrollScreenContainer
-      style={styles}
-      refreshEnabled
-      refreshing={isFetching}
-      onRefresh={handleRefresh}
-    >
-      <Heading level={1}>
-        Feeds {data?.length ? `(${data.length})` : ''}
-      </Heading>
-      {data?.sort(sortByTitle).map((feed) => (
-        <FeedCard key={feed.id} feed={feed} />
-      ))}
-    </ScrollScreenContainer>
+    <ListContainer title={title}>
+      <FlatList
+        style={styles}
+        data={feeds}
+        renderItem={renderItem}
+        refreshControl={
+          <RefreshControl
+            refreshing={isFetching}
+            onRefresh={handleRefresh}
+            progressBackgroundColor={tokens.backgroundColor}
+            colors={[tokens.lightColor]}
+          />
+        }
+        ListEmptyComponent={
+          <ListEmptyPlaceholder
+            isLoading={isFetching}
+            message="You have no feeds!"
+          />
+        }
+        ListFooterComponent={<ListFooter showSkeleton={false} />}
+      />
+    </ListContainer>
   )
 }
 
-const styles: ViewStyle = {
-  flex: 1,
-  paddingLeft: tokens.space,
-  paddingRight: tokens.space,
-}
+const styles: ViewStyle = { padding: tokens.space }
