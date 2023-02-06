@@ -113,26 +113,28 @@ function renderPreNode(node: Node, index: number): ReactNode {
   src = src.replace(/\n$/, '')
 
   return (
-    <ScrollView
-      key={getKey(node, index)}
-      horizontal={true}
-      style={{
-        backgroundColor: tokens.darkColor,
-        padding: tokens.space,
-      }}
-    >
-      <P
+    <View>
+      <ScrollView
         key={getKey(node, index)}
-        margin={0}
+        horizontal={true}
         style={{
-          paddingRight: tokens.space,
-          fontFamily: tokens.fontFamily.code,
-          fontSize: tokens.fontSize.code,
+          backgroundColor: tokens.darkColor,
+          padding: tokens.space,
         }}
       >
-        {he.decode(src)}
-      </P>
-    </ScrollView>
+        <P
+          key={getKey(node, index)}
+          margin={0}
+          style={{
+            paddingRight: tokens.space,
+            fontFamily: tokens.fontFamily.code,
+            fontSize: tokens.fontSize.code,
+          }}
+        >
+          {he.decode(src)}
+        </P>
+      </ScrollView>
+    </View>
   )
 }
 
