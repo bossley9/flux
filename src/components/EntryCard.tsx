@@ -18,7 +18,10 @@ export function EntryCard({ entry, displayStatus }: Props) {
   const { mutate: setEntryRead } = useMutationSetEntryRead()
 
   let displayStatusStyles: ViewStyle | undefined
-  if (displayStatus && entry.status === 'read') {
+  if (
+    displayStatus &&
+    (entry.status === 'read' || entry.status === 'removed')
+  ) {
     displayStatusStyles = {
       backgroundColor: tokens.darkColor,
       borderColor: tokens.darkColor,
@@ -26,7 +29,7 @@ export function EntryCard({ entry, displayStatus }: Props) {
   }
 
   const handleOpenEntry = () => {
-    setEntryRead({ entryId: entry.id, read: true })
+    setEntryRead({ entryId: entry.id, feedId: entry.feed_id, read: true })
     navigation.navigate(RootScreen.Entry, { entry })
   }
 

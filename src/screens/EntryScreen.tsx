@@ -32,7 +32,7 @@ export function EntryScreen({ route, navigation }: Props) {
   }
 
   function handleToggleRead() {
-    setEntryRead({ entryId: entry.id, read: !read })
+    setEntryRead({ entryId: entry.id, feedId: feed?.id, read: !read })
     setRead(!read)
   }
 

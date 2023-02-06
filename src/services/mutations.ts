@@ -35,6 +35,7 @@ export function useMutationRefreshFeed() {
 }
 
 type SetReadMutationProps = {
+  feedId?: number
   entryId: number
   read: boolean
 }
@@ -51,7 +52,8 @@ export function useMutationSetEntryRead() {
         },
       })
     },
-    onSettled: function () {
+    onSettled: function (_data, _error, { feedId }) {
+      queryClient.invalidateQueries([userId, { feedId }])
       // invalidate all filtered entries queries
       const [user, entriesKey] = keys.getEntriesInfiniteQueryKey({ userId })
       queryClient.invalidateQueries([user, entriesKey])
