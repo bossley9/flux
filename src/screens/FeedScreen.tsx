@@ -1,4 +1,3 @@
-import { Fragment } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { ScreenContainer } from '@/components/ScreenContainer'
 import { HeadingLink, MainButton } from '@/html'
@@ -7,6 +6,7 @@ import { RootScreen, RootScreenProps } from '@/navigation'
 import { tokens } from '@/tokens'
 import { EntryCard } from '@/components/EntryCard'
 import { useMutationRefreshFeed } from '@/services/mutations'
+import type { Entry } from '@/services/types'
 
 type Props = RootScreenProps<RootScreen.Feed>
 
@@ -20,6 +20,14 @@ export function FeedScreen({ route }: Props) {
     refreshFeed(feed.id)
   }
 
+  const total = data?.pages?.[0].total ?? 0
+  const entries =
+    data?.pages?.reduce<Entry[]>((acc, val) => [...acc, ...val.entries], []) ??
+    []
+  const unreadCount = entries.filter(
+    (entry) => entry.status === 'unread'
+  ).length
+
   return (
     <ScreenContainer
       style={styles.container}
@@ -28,19 +36,20 @@ export function FeedScreen({ route }: Props) {
       onRefresh={handleRefetchFeed}
     >
       <HeadingLink href={feed.site_url}>
-        {feed.title} {data?.pages?.[0].total ? `(${data.pages[0].total})` : ''}
+        {feed.title}{' '}
+        {Boolean(total) && (
+          <>
+            ({unreadCount}/{total})
+          </>
+        )}
       </HeadingLink>
       <View style={styles.buttonWrapper}>
         <MainButton onPress={handleRefetchFeed} horizontalMargin={0}>
           Refetch feed
         </MainButton>
       </View>
-      {data?.pages?.map((page, i) => (
-        <Fragment key={i}>
-          {page.entries.map((entry) => (
-            <EntryCard key={entry.id} entry={entry} displayStatus />
-          ))}
-        </Fragment>
+      {entries.map((entry) => (
+        <EntryCard key={entry.id} entry={entry} displayStatus />
       ))}
       {hasNextPage && (
         <MainButton
@@ -51,7 +60,6 @@ export function FeedScreen({ route }: Props) {
         </MainButton>
       )}
       <View style={{ height: tokens.space * (hasNextPage ? 2 : 4) }} />
-      <View style={styles.footer} />
     </ScreenContainer>
   )
 }
@@ -64,8 +72,5 @@ const styles = StyleSheet.create({
   },
   buttonWrapper: {
     marginBottom: tokens.space * 3,
-  },
-  footer: {
-    height: tokens.space * 4,
   },
 })

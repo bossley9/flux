@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, View, ViewStyle } from 'react-native'
+import { StyleSheet, View, ViewStyle } from 'react-native'
 import { CardContainer } from '@/components/CardContainer'
 import { useNavigation } from '@react-navigation/native'
 import { Heading, P, TextButton } from '@/html'
