@@ -5,6 +5,7 @@ import { linkStyles } from './Link'
 import { Heading } from './Heading'
 import { parse, Node, NodeType } from 'node-html-parser'
 import { tokens } from '@/tokens'
+import he from 'he'
 
 function getKey(node: Node, index: number): string {
   return node.range[0] + '-' + node.range[1] + '-' + index
@@ -112,18 +113,24 @@ function renderPreNode(node: Node, index: number): ReactNode {
   src = src.replace(/\n$/, '')
 
   return (
-    <ScrollView horizontal={true}>
+    <ScrollView
+      key={getKey(node, index)}
+      horizontal={true}
+      style={{
+        backgroundColor: tokens.darkColor,
+        padding: tokens.space,
+      }}
+    >
       <P
         key={getKey(node, index)}
+        margin={0}
         style={{
-          margin: 0,
-          padding: tokens.space,
-          backgroundColor: tokens.darkColor,
+          paddingRight: tokens.space,
           fontFamily: tokens.fontFamily.code,
           fontSize: tokens.fontSize.code,
         }}
       >
-        {src}
+        {he.decode(src)}
       </P>
     </ScrollView>
   )
