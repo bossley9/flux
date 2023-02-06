@@ -30,7 +30,7 @@ useQueryFeeds.fetcher = fetchers.fetchFeeds
 
 export function useInfiniteQueryFeedEntries({ feedId }: { feedId: number }) {
   const userId = useUserId()
-  const limit = 20
+  const limit = 40
   return useInfiniteQuery({
     queryKey: keys.getFeedEntriesInfiniteQueryKey({ userId, feedId, limit }),
     queryFn: fetchers.fetchInfiniteFeedEntries,
@@ -44,19 +44,19 @@ export function useInfiniteQueryFeedEntries({ feedId }: { feedId: number }) {
 
 export function useInfiniteQueryEntries(options?: FetchEntriesOptions) {
   const userId = useUserId()
-  const batchNum = 20
+  const limit = 40
   const filterOptions: FetchEntriesOptions = {
     direction: 'desc',
     order: 'published_at',
     ...options,
-    limit: batchNum,
+    limit,
   }
   return useInfiniteQuery({
     queryKey: keys.getEntriesInfiniteQueryKey({ userId, ...filterOptions }),
     queryFn: fetchers.fetchInfiniteEntries,
     getNextPageParam: function (firstPage, pages) {
       const total = firstPage.total
-      const entriesRendered = pages.length * batchNum
+      const entriesRendered = pages.length * limit
       return entriesRendered < total ? pages.length : undefined
     },
   })
