@@ -6,7 +6,7 @@ import { RootScreen, RootScreenProps } from '@/navigation'
 import { tokens } from '@/tokens'
 import { EntryCard } from '@/components/EntryCard'
 import { useMutationRefreshFeed } from '@/services/mutations'
-import type { Entry } from '@/services/types'
+import { flattenEntryLists } from '@/utils'
 
 type Props = RootScreenProps<RootScreen.Feed>
 
@@ -20,11 +20,9 @@ export function FeedScreen({ route }: Props) {
     refreshFeed(feed.id)
   }
 
-  const total = data?.pages?.[0].total ?? 0
-  const entries =
-    data?.pages?.reduce<Entry[]>((acc, val) => [...acc, ...val.entries], []) ??
-    []
-  const unreadCount = entries.filter(
+  const entryList = flattenEntryLists(data?.pages ?? [])
+
+  const unreadCount = entryList.entries.filter(
     (entry) => entry.status === 'unread'
   ).length
 
@@ -40,9 +38,9 @@ export function FeedScreen({ route }: Props) {
         color={feed.disabled ? tokens.errorColor : undefined}
       >
         {feed.title}{' '}
-        {Boolean(total) && (
+        {Boolean(entryList.total) && (
           <>
-            ({unreadCount}/{total})
+            ({unreadCount}/{entryList.total})
           </>
         )}
       </HeadingLink>
@@ -51,7 +49,7 @@ export function FeedScreen({ route }: Props) {
           Refetch feed
         </MainButton>
       </View>
-      {entries.map((entry) => (
+      {entryList.entries.map((entry) => (
         <EntryCard key={entry.id} entry={entry} displayStatus />
       ))}
       {hasNextPage && (

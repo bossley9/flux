@@ -1,4 +1,3 @@
-import { Fragment } from 'react'
 import { View, ViewStyle } from 'react-native'
 import { ScrollScreenContainer } from '@/components/ScrollScreenContainer'
 import { Heading, MainButton } from '@/html'
@@ -7,6 +6,7 @@ import { useInfiniteQueryEntries, useUserId } from '@/services/queries'
 import * as keys from '@/services/keys'
 import { tokens } from '@/tokens'
 import { EntryCard } from '@/components/EntryCard'
+import { flattenEntryLists } from '@/utils'
 import type { FetchEntriesOptions } from '@/services/keys'
 
 export function HistoryScreen() {
@@ -25,6 +25,8 @@ export function HistoryScreen() {
     )
   }
 
+  const entryList = flattenEntryLists(data?.pages ?? [])
+
   return (
     <ScrollScreenContainer
       style={styles}
@@ -32,15 +34,9 @@ export function HistoryScreen() {
       refreshing={isFetchingNextPage}
       onRefresh={handleRefresh}
     >
-      <Heading level={1}>
-        History {data?.pages?.[0].total ? `(${data.pages[0].total})` : ''}
-      </Heading>
-      {data?.pages?.map((page, i) => (
-        <Fragment key={i}>
-          {page.entries.map((entry) => (
-            <EntryCard key={entry.id} entry={entry} />
-          ))}
-        </Fragment>
+      <Heading level={1}>History ({entryList.total})</Heading>
+      {entryList.entries.map((entry) => (
+        <EntryCard key={entry.id} entry={entry} />
       ))}
       {hasNextPage && (
         <MainButton
