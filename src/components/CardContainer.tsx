@@ -2,7 +2,7 @@ import { Pressable, ViewStyle } from 'react-native'
 import { tokens } from '@/tokens'
 
 type Props = {
-  onPress: () => void
+  onPress?: () => void
   style?: ViewStyle
   children?: React.ReactNode
 }
@@ -13,7 +13,7 @@ export function CardContainer({
   children,
 }: Props) {
   function handlePress() {
-    onPress()
+    onPress?.()
   }
   return (
     <Pressable onPress={handlePress} style={{ ...styles, ...overrideStyles }}>
