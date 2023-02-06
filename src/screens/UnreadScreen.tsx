@@ -70,7 +70,7 @@ export function UnreadScreen() {
         ListEmptyComponent={
           <ListEmptyPlaceholder
             isLoading={isFetching}
-            message="You have no unread feeds."
+            message="You have no unread entries."
           />
         }
         onEndReached={handleOnEndReached}

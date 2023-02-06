@@ -1,6 +1,14 @@
-import { View, ViewStyle } from 'react-native'
-import { ScrollScreenContainer } from '@/components/ScrollScreenContainer'
-import { Heading, MainButton } from '@/html'
+import {
+  FlatList,
+  RefreshControl,
+  ViewStyle,
+  ListRenderItemInfo,
+} from 'react-native'
+import {
+  ListContainer,
+  ListEmptyPlaceholder,
+  ListFooter,
+} from '@/components/ListContainer'
 import { useQueryClient } from '@tanstack/react-query'
 import { useInfiniteQueryEntries, useUserId } from '@/services/queries'
 import * as keys from '@/services/keys'
@@ -8,12 +16,13 @@ import { tokens } from '@/tokens'
 import { EntryCard } from '@/components/EntryCard'
 import { flattenEntryLists } from '@/utils'
 import type { FetchEntriesOptions } from '@/services/keys'
+import type { Entry } from '@/services/types'
 
 export function StarredScreen() {
   const entryOptions: FetchEntriesOptions = {
     starred: 'true',
   }
-  const { data, isFetching, isFetchingNextPage, hasNextPage, fetchNextPage } =
+  const { data, isFetching, hasNextPage, fetchNextPage } =
     useInfiniteQueryEntries(entryOptions)
   const queryClient = useQueryClient()
   const userId = useUserId()
@@ -24,34 +33,44 @@ export function StarredScreen() {
     )
   }
 
+  function handleOnEndReached() {
+    fetchNextPage()
+  }
+
+  function renderItem({
+    item: entry,
+  }: ListRenderItemInfo<Entry>): React.ReactElement {
+    return <EntryCard key={entry.id} entry={entry} />
+  }
+
   const entryList = flattenEntryLists(data?.pages ?? [])
+  const title = `Starred (${entryList.total})`
 
   return (
-    <ScrollScreenContainer
-      style={styles}
-      refreshEnabled
-      refreshing={isFetching}
-      onRefresh={handleRefresh}
-    >
-      <Heading level={1}>Starred ({entryList.total})</Heading>
-      {entryList.entries.map((entry) => (
-        <EntryCard key={entry.id} entry={entry} />
-      ))}
-      {hasNextPage && (
-        <MainButton
-          onPress={() => fetchNextPage()}
-          disabled={isFetchingNextPage}
-        >
-          {isFetchingNextPage ? 'Loading...' : 'Load more'}
-        </MainButton>
-      )}
-      <View style={{ height: tokens.space * (hasNextPage ? 2 : 4) }} />
-    </ScrollScreenContainer>
+    <ListContainer title={title}>
+      <FlatList
+        style={styles}
+        data={entryList.entries}
+        renderItem={renderItem}
+        refreshControl={
+          <RefreshControl
+            refreshing={isFetching}
+            onRefresh={handleRefresh}
+            progressBackgroundColor={tokens.backgroundColor}
+            colors={[tokens.lightColor]}
+          />
+        }
+        ListEmptyComponent={
+          <ListEmptyPlaceholder
+            isLoading={isFetching}
+            message="You have no starred entries."
+          />
+        }
+        onEndReached={handleOnEndReached}
+        ListFooterComponent={<ListFooter showSkeleton={Boolean(hasNextPage)} />}
+      />
+    </ListContainer>
   )
 }
 
-const styles: ViewStyle = {
-  flex: 1,
-  paddingLeft: tokens.space,
-  paddingRight: tokens.space,
-}
+const styles: ViewStyle = { padding: tokens.space }
