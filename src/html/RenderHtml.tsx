@@ -223,6 +223,14 @@ function renderElementNode(node: Node, index: number): ReactNode {
       return renderPreNode(node, index)
     case 'figure':
       return <P margin={0}>{children.map(renderNode)}</P>
+    case 'sup':
+      return (
+        <View style={{ flex: 1, justifyContent: 'flex-start' }}>
+          <P margin={0} style={{ fontSize: tokens.fontSize.base0 }}>
+            {children.map(renderNode)}
+          </P>
+        </View>
+      )
     case 'picture':
     case 'figcaption':
     case 'table':
