@@ -5,6 +5,8 @@ import { FeedScreen } from '@/screens/FeedScreen'
 import { EntryScreen } from '@/screens/EntryScreen'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import { NavigationContainer } from '@react-navigation/native'
+import * as NavigationBar from 'expo-navigation-bar'
+import { useEffect } from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { RootScreen } from '@/navigation'
 import { tokens } from '@/tokens'
@@ -20,9 +22,19 @@ const queryClient = new QueryClient({
     },
   },
 })
+
+function setupNavigationBar() {
+  NavigationBar.setBackgroundColorAsync('#00000000')
+  NavigationBar.setPositionAsync('absolute')
+}
+
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
 export function Root() {
+  useEffect(() => {
+    setupNavigationBar()
+  }, [])
+
   const screenOptions: NativeStackNavigationOptions = {
     headerShown: false,
     headerStyle: {
