@@ -35,7 +35,10 @@ export function FeedScreen({ route }: Props) {
       refreshing={isFetchingNextPage || isLoading}
       onRefresh={handleRefetchFeed}
     >
-      <HeadingLink href={feed.site_url}>
+      <HeadingLink
+        href={feed.site_url}
+        color={feed.disabled ? tokens.errorColor : undefined}
+      >
         {feed.title}{' '}
         {Boolean(total) && (
           <>

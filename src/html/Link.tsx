@@ -13,11 +13,13 @@ type LinkProps = {
 }
 
 type HeadingLinkProps = LinkProps & {
+  color?: TextStyle['color']
   marginBottom?: TextStyle['margin']
 }
 
 export function HeadingLink({
   href,
+  color,
   marginBottom,
   children,
 }: HeadingLinkProps) {
@@ -26,7 +28,7 @@ export function HeadingLink({
   }
   return (
     <Pressable onPress={handlePress}>
-      <Heading color={tokens.linkColor} marginBottom={marginBottom}>
+      <Heading color={color ?? tokens.linkColor} marginBottom={marginBottom}>
         {children}
       </Heading>
     </Pressable>
