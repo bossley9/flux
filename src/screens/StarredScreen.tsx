@@ -1,6 +1,6 @@
 import { Fragment } from 'react'
 import { View, ViewStyle } from 'react-native'
-import { ScreenContainer } from '@/components/ScreenContainer'
+import { ScrollScreenContainer } from '@/components/ScrollScreenContainer'
 import { Heading, MainButton } from '@/html'
 import { useQueryClient } from '@tanstack/react-query'
 import { useInfiniteQueryEntries, useUserId } from '@/services/queries'
@@ -25,7 +25,7 @@ export function StarredScreen() {
   }
 
   return (
-    <ScreenContainer
+    <ScrollScreenContainer
       style={styles}
       refreshEnabled
       refreshing={isFetching}
@@ -50,7 +50,7 @@ export function StarredScreen() {
         </MainButton>
       )}
       <View style={{ height: tokens.space * (hasNextPage ? 2 : 4) }} />
-    </ScreenContainer>
+    </ScrollScreenContainer>
   )
 }
 

@@ -1,5 +1,5 @@
 import { StyleSheet, View } from 'react-native'
-import { ScreenContainer } from '@/components/ScreenContainer'
+import { ScrollScreenContainer } from '@/components/ScrollScreenContainer'
 import { Heading, P, MainButton } from '@/html'
 import { useQueryVersion } from '@/services/queries'
 import { useMutationLogout } from '@/services/auth'
@@ -14,7 +14,7 @@ export function SettingsScreen() {
   }
 
   return (
-    <ScreenContainer
+    <ScrollScreenContainer
       style={styles.container}
       contentContainerStyle={styles.contentContainer}
     >
@@ -25,7 +25,7 @@ export function SettingsScreen() {
           Miniflux version {data ?? '0.0.00'}
         </P>
       </View>
-    </ScreenContainer>
+    </ScrollScreenContainer>
   )
 }
 

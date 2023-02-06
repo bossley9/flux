@@ -1,5 +1,5 @@
 import { StyleSheet, View } from 'react-native'
-import { ScreenContainer } from '@/components/ScreenContainer'
+import { ScrollScreenContainer } from '@/components/ScrollScreenContainer'
 import { HeadingLink, MainButton } from '@/html'
 import { useInfiniteQueryFeedEntries } from '@/services/queries'
 import { RootScreen, RootScreenProps } from '@/navigation'
@@ -29,7 +29,7 @@ export function FeedScreen({ route }: Props) {
   ).length
 
   return (
-    <ScreenContainer
+    <ScrollScreenContainer
       style={styles.container}
       refreshEnabled
       refreshing={isFetchingNextPage || isLoading}
@@ -63,7 +63,7 @@ export function FeedScreen({ route }: Props) {
         </MainButton>
       )}
       <View style={{ height: tokens.space * (hasNextPage ? 2 : 4) }} />
-    </ScreenContainer>
+    </ScrollScreenContainer>
   )
 }
 

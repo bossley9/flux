@@ -1,5 +1,5 @@
 import { ViewStyle } from 'react-native'
-import { ScreenContainer } from '@/components/ScreenContainer'
+import { ScrollScreenContainer } from '@/components/ScrollScreenContainer'
 import { Heading } from '@/html'
 import { useQueryClient } from '@tanstack/react-query'
 import { useQueryFeeds, useUserId } from '@/services/queries'
@@ -22,7 +22,7 @@ export function FeedsScreen() {
   }
 
   return (
-    <ScreenContainer
+    <ScrollScreenContainer
       style={styles}
       refreshEnabled
       refreshing={isFetching}
@@ -34,7 +34,7 @@ export function FeedsScreen() {
       {data?.sort(sortByTitle).map((feed) => (
         <FeedCard key={feed.id} feed={feed} />
       ))}
-    </ScreenContainer>
+    </ScrollScreenContainer>
   )
 }
 

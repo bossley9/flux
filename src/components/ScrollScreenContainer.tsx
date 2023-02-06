@@ -18,7 +18,7 @@ function setupNavigationBar() {
   NavigationBar.setPositionAsync('absolute')
 }
 
-export function ScreenContainer({
+export function ScrollScreenContainer({
   style,
   children,
   refreshEnabled,

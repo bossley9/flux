@@ -1,5 +1,5 @@
 import { Pressable, StyleSheet, View } from 'react-native'
-import { ScreenContainer } from '@/components/ScreenContainer'
+import { ScrollScreenContainer } from '@/components/ScrollScreenContainer'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { HeadingLink, P, TextButton, RenderHtml } from '@/html'
 import { useState } from 'react'
@@ -42,7 +42,7 @@ export function EntryScreen({ route, navigation }: Props) {
   }
 
   return (
-    <ScreenContainer style={styles.container}>
+    <ScrollScreenContainer style={styles.container}>
       <HeadingLink href={entry.url} marginBottom={0}>
         {entry.title}
       </HeadingLink>
@@ -73,7 +73,7 @@ export function EntryScreen({ route, navigation }: Props) {
         </Pressable>
       </View>
       <RenderHtml source={entry.content} />
-    </ScreenContainer>
+    </ScrollScreenContainer>
   )
 }
 

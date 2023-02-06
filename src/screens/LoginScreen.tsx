@@ -1,4 +1,4 @@
-import { ScreenContainer } from '@/components/ScreenContainer'
+import { ScrollScreenContainer } from '@/components/ScrollScreenContainer'
 import { useRef, useState } from 'react'
 import { StyleSheet, TextInput, View } from 'react-native'
 import { ErrorText, Heading, Input, MainButton, P } from '@/html'
@@ -17,7 +17,7 @@ export function LoginScreen() {
   }
 
   return (
-    <ScreenContainer style={styles.container}>
+    <ScrollScreenContainer style={styles.container}>
       <Heading align="center">Log In</Heading>
       <View style={styles.form}>
         <Input
@@ -44,7 +44,7 @@ export function LoginScreen() {
       </MainButton>
       {isLoading && <P align="center">Loading...</P>}
       {isError && <ErrorText>{error.message}</ErrorText>}
-    </ScreenContainer>
+    </ScrollScreenContainer>
   )
 }
 

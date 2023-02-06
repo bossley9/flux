@@ -1,4 +1,4 @@
-import { ScreenContainer } from '@/components/ScreenContainer'
+import { ScrollScreenContainer } from '@/components/ScrollScreenContainer'
 import { useEffect } from 'react'
 import { getItem, StorageKey } from '@/storage'
 import { RootScreen, RootScreenProps } from '@/navigation'
@@ -25,5 +25,5 @@ export function AppInitLoadingScreen({
     readStoredData()
   }, [])
 
-  return <ScreenContainer />
+  return <ScrollScreenContainer />
 }
