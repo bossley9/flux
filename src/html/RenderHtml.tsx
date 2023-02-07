@@ -186,7 +186,7 @@ function renderElementNode(node: Node, index: number): ReactNode {
       )
     case 'blockquote':
       return (
-        <View style={{ flexDirection: 'row' }}>
+        <View key={key} style={{ flexDirection: 'row' }}>
           <View
             style={{
               width: tokens.space / 2,
@@ -222,10 +222,14 @@ function renderElementNode(node: Node, index: number): ReactNode {
     case 'pre':
       return renderPreNode(node, index)
     case 'figure':
-      return <P margin={0}>{children.map(renderNode)}</P>
+      return (
+        <P key={key} margin={0}>
+          {children.map(renderNode)}
+        </P>
+      )
     case 'sup':
       return (
-        <View style={{ flex: 1, justifyContent: 'flex-start' }}>
+        <View key={key} style={{ flex: 1, justifyContent: 'flex-start' }}>
           <P margin={0} style={{ fontSize: tokens.fontSize.base0 }}>
             {children.map(renderNode)}
           </P>
