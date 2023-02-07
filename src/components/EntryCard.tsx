@@ -29,7 +29,9 @@ export function EntryCard({ entry, displayStatus }: Props) {
   }
 
   function handleOpenEntry() {
-    setEntryRead({ entryId: entry.id, feedId: entry.feed_id, read: true })
+    if (entry.status === 'unread') {
+      setEntryRead({ entryId: entry.id, feedId: entry.feed_id, read: true })
+    }
     navigation.navigate(RootScreen.Entry, { entry })
   }
 
