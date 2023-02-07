@@ -22,6 +22,21 @@ export async function fetchFeeds({
   return response.data
 }
 
+export async function fetchFeedCounters({
+  signal,
+}: API.Context<
+  typeof keys.getFeedCountersQueryKey
+>): Promise<API.FeedCounters> {
+  const response = await request<Wrapped<API.FeedCounters>>(
+    'GET',
+    'v1/feeds/counters',
+    {
+      signal,
+    }
+  )
+  return response.data
+}
+
 export async function fetchInfiniteFeedEntries({
   queryKey,
   signal,

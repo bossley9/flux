@@ -26,6 +26,14 @@ export function useQueryFeeds() {
 useQueryFeeds.getKey = keys.getFeedsQueryKey
 useQueryFeeds.fetcher = fetchers.fetchFeeds
 
+export function useQueryFeedCounters() {
+  const userId = useUserId()
+  return useQuery({
+    queryKey: keys.getFeedCountersQueryKey({ userId }),
+    queryFn: fetchers.fetchFeedCounters,
+  })
+}
+
 export function useInfiniteQueryFeedEntries({ feedId }: { feedId: number }) {
   const userId = useUserId()
   const limit = 40

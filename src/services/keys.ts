@@ -8,6 +8,10 @@ export function getFeedsQueryKey({ userId }: { userId: number | null }) {
   return [userId, 'feeds'] as const
 }
 
+export function getFeedCountersQueryKey({ userId }: { userId: number | null }) {
+  return [userId, 'feedcounters'] as const
+}
+
 export function getFeedEntriesInfiniteQueryKey({
   userId,
   feedId,

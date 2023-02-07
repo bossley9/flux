@@ -61,6 +61,11 @@ export type Feed = {
   hide_globally: boolean
 }
 
+export type FeedCounters = {
+  reads: Record<string, number>
+  unreads: Record<string, number>
+}
+
 export type Category = {
   id?: number
   title?: string

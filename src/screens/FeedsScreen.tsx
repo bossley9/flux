@@ -10,7 +10,11 @@ import {
   ListFooter,
 } from '@/components/ListContainer'
 import { useQueryClient } from '@tanstack/react-query'
-import { useQueryFeeds, useUserId } from '@/services/queries'
+import {
+  useQueryFeeds,
+  useUserId,
+  useQueryFeedCounters,
+} from '@/services/queries'
 import * as keys from '@/services/keys'
 import { tokens } from '@/tokens'
 import { FeedCard } from '@/components/FeedCard'
@@ -24,15 +28,19 @@ export function FeedsScreen() {
   const { data, isFetching } = useQueryFeeds()
   const queryClient = useQueryClient()
   const userId = useUserId()
+  const { data: feedCounters, isFetching: isFetchingCounters } =
+    useQueryFeedCounters()
 
   function handleRefresh() {
     queryClient.invalidateQueries(keys.getFeedsQueryKey({ userId }))
+    queryClient.invalidateQueries(keys.getFeedCountersQueryKey({ userId }))
   }
 
   function renderItem({
     item: feed,
   }: ListRenderItemInfo<Feed>): React.ReactElement {
-    return <FeedCard key={feed.id} feed={feed} />
+    const unreadCount = feedCounters?.unreads?.[String(feed.id)] ?? 0
+    return <FeedCard key={feed.id} feed={feed} unreadCount={unreadCount} />
   }
 
   const feeds = data?.sort(sortByTitle) ?? []
@@ -43,10 +51,11 @@ export function FeedsScreen() {
       <FlatList
         style={styles}
         data={feeds}
+        extraData={feedCounters}
         renderItem={renderItem}
         refreshControl={
           <RefreshControl
-            refreshing={isFetching}
+            refreshing={isFetching || isFetchingCounters}
             onRefresh={handleRefresh}
             progressBackgroundColor={tokens.backgroundColor}
             colors={[tokens.lightColor]}
