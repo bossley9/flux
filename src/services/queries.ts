@@ -8,14 +8,12 @@ export function useUserId() {
   return data?.id ?? null
 }
 
-export function useQueryUser() {
+function useQueryUser() {
   return useQuery({
     queryKey: keys.getUserQueryKey(),
     queryFn: fetchers.fetchUser,
   })
 }
-useQueryUser.getKey = keys.getUserQueryKey
-useQueryUser.fetcher = fetchers.fetchUser
 
 export function useQueryFeeds() {
   const userId = useUserId()

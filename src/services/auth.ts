@@ -1,8 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useQueryUser, useUserId } from './queries'
+import { useUserId } from './queries'
 import { useNavigation } from '@react-navigation/native'
 import { storeItems, removeItems, StorageKey } from '@/storage'
 import { isMinifluxError, isAxiosError } from './errors'
+import * as fetchers from './fetchers'
 import * as keys from './keys'
 import { RootScreen, RootScreenNavigationProp } from '@/navigation'
 import type { GenericError } from './errors'
@@ -36,8 +37,8 @@ export function useMutationLogin() {
       try {
         // keep fetchQuery to catch errors
         await queryClient.fetchQuery({
-          queryFn: useQueryUser.fetcher,
-          queryKey: useQueryUser.getKey(),
+          queryFn: fetchers.fetchUser,
+          queryKey: keys.getUserQueryKey(),
         })
         navigation.replace(RootScreen.Main)
       } catch (e) {

@@ -9,7 +9,9 @@ import {
   ListEmptyPlaceholder,
   ListFooter,
 } from '@/components/ListContainer'
+import { useEffect } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
+import { useMutationLogout } from '@/services/auth'
 import { useInfiniteQueryEntries, useUserId } from '@/services/queries'
 import { useAppFocusEffect } from '@/useAppFocusEffect'
 import * as keys from '@/services/keys'
@@ -26,7 +28,15 @@ export function UnreadScreen() {
   const { data, isFetching, hasNextPage, fetchNextPage } =
     useInfiniteQueryEntries(entryOptions)
   const queryClient = useQueryClient()
+  const { mutate: logout } = useMutationLogout()
   const userId = useUserId()
+
+  // we need to logout the user if LS gets wiped
+  useEffect(() => {
+    if (userId === null) {
+      logout()
+    }
+  }, [userId])
 
   useAppFocusEffect(() => {
     queryClient.invalidateQueries(

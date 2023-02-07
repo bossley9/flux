@@ -30,23 +30,24 @@ function setupNavigationBar() {
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
+const screenOptions: NativeStackNavigationOptions = {
+  headerShown: false,
+  headerStyle: {
+    backgroundColor: tokens.backgroundColor,
+  },
+  statusBarColor: tokens.backgroundColor,
+  statusBarStyle: 'dark',
+  animation: 'none',
+  orientation: 'portrait',
+  // prevent unnecessary rerenders
+  freezeOnBlur: true,
+}
+
 export function Root() {
   useEffect(() => {
     setupNavigationBar()
   }, [])
 
-  const screenOptions: NativeStackNavigationOptions = {
-    headerShown: false,
-    headerStyle: {
-      backgroundColor: tokens.backgroundColor,
-    },
-    statusBarColor: tokens.backgroundColor,
-    statusBarStyle: 'dark',
-    animation: 'none',
-    orientation: 'portrait',
-    // prevent unnecessary rerenders
-    freezeOnBlur: true,
-  }
   return (
     <NavigationContainer>
       <QueryClientProvider client={queryClient}>
