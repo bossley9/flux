@@ -3,6 +3,7 @@ import { useUserId } from './queries'
 import {
   createInfiniteEntryAdd,
   createInfiniteEntryDelete,
+  createInfiniteEntryUpdate,
 } from './mutationUtils'
 import * as keys from './keys'
 import { request } from './utils'
@@ -16,6 +17,7 @@ export function useMutationToggleStar() {
       return request<void>('PUT', `v1/entries/${entry.id}/bookmark`)
     },
     onSettled: function (_data, _error, entry) {
+      const newEntry: Entry = { ...entry, starred: !entry.starred }
       if (entry.starred) {
         queryClient.setQueryData(
           keys.getEntriesInfiniteQueryKey({ userId, starred: 'true' }),
@@ -24,22 +26,24 @@ export function useMutationToggleStar() {
       } else {
         queryClient.setQueryData(
           keys.getEntriesInfiniteQueryKey({ userId, starred: 'true' }),
-          createInfiniteEntryAdd({ ...entry, starred: !entry.starred })
+          createInfiniteEntryAdd(newEntry)
+        )
+      }
+
+      if (entry.status === 'unread') {
+        queryClient.setQueryData(
+          keys.getEntriesInfiniteQueryKey({ userId, status: 'unread' }),
+          createInfiniteEntryUpdate(newEntry)
+        )
+      } else {
+        queryClient.setQueryData(
+          keys.getEntriesInfiniteQueryKey({ userId, status: 'read' }),
+          createInfiniteEntryUpdate(newEntry)
         )
       }
 
       // invalidate remaining
       queryClient.invalidateQueries([userId, { feedId: entry.feed_id }])
-
-      if (entry.status === 'unread') {
-        queryClient.invalidateQueries(
-          keys.getEntriesInfiniteQueryKey({ userId, status: 'unread' })
-        )
-      } else {
-        queryClient.invalidateQueries(
-          keys.getEntriesInfiniteQueryKey({ userId, status: 'read' })
-        )
-      }
     },
   })
 }

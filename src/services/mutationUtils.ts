@@ -24,18 +24,58 @@ export function createInfiniteEntryAdd(
           entryPublishDate.getTime() - pagePublishDate.getTime() > 0
 
         if (!belongsInPage) {
-          return page
+          return {
+            total: page.total + 1,
+            entries: page.entries,
+          }
         }
 
         entries.push(entry)
         entries.sort(sortEntriesByPubdate)
 
         return {
-          total: entries.length,
+          total: page.total + 1,
           entries,
         }
       }) ?? [],
   })
+}
+
+export function createInfiniteEntryUpdate(
+  entry: Entry
+): Updater<
+  InfiniteData<EntryList> | undefined,
+  InfiniteData<EntryList> | undefined
+> {
+  return (prevData) => {
+    let entryFound = false
+
+    const pages: EntryList[] = []
+    for (const page of prevData?.pages ?? []) {
+      if (entryFound) {
+        pages.push(page)
+        continue
+      }
+
+      const entries = page.entries.map((item) => {
+        if (item.id === entry.id) {
+          entryFound = true
+          return entry
+        } else {
+          return item
+        }
+      })
+      pages.push({
+        total: page.total,
+        entries,
+      })
+    }
+
+    return {
+      pageParams: [],
+      pages,
+    }
+  }
 }
 
 export function createInfiniteEntryDelete(
@@ -50,7 +90,7 @@ export function createInfiniteEntryDelete(
       prevData?.pages?.map((page) => {
         const entries = page.entries.filter((item) => item.id !== entryId)
         return {
-          total: entries.length,
+          total: page.total - 1,
           entries,
         }
       }) ?? [],
