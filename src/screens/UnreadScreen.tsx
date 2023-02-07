@@ -90,7 +90,7 @@ export function UnreadScreen() {
     function handleSwipeableOpen() {
       queryClient.setQueryData<InfiniteData<EntryList>>(
         keys.getEntriesInfiniteQueryKey({ userId, ...entryOptions }),
-        createInfiniteEntryDelete(entry)
+        createInfiniteEntryDelete(entry.id)
       )
       setEntryRead({ entryId: entry.id, feedId: entry.feed_id, read: true })
     }

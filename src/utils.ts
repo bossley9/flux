@@ -29,7 +29,7 @@ export function flattenEntryLists(entryLists: EntryList[]): EntryList {
 }
 
 export function createInfiniteEntryDelete(
-  entry: Entry
+  entryId: number
 ): Updater<
   InfiniteData<EntryList> | undefined,
   InfiniteData<EntryList> | undefined
@@ -38,7 +38,7 @@ export function createInfiniteEntryDelete(
     pageParams: [],
     pages:
       prevData?.pages?.map((page) => {
-        const entries = page.entries.filter((item) => item.id !== entry.id)
+        const entries = page.entries.filter((item) => item.id !== entryId)
         return {
           total: entries.length,
           entries,

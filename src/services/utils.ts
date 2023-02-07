@@ -42,7 +42,7 @@ export async function request<T>(
   const headers = await getHeaders()
   const url = constructURL(serverUrl, path, queryStringParams)
 
-  console.log({ url })
+  console.log(method, url)
   return axios.request({
     ...options,
     method,
