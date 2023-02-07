@@ -37,7 +37,7 @@ export function EntryScreen({ route, navigation }: Props) {
   }
 
   function handleToggleStar() {
-    starEntry(entry.id)
+    starEntry(entry)
     setStarred(!starred)
   }
 

@@ -1,5 +1,4 @@
 import moment from 'moment'
-import type { Updater, InfiniteData } from '@tanstack/react-query'
 import type { Entry, EntryList } from '@/services/types'
 
 export function formatPubDate(dateStr: string): string {
@@ -28,21 +27,6 @@ export function flattenEntryLists(entryLists: EntryList[]): EntryList {
   }
 }
 
-export function createInfiniteEntryDelete(
-  entryId: number
-): Updater<
-  InfiniteData<EntryList> | undefined,
-  InfiniteData<EntryList> | undefined
-> {
-  return (prevData) => ({
-    pageParams: [],
-    pages:
-      prevData?.pages?.map((page) => {
-        const entries = page.entries.filter((item) => item.id !== entryId)
-        return {
-          total: entries.length,
-          entries,
-        }
-      }) ?? [],
-  })
+export function sortEntriesByPubdate(a: Entry, b: Entry) {
+  return new Date(b.published_at).getTime() - new Date(a.published_at).getTime()
 }
