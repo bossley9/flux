@@ -22,9 +22,10 @@ import { useAppFocusEffect } from '@/useAppFocusEffect'
 import * as keys from '@/services/keys'
 import { tokens } from '@/tokens'
 import { EntryCard } from '@/components/EntryCard'
-import { flattenEntryLists } from '@/utils'
+import { flattenEntryLists, createInfiniteEntryDelete } from '@/utils'
 import type { FetchEntriesOptions } from '@/services/keys'
-import type { Entry } from '@/services/types'
+import type { InfiniteData } from '@tanstack/react-query'
+import type { Entry, EntryList } from '@/services/types'
 
 function MarkReadContainer() {
   return (
@@ -87,8 +88,13 @@ export function UnreadScreen() {
     item: entry,
   }: ListRenderItemInfo<Entry>): React.ReactElement {
     function handleSwipeableOpen() {
+      queryClient.setQueryData<InfiniteData<EntryList>>(
+        keys.getEntriesInfiniteQueryKey({ userId, ...entryOptions }),
+        createInfiniteEntryDelete(entry)
+      )
       setEntryRead({ entryId: entry.id, feedId: entry.feed_id, read: true })
     }
+
     return (
       <Swipeable
         renderRightActions={MarkReadContainer}
