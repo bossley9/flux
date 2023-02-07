@@ -1,4 +1,5 @@
 import { request } from './utils'
+import { entryLimit } from './constants'
 import type * as keys from './keys'
 import type * as API from './types'
 
@@ -45,11 +46,11 @@ export async function fetchInfiniteFeedEntries({
   typeof keys.getFeedEntriesInfiniteQueryKey,
   number
 >): Promise<API.EntryList> {
-  const [, { feedId, limit }] = queryKey
+  const [, { feedId }] = queryKey
   const response = await request<Wrapped<API.EntryList>>(
     'GET',
-    `v1/feeds/${feedId}/entries?direction=desc&limit=${limit}&offset=${
-      pageParam * limit
+    `v1/feeds/${feedId}/entries?direction=desc&limit=${entryLimit}&offset=${
+      pageParam * entryLimit
     }`,
     { signal }
   )
@@ -65,16 +66,17 @@ export async function fetchInfiniteEntries({
   number
 >): Promise<API.EntryList> {
   const [, , options] = queryKey
-  const { limit = 0, ...restOptions } = options
 
   const response = await request<Wrapped<API.EntryList>>(
     'GET',
     'v1/entries',
     { signal },
     {
-      ...restOptions,
-      limit: String(limit),
-      offset: String(pageParam * limit),
+      direction: 'desc',
+      order: 'published_at',
+      ...options,
+      limit: String(entryLimit),
+      offset: String(pageParam * entryLimit),
     }
   )
   return response.data

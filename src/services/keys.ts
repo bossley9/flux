@@ -15,21 +15,16 @@ export function getFeedCountersQueryKey({ userId }: { userId: number | null }) {
 export function getFeedEntriesInfiniteQueryKey({
   userId,
   feedId,
-  limit,
 }: {
   userId: number | null
   feedId: number
-  limit: number
 }) {
-  return [userId, { feedId, limit }] as const
+  return [userId, { feedId }] as const
 }
 
 export type FetchEntriesOptions = {
   status?: EntryStatus
-  direction?: 'desc' | 'asc'
-  order?: 'id' | 'status' | 'published_at' | 'category_title' | 'category_id'
   starred?: 'true' | 'false'
-  limit?: number
 }
 
 export function getEntriesInfiniteQueryKey({
