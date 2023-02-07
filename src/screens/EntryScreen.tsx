@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import { HeadingLink, P, TextButton, RenderHtml } from '@/html'
 import { useState } from 'react'
 import {
-  useMutationSetEntryRead,
+  useMutationToggleEntryRead,
   useMutationToggleStar,
 } from '@/services/mutations'
 import { RootScreen, RootScreenProps } from '@/navigation'
@@ -21,7 +21,7 @@ export function EntryScreen({ route, navigation }: Props) {
   const { mutate: starEntry } = useMutationToggleStar()
 
   const [read, setRead] = useState(true)
-  const { mutate: setEntryRead } = useMutationSetEntryRead()
+  const { mutate: toggleEntryRead } = useMutationToggleEntryRead()
 
   function handleOpenFeed() {
     if (feed) {
@@ -32,7 +32,7 @@ export function EntryScreen({ route, navigation }: Props) {
   }
 
   function handleToggleRead() {
-    setEntryRead({ entryId: entry.id, feedId: feed?.id, read: !read })
+    toggleEntryRead(entry)
     setRead(!read)
   }
 

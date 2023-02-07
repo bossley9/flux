@@ -65,27 +65,21 @@ export function useMutationRefreshFeed() {
   })
 }
 
-type SetReadMutationProps = {
-  feedId?: number
-  entryId: number
-  read: boolean
-}
-
-export function useMutationSetEntryRead() {
+export function useMutationToggleEntryRead() {
   const queryClient = useQueryClient()
   const userId = useUserId()
   return useMutation({
-    mutationFn: function ({ entryId, read }: SetReadMutationProps) {
+    mutationFn: function (entry: Entry) {
       return request<void>('PUT', 'v1/entries', {
         data: {
-          entry_ids: [entryId],
-          status: read ? 'read' : 'unread',
+          entry_ids: [entry.id],
+          status: entry.status === 'unread' ? 'read' : 'unread',
         },
       })
     },
-    onSettled: function (_data, _error, { feedId }) {
+    onSettled: function (_data, _error, entry) {
       queryClient.invalidateQueries(keys.getFeedCountersQueryKey({ userId }))
-      queryClient.invalidateQueries([userId, { feedId }])
+      queryClient.invalidateQueries([userId, { feedId: entry.feed_id }])
       // invalidate all filtered entries queries
       const [user, entriesKey] = keys.getEntriesInfiniteQueryKey({ userId })
       queryClient.invalidateQueries([user, entriesKey])
