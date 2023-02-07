@@ -28,5 +28,6 @@ const styles: ViewStyle = {
   marginBottom: tokens.space * 2,
   borderRadius: tokens.radius,
   borderWidth: 1,
+  backgroundColor: tokens.backgroundColor,
   borderColor: tokens.lightColor,
 }

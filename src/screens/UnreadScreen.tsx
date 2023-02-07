@@ -9,9 +9,14 @@ import {
   ListEmptyPlaceholder,
   ListFooter,
 } from '@/components/ListContainer'
+import { CardContainer } from '@/components/CardContainer'
+import Swipeable from 'react-native-gesture-handler/Swipeable'
+import Icon from 'react-native-vector-icons/MaterialIcons'
+import { P } from '@/html'
 import { useEffect } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useMutationLogout } from '@/services/auth'
+import { useMutationSetEntryRead } from '@/services/mutations'
 import { useInfiniteQueryEntries, useUserId } from '@/services/queries'
 import { useAppFocusEffect } from '@/useAppFocusEffect'
 import * as keys from '@/services/keys'
@@ -21,6 +26,29 @@ import { flattenEntryLists } from '@/utils'
 import type { FetchEntriesOptions } from '@/services/keys'
 import type { Entry } from '@/services/types'
 
+function MarkReadContainer() {
+  return (
+    <CardContainer
+      style={{
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        backgroundColor: tokens.darkColor,
+        borderColor: tokens.darkColor,
+      }}
+    >
+      <Icon
+        style={{ marginRight: tokens.space / 2 }}
+        name="mail"
+        size={32}
+        color={tokens.foregroundColor}
+      />
+      <P color={tokens.foregroundColor}>Mark as read</P>
+    </CardContainer>
+  )
+}
+
 export function UnreadScreen() {
   const entryOptions: FetchEntriesOptions = {
     status: 'unread',
@@ -29,6 +57,7 @@ export function UnreadScreen() {
     useInfiniteQueryEntries(entryOptions)
   const queryClient = useQueryClient()
   const { mutate: logout } = useMutationLogout()
+  const { mutate: setEntryRead } = useMutationSetEntryRead()
   const userId = useUserId()
 
   // we need to logout the user if LS gets wiped
@@ -57,7 +86,17 @@ export function UnreadScreen() {
   function renderItem({
     item: entry,
   }: ListRenderItemInfo<Entry>): React.ReactElement {
-    return <EntryCard key={entry.id} entry={entry} />
+    function handleSwipeableOpen() {
+      setEntryRead({ entryId: entry.id, feedId: entry.feed_id, read: true })
+    }
+    return (
+      <Swipeable
+        renderRightActions={MarkReadContainer}
+        onSwipeableWillOpen={handleSwipeableOpen}
+      >
+        <EntryCard key={entry.id} entry={entry} />
+      </Swipeable>
+    )
   }
 
   const entryList = flattenEntryLists(data?.pages ?? [])

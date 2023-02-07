@@ -10,6 +10,7 @@ import { useEffect } from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { RootScreen } from '@/navigation'
 import { tokens } from '@/tokens'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import type { NativeStackNavigationOptions } from '@react-navigation/native-stack'
 import type { RootStackParamList } from '@/navigation'
 
@@ -51,19 +52,21 @@ export function Root() {
   return (
     <NavigationContainer>
       <QueryClientProvider client={queryClient}>
-        <Stack.Navigator
-          initialRouteName={RootScreen.AppInitLoading}
-          screenOptions={screenOptions}
-        >
-          <Stack.Screen
-            name={RootScreen.AppInitLoading}
-            component={AppInitLoadingScreen}
-          />
-          <Stack.Screen name={RootScreen.Login} component={LoginScreen} />
-          <Stack.Screen name={RootScreen.Main} component={MainScreen} />
-          <Stack.Screen name={RootScreen.Feed} component={FeedScreen} />
-          <Stack.Screen name={RootScreen.Entry} component={EntryScreen} />
-        </Stack.Navigator>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <Stack.Navigator
+            initialRouteName={RootScreen.AppInitLoading}
+            screenOptions={screenOptions}
+          >
+            <Stack.Screen
+              name={RootScreen.AppInitLoading}
+              component={AppInitLoadingScreen}
+            />
+            <Stack.Screen name={RootScreen.Login} component={LoginScreen} />
+            <Stack.Screen name={RootScreen.Main} component={MainScreen} />
+            <Stack.Screen name={RootScreen.Feed} component={FeedScreen} />
+            <Stack.Screen name={RootScreen.Entry} component={EntryScreen} />
+          </Stack.Navigator>
+        </GestureHandlerRootView>
       </QueryClientProvider>
     </NavigationContainer>
   )
