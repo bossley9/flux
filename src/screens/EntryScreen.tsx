@@ -10,17 +10,23 @@ import {
 import { RootScreen, RootScreenProps } from '@/navigation'
 import { formatPubDate } from '@/utils'
 import { tokens } from '@/tokens'
+import type { Entry } from '@/services/types'
 
 type Props = RootScreenProps<RootScreen.Entry>
 
 export function EntryScreen({ route, navigation }: Props) {
-  const { entry } = route.params
+  const { entry: originalEntry } = route.params
+  const [starred, setStarred] = useState(originalEntry.starred)
+  const [read, setRead] = useState(true)
+
+  const entry: Entry = {
+    ...originalEntry,
+    starred,
+    status: read ? 'read' : 'unread',
+  }
   const feed = entry.feed ?? null
 
-  const [starred, setStarred] = useState(entry.starred)
   const { mutate: starEntry } = useMutationToggleStar()
-
-  const [read, setRead] = useState(true)
   const { mutate: setEntryRead } = useMutationSetEntryRead()
 
   function handleOpenFeed() {
@@ -34,7 +40,7 @@ export function EntryScreen({ route, navigation }: Props) {
   function handleToggleRead() {
     setEntryRead({
       entry,
-      newStatus: entry.status === 'unread' ? 'read' : 'unread',
+      newStatus: read ? 'unread' : 'read',
     })
     setRead(!read)
   }
