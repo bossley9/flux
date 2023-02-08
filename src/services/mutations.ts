@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useUserId } from './queries'
 import {
+  createFeedCountersUpdate,
   createInfiniteEntryAdd,
   createInfiniteEntryDelete,
   createInfiniteEntryUpdate,
@@ -83,7 +84,7 @@ export function useMutationSetEntryRead() {
         },
       })
     },
-    onSettled: function (_data, _error, { entry, newStatus }) {
+    onMutate: function ({ entry, newStatus }) {
       const newEntry: Entry = { ...entry, status: newStatus }
 
       queryClient.setQueryData(
@@ -91,10 +92,35 @@ export function useMutationSetEntryRead() {
         createInfiniteEntryUpdate(newEntry)
       )
 
-      queryClient.invalidateQueries(keys.getFeedCountersQueryKey({ userId }))
-      // invalidate all filtered entries queries
-      const [user, entriesKey] = keys.getEntriesInfiniteQueryKey({ userId })
-      queryClient.invalidateQueries([user, entriesKey])
+      queryClient.setQueryData(
+        keys.getFeedCountersQueryKey({ userId }),
+        createFeedCountersUpdate(newEntry)
+      )
+
+      queryClient.setQueryData(
+        keys.getEntriesInfiniteQueryKey({ userId, starred: 'true' }),
+        createInfiniteEntryUpdate(newEntry)
+      )
+
+      if (newStatus === 'read') {
+        queryClient.setQueryData(
+          keys.getEntriesInfiniteQueryKey({ userId, status: 'read' }),
+          createInfiniteEntryAdd(newEntry)
+        )
+        queryClient.setQueryData(
+          keys.getEntriesInfiniteQueryKey({ userId, status: 'unread' }),
+          createInfiniteEntryDelete(entry.id)
+        )
+      } else {
+        queryClient.setQueryData(
+          keys.getEntriesInfiniteQueryKey({ userId, status: 'unread' }),
+          createInfiniteEntryAdd(newEntry)
+        )
+        queryClient.setQueryData(
+          keys.getEntriesInfiniteQueryKey({ userId, status: 'read' }),
+          createInfiniteEntryDelete(entry.id)
+        )
+      }
     },
   })
 }

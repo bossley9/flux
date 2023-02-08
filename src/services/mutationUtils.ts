@@ -1,6 +1,6 @@
 import { sortEntriesByPubdate } from '@/utils'
 import type { Updater, InfiniteData } from '@tanstack/react-query'
-import type { Entry, EntryList } from '@/services/types'
+import type { Entry, EntryList, FeedCounters } from '@/services/types'
 
 export function createInfiniteEntryAdd(
   entry: Entry
@@ -95,4 +95,31 @@ export function createInfiniteEntryDelete(
         }
       }) ?? [],
   })
+}
+
+export function createFeedCountersUpdate(
+  entry: Entry
+): Updater<FeedCounters | undefined, FeedCounters | undefined> {
+  return (prevData) => {
+    if (!prevData) {
+      return undefined
+    }
+
+    const feedId = String(entry.feed_id)
+    let newReads = Math.max(prevData.reads[feedId] ?? 0, 0)
+    let newUnreads = Math.max(prevData.unreads[feedId] ?? 0, 0)
+
+    if (entry.status === 'read') {
+      newReads = newReads + 1
+      newUnreads = newUnreads - 1
+    } else {
+      newReads = newReads - 1
+      newUnreads = newUnreads + 1
+    }
+
+    return {
+      reads: { ...prevData.reads, [feedId]: newReads },
+      unreads: { ...prevData.unreads, [feedId]: newUnreads },
+    }
+  }
 }
