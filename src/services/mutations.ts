@@ -7,7 +7,7 @@ import {
 } from './mutationUtils'
 import * as keys from './keys'
 import { request } from './utils'
-import type { Entry } from './types'
+import type { Entry, EntryStatus } from './types'
 
 export function useMutationToggleStar() {
   const queryClient = useQueryClient()
@@ -16,7 +16,7 @@ export function useMutationToggleStar() {
     mutationFn: function (entry: Entry) {
       return request<void>('PUT', `v1/entries/${entry.id}/bookmark`)
     },
-    onSettled: function (_data, _error, entry) {
+    onMutate: function (entry) {
       const newEntry: Entry = { ...entry, starred: !entry.starred }
       if (entry.starred) {
         queryClient.setQueryData(
@@ -42,8 +42,10 @@ export function useMutationToggleStar() {
         )
       }
 
-      // invalidate remaining
-      queryClient.invalidateQueries([userId, { feedId: entry.feed_id }])
+      queryClient.setQueryData(
+        keys.getFeedEntriesInfiniteQueryKey({ userId, feedId: entry.feed_id }),
+        createInfiniteEntryUpdate(newEntry)
+      )
     },
   })
 }
@@ -65,21 +67,31 @@ export function useMutationRefreshFeed() {
   })
 }
 
-export function useMutationToggleEntryRead() {
+type SetEntryReadProps = {
+  entry: Entry
+  newStatus: EntryStatus
+}
+export function useMutationSetEntryRead() {
   const queryClient = useQueryClient()
   const userId = useUserId()
   return useMutation({
-    mutationFn: function (entry: Entry) {
+    mutationFn: function ({ entry, newStatus }: SetEntryReadProps) {
       return request<void>('PUT', 'v1/entries', {
         data: {
           entry_ids: [entry.id],
-          status: entry.status === 'unread' ? 'read' : 'unread',
+          status: newStatus,
         },
       })
     },
-    onSettled: function (_data, _error, entry) {
+    onSettled: function (_data, _error, { entry, newStatus }) {
+      const newEntry: Entry = { ...entry, status: newStatus }
+
+      queryClient.setQueryData(
+        keys.getFeedEntriesInfiniteQueryKey({ userId, feedId: entry.feed_id }),
+        createInfiniteEntryUpdate(newEntry)
+      )
+
       queryClient.invalidateQueries(keys.getFeedCountersQueryKey({ userId }))
-      queryClient.invalidateQueries([userId, { feedId: entry.feed_id }])
       // invalidate all filtered entries queries
       const [user, entriesKey] = keys.getEntriesInfiniteQueryKey({ userId })
       queryClient.invalidateQueries([user, entriesKey])

@@ -2,7 +2,7 @@ import { StyleSheet, View, ViewStyle } from 'react-native'
 import { CardContainer } from '@/components/CardContainer'
 import { useNavigation } from '@react-navigation/native'
 import { Heading, P, TextButton } from '@/html'
-import { useMutationToggleEntryRead } from '@/services/mutations'
+import { useMutationSetEntryRead } from '@/services/mutations'
 import { formatPubDate } from '@/utils'
 import { tokens } from '@/tokens'
 import type { Entry } from '@/services/types'
@@ -15,7 +15,7 @@ type Props = {
 
 export function EntryCard({ entry, displayStatus }: Props) {
   const navigation = useNavigation<RootScreenNavigationProp<RootScreen.Main>>()
-  const { mutate: toggleEntryRead } = useMutationToggleEntryRead()
+  const { mutate: setEntryRead } = useMutationSetEntryRead()
 
   let displayStatusStyles: ViewStyle | undefined
   if (
@@ -30,7 +30,7 @@ export function EntryCard({ entry, displayStatus }: Props) {
 
   function handleOpenEntry() {
     if (entry.status === 'unread') {
-      toggleEntryRead(entry)
+      setEntryRead({ entry, newStatus: 'read' })
     }
     navigation.navigate(RootScreen.Entry, { entry })
   }

@@ -44,6 +44,9 @@ export function useInfiniteQueryFeedEntries({ feedId }: { feedId: number }) {
     }),
     queryFn: fetchers.fetchInfiniteFeedEntries,
     getNextPageParam: function (firstPage, pages) {
+      if (!firstPage) {
+        return true
+      }
       const total = firstPage.total
       const entriesRendered = pages.length * entryLimit
       return entriesRendered < total ? pages.length : undefined
@@ -58,6 +61,9 @@ export function useInfiniteQueryEntries(options?: FetchEntriesOptions) {
     queryKey: keys.getEntriesInfiniteQueryKey({ userId, ...options }),
     queryFn: fetchers.fetchInfiniteEntries,
     getNextPageParam: function (firstPage, pages) {
+      if (!firstPage) {
+        return true
+      }
       const total = firstPage.total
       const entriesRendered = pages.length * entryLimit
       return entriesRendered < total ? pages.length : undefined

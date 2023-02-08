@@ -16,7 +16,7 @@ import { P } from '@/html'
 import { useEffect } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useMutationLogout } from '@/services/auth'
-import { useMutationToggleEntryRead } from '@/services/mutations'
+import { useMutationSetEntryRead } from '@/services/mutations'
 import { useInfiniteQueryEntries, useUserId } from '@/services/queries'
 import { useAppFocusEffect } from '@/useAppFocusEffect'
 import * as keys from '@/services/keys'
@@ -59,7 +59,7 @@ export function UnreadScreen() {
     useInfiniteQueryEntries(entryOptions)
   const queryClient = useQueryClient()
   const { mutate: logout } = useMutationLogout()
-  const { mutate: toggleEntryRead } = useMutationToggleEntryRead()
+  const { mutate: setEntryRead } = useMutationSetEntryRead()
   const userId = useUserId()
 
   // we need to logout the user if LS gets wiped
@@ -93,7 +93,7 @@ export function UnreadScreen() {
         keys.getEntriesInfiniteQueryKey({ userId, ...entryOptions }),
         createInfiniteEntryDelete(entry.id)
       )
-      toggleEntryRead(entry)
+      setEntryRead({ entry, newStatus: 'read' })
     }
 
     return (
