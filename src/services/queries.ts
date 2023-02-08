@@ -9,7 +9,7 @@ export function useUserId() {
   return data?.id ?? null
 }
 
-function useQueryUser() {
+export function useQueryUser() {
   return useQuery({
     queryKey: keys.getUserQueryKey(),
     queryFn: fetchers.fetchUser,

@@ -13,12 +13,16 @@ import { CardContainer } from '@/components/CardContainer'
 import Swipeable from 'react-native-gesture-handler/Swipeable'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { P } from '@/html'
-import { useEffect } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import { useMutationLogout } from '@/services/auth'
 import { useMutationSetEntryRead } from '@/services/mutations'
-import { useInfiniteQueryEntries, useUserId } from '@/services/queries'
+import {
+  useQueryUser,
+  useInfiniteQueryEntries,
+  useUserId,
+} from '@/services/queries'
+import { useEffect } from 'react'
 import { useAppFocusEffect } from '@/useAppFocusEffect'
+import { useMutationLogout } from '@/services/auth'
 import * as keys from '@/services/keys'
 import { tokens } from '@/tokens'
 import { EntryCard } from '@/components/EntryCard'
@@ -57,19 +61,20 @@ export function UnreadScreen() {
   }
   const { data, isFetching, hasNextPage, fetchNextPage } =
     useInfiniteQueryEntries(entryOptions)
-  const queryClient = useQueryClient()
+  const { isError } = useQueryUser()
   const { mutate: logout } = useMutationLogout()
+  const queryClient = useQueryClient()
   const { mutate: setEntryRead } = useMutationSetEntryRead()
   const userId = useUserId()
 
-  // we need to logout the user if LS gets wiped
   useEffect(() => {
-    if (userId === null) {
+    if (isError) {
       logout()
     }
-  }, [userId])
+  }, [isError])
 
   useAppFocusEffect(() => {
+    queryClient.invalidateQueries(keys.getUserQueryKey())
     queryClient.invalidateQueries(
       keys.getEntriesInfiniteQueryKey({ userId, ...entryOptions })
     )
