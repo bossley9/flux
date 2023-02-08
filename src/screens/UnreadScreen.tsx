@@ -27,10 +27,8 @@ import * as keys from '@/services/keys'
 import { tokens } from '@/tokens'
 import { EntryCard } from '@/components/EntryCard'
 import { flattenEntryLists } from '@/utils'
-import { createInfiniteEntryDelete } from '@/services/mutationUtils'
 import type { FetchEntriesOptions } from '@/services/keys'
-import type { InfiniteData } from '@tanstack/react-query'
-import type { Entry, EntryList } from '@/services/types'
+import type { Entry } from '@/services/types'
 
 function MarkReadContainer() {
   return (
@@ -94,10 +92,6 @@ export function UnreadScreen() {
     item: entry,
   }: ListRenderItemInfo<Entry>): React.ReactElement {
     function handleSwipeableOpen() {
-      queryClient.setQueryData<InfiniteData<EntryList>>(
-        keys.getEntriesInfiniteQueryKey({ userId, ...entryOptions }),
-        createInfiniteEntryDelete(entry.id)
-      )
       setEntryRead({ entry, newStatus: 'read' })
     }
 
