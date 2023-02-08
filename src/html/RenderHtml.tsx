@@ -1,6 +1,5 @@
 import { ReactNode } from 'react'
 import { View, Linking, ScrollView, Text } from 'react-native'
-import { WebView } from 'react-native-webview'
 import { P } from './P'
 import { linkStyles } from './Link'
 import { Heading } from './Heading'
@@ -139,32 +138,6 @@ function renderPreNode(node: Node, index: number): ReactNode {
   )
 }
 
-function renderIframeNode(node: Node, index: number): ReactNode {
-  const src = getNodeAttribute(node, 'src')
-  return (
-    src && (
-      <WebView
-        key={getKey(node, index)}
-        source={{ uri: src }}
-        androidLayerType="hardware"
-        scrollEnabled={false}
-        javaScriptEnabled
-        incognito
-        cacheEnabled={false}
-        thirdPartyCookiesEnabled={false}
-        geolocationEnabled={false}
-        allowsFullscreenVideo
-        style={{
-          backgroundColor: tokens.backgroundColor,
-          minHeight: 350,
-          marginTop: tokens.space,
-          marginBottom: tokens.space,
-        }}
-      />
-    )
-  )
-}
-
 function renderElementNode(node: Node, index: number): ReactNode {
   const children = node.childNodes
   if (isBlankNode(node)) {
@@ -263,7 +236,7 @@ function renderElementNode(node: Node, index: number): ReactNode {
         </View>
       )
     case 'iframe':
-      return renderIframeNode(node, index)
+      return null
     case 'picture':
     case 'figcaption':
     case 'table':

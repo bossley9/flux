@@ -39,6 +39,7 @@ const screenOptions: NativeStackNavigationOptions = {
   statusBarColor: tokens.backgroundColor,
   statusBarStyle: 'dark',
   animation: 'none',
+  orientation: 'portrait',
   // prevent unnecessary rerenders
   freezeOnBlur: true,
 }
