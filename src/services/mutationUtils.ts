@@ -8,37 +8,43 @@ export function createInfiniteEntryAdd(
   InfiniteData<EntryList> | undefined,
   InfiniteData<EntryList> | undefined
 > {
-  return (prevData) => ({
-    pageParams: [],
-    pages:
-      prevData?.pages.map((page) => {
-        const entries = page.entries
-        // because entries are sorted by publish date (newest to oldest),
-        // we can assume that if the entry's publish date is newer than the
-        // oldest entry's publish date, it belongs in this page.
-        const pagePublishDate = new Date(
-          entries[entries.length - 1].published_at
-        )
-        const entryPublishDate = new Date(entry.published_at)
-        const belongsInPage =
-          entryPublishDate.getTime() - pagePublishDate.getTime() > 0
+  return (prevData) => {
+    if (!prevData) {
+      return undefined
+    }
 
-        if (!belongsInPage) {
+    return {
+      pageParams: [],
+      pages:
+        prevData.pages.map((page) => {
+          const entries = page.entries
+          // because entries are sorted by publish date (newest to oldest),
+          // we can assume that if the entry's publish date is newer than the
+          // oldest entry's publish date, it belongs in this page.
+          const pagePublishDate = new Date(
+            entries[entries.length - 1].published_at
+          )
+          const entryPublishDate = new Date(entry.published_at)
+          const belongsInPage =
+            entryPublishDate.getTime() - pagePublishDate.getTime() > 0
+
+          if (!belongsInPage) {
+            return {
+              total: page.total + 1,
+              entries: page.entries,
+            }
+          }
+
+          entries.push(entry)
+          entries.sort(sortEntriesByPubdate)
+
           return {
             total: page.total + 1,
-            entries: page.entries,
+            entries,
           }
-        }
-
-        entries.push(entry)
-        entries.sort(sortEntriesByPubdate)
-
-        return {
-          total: page.total + 1,
-          entries,
-        }
-      }) ?? [],
-  })
+        }) ?? [],
+    }
+  }
 }
 
 export function createInfiniteEntryUpdate(
@@ -48,10 +54,13 @@ export function createInfiniteEntryUpdate(
   InfiniteData<EntryList> | undefined
 > {
   return (prevData) => {
+    if (!prevData) {
+      return undefined
+    }
     let entryFound = false
 
     const pages: EntryList[] = []
-    for (const page of prevData?.pages ?? []) {
+    for (const page of prevData.pages ?? []) {
       if (entryFound) {
         pages.push(page)
         continue
@@ -84,17 +93,23 @@ export function createInfiniteEntryDelete(
   InfiniteData<EntryList> | undefined,
   InfiniteData<EntryList> | undefined
 > {
-  return (prevData) => ({
-    pageParams: [],
-    pages:
-      prevData?.pages?.map((page) => {
-        const entries = page.entries.filter((item) => item.id !== entryId)
-        return {
-          total: page.total - 1,
-          entries,
-        }
-      }) ?? [],
-  })
+  return (prevData) => {
+    if (!prevData) {
+      return undefined
+    }
+
+    return {
+      pageParams: [],
+      pages:
+        prevData.pages?.map((page) => {
+          const entries = page.entries.filter((item) => item.id !== entryId)
+          return {
+            total: page.total - 1,
+            entries,
+          }
+        }) ?? [],
+    }
+  }
 }
 
 export function createFeedCountersUpdate(
