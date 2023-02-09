@@ -103,7 +103,11 @@ function renderListItemNode(node: Node, index: number): ReactNode {
   }
 }
 
-function renderImageNode(node: Node, index: number, type: 'img'): ReactNode {
+function renderImageNode(
+  node: Node,
+  index: number,
+  type: 'img' | 'picture'
+): ReactNode {
   const key = getKey(node, index)
 
   if (type === 'img') {
@@ -117,12 +121,18 @@ function renderImageNode(node: Node, index: number, type: 'img'): ReactNode {
     }
 
     return (
-      <View style={{ padding: tokens.space }}>
-        <Text key={key} onPress={handlePress} style={linkStyles}>
+      <View key={key} style={{ padding: tokens.space }}>
+        <Text onPress={handlePress} style={linkStyles}>
           [{he.decode(alt)}]
         </Text>
       </View>
     )
+  } else if (type === 'picture') {
+    const imgNode = node.childNodes.find((n) => n.toString().startsWith('<img'))
+    if (!imgNode) {
+      return null
+    }
+    return renderImageNode(imgNode, index, 'img')
   }
 }
 
@@ -259,12 +269,27 @@ function renderElementNode(node: Node, index: number): ReactNode {
           </P>
         </View>
       )
+    case 'del':
+      return (
+        <Text key={key} style={{ textDecorationLine: 'line-through' }}>
+          {node.childNodes.map(renderNode)}
+        </Text>
+      )
     case 'iframe':
       return null
     case 'img':
       return renderImageNode(node, index, 'img')
     case 'picture':
+      return renderImageNode(node, index, 'picture')
     case 'figcaption':
+      return (
+        <P
+          key={key}
+          style={{ fontStyle: 'italic', fontSize: tokens.fontSize.base0 }}
+        >
+          {node.childNodes.map(renderNode)}
+        </P>
+      )
     case 'table':
     default:
       return (
