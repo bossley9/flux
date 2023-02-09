@@ -15,7 +15,8 @@ function isBlankNode(node: Node): boolean {
   const src = node.toString()
   const hasNoChildren = node.childNodes.length === 0
   const isIframe = src.indexOf('<iframe') === 0
-  return hasNoChildren && !isIframe
+  const isImg = src.indexOf('<img') === 0
+  return hasNoChildren && !isIframe && !isImg
 }
 
 function isWhitespaceTextNode(node: Node): boolean {
@@ -113,7 +114,7 @@ function renderPreNode(node: Node, index: number): ReactNode {
   src = src.replace(/\n$/, '')
 
   return (
-    <View>
+    <View style={{ width: '100%' }}>
       <ScrollView
         key={getKey(node, index)}
         horizontal={true}
@@ -237,6 +238,7 @@ function renderElementNode(node: Node, index: number): ReactNode {
       )
     case 'iframe':
       return null
+    case 'img':
     case 'picture':
     case 'figcaption':
     case 'table':
@@ -254,7 +256,7 @@ function renderTextNode(node: Node, index: number): ReactNode {
   // special elements such as iframes break the rendering
   return (
     <Text key={getKey(node, index)}>
-      {node.text.replace(/\n/g, ' ').replace(/ {2}/g, ' ')}
+      {node.text.replace(/\n/g, ' ').replace(/\s+/g, ' ')}
     </Text>
   )
 }
@@ -281,7 +283,13 @@ export function RenderHtml({ source }: Props) {
   const root = parse(source)
 
   return (
-    <View style={{ marginBottom: tokens.space * 8 }}>
+    <View
+      style={{
+        marginBottom: tokens.space * 8,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+      }}
+    >
       {root.childNodes.map(renderNode)}
     </View>
   )

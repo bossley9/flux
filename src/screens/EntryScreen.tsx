@@ -81,7 +81,9 @@ export function EntryScreen({ route, navigation }: Props) {
           <P color={tokens.primaryColor}>Mark {read ? 'unread' : 'read'}</P>
         </Pressable>
       </View>
-      <RenderHtml source={entry.content} />
+      <View>
+        <RenderHtml source={entry.content} />
+      </View>
     </ScrollScreenContainer>
   )
 }
