@@ -103,6 +103,29 @@ function renderListItemNode(node: Node, index: number): ReactNode {
   }
 }
 
+function renderImageNode(node: Node, index: number, type: 'img'): ReactNode {
+  const key = getKey(node, index)
+
+  if (type === 'img') {
+    const src = getNodeAttribute(node, 'src')
+    const alt = getNodeAttribute(node, 'alt')
+    if (!src || !alt) {
+      return null
+    }
+    const handlePress = () => {
+      Linking.openURL(src)
+    }
+
+    return (
+      <View style={{ padding: tokens.space }}>
+        <Text key={key} onPress={handlePress} style={linkStyles}>
+          [{he.decode(alt)}]
+        </Text>
+      </View>
+    )
+  }
+}
+
 function renderPreNode(node: Node, index: number): ReactNode {
   const rawSrc = node.toString()
   let src = rawSrc.substring('<pre>'.length, rawSrc.length - '</pre>'.length)
@@ -239,6 +262,7 @@ function renderElementNode(node: Node, index: number): ReactNode {
     case 'iframe':
       return null
     case 'img':
+      return renderImageNode(node, index, 'img')
     case 'picture':
     case 'figcaption':
     case 'table':
