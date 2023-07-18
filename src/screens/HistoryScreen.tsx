@@ -21,8 +21,8 @@ import type { Entry } from '@/services/types'
 export function HistoryScreen() {
   const entryOptions: FetchEntriesOptions = {
     status: 'read',
+    order: 'changed_at',
   }
-  // TODO sort entries by last read once API allows for such a thing
   const { data, isFetching, hasNextPage, fetchNextPage } =
     useInfiniteQueryEntries(entryOptions)
   const queryClient = useQueryClient()

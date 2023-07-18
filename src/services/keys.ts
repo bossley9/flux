@@ -1,4 +1,4 @@
-import type { EntryStatus } from './types'
+import type { EntryStatus, Entry } from './types'
 
 export function getUserQueryKey() {
   return ['user']
@@ -25,6 +25,7 @@ export function getFeedEntriesInfiniteQueryKey({
 export type FetchEntriesOptions = {
   status?: EntryStatus
   starred?: 'true' | 'false'
+  order?: keyof Entry
 }
 
 export function getEntriesInfiniteQueryKey({
