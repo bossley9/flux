@@ -32,8 +32,12 @@ export function FeedsScreen() {
     useQueryFeedCounters()
 
   function handleRefresh() {
-    queryClient.invalidateQueries(keys.getFeedsQueryKey({ userId }))
-    queryClient.invalidateQueries(keys.getFeedCountersQueryKey({ userId }))
+    queryClient.invalidateQueries({
+      queryKey: keys.getFeedsQueryKey({ userId }),
+    })
+    queryClient.invalidateQueries({
+      queryKey: keys.getFeedCountersQueryKey({ userId }),
+    })
   }
 
   function renderItem({

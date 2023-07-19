@@ -124,3 +124,25 @@ export function useMutationSetEntryRead() {
     },
   })
 }
+
+export function useMutationMarkAllRead() {
+  const queryClient = useQueryClient()
+  const userId = useUserId()
+
+  return useMutation({
+    mutationFn: function (feedId: number) {
+      return request<void>('PUT', `v1/feeds/${feedId}/mark-all-as-read`)
+    },
+    onSuccess: function (_data, feedId) {
+      queryClient.invalidateQueries({
+        queryKey: keys.getFeedEntriesInfiniteQueryKey({
+          userId,
+          feedId,
+        }),
+      })
+      queryClient.invalidateQueries({
+        queryKey: keys.getFeedCountersQueryKey({ userId }),
+      })
+    },
+  })
+}

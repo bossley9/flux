@@ -11,12 +11,16 @@ import {
   ListEmptyPlaceholder,
   ListFooter,
 } from '@/components/ListContainer'
+import { ActionButton } from '@/components/ActionButton'
 import { HeadingLink } from '@/html'
 import { useInfiniteQueryFeedEntries } from '@/services/queries'
 import { RootScreen, RootScreenProps } from '@/navigation'
 import { tokens } from '@/tokens'
 import { EntryCard } from '@/components/EntryCard'
-import { useMutationRefreshFeed } from '@/services/mutations'
+import {
+  useMutationRefreshFeed,
+  useMutationMarkAllRead,
+} from '@/services/mutations'
 import { flattenEntryLists } from '@/utils'
 import type { Entry } from '@/services/types'
 
@@ -27,9 +31,15 @@ export function FeedScreen({ route }: Props) {
   const { data, isFetching, hasNextPage, fetchNextPage } =
     useInfiniteQueryFeedEntries({ feedId: feed.id })
   const { mutate: refreshFeed, isLoading } = useMutationRefreshFeed()
+  const { mutate: markAllRead, isLoading: isMarkingAllRead } =
+    useMutationMarkAllRead()
 
   function handleRefresh() {
     refreshFeed(feed.id)
+  }
+
+  function handleMarkAllRead() {
+    markAllRead(feed.id)
   }
 
   function handleOnEndReached() {
@@ -59,13 +69,18 @@ export function FeedScreen({ route }: Props) {
           {title}
         </HeadingLink>
       </View>
+      <View style={ButtonContainerStyles}>
+        <ActionButton onPress={handleMarkAllRead} disabled={isMarkingAllRead}>
+          Mark all as read
+        </ActionButton>
+      </View>
       <FlatList
         style={styles}
         data={entryList.entries}
         renderItem={renderItem}
         refreshControl={
           <RefreshControl
-            refreshing={isFetching || isLoading}
+            refreshing={isFetching || isLoading || isMarkingAllRead}
             onRefresh={handleRefresh}
             progressBackgroundColor={tokens.backgroundColor}
             colors={[tokens.lightColor]}
@@ -90,3 +105,10 @@ export function FeedScreen({ route }: Props) {
 }
 
 const styles: ViewStyle = { padding: tokens.space }
+
+const ButtonContainerStyles: ViewStyle = {
+  flexDirection: 'row',
+  paddingLeft: tokens.space,
+  paddingRight: tokens.space,
+  paddingBottom: tokens.space,
+}
