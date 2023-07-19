@@ -2,7 +2,7 @@ import { Linking, Pressable, Text, TextStyle } from 'react-native'
 import { Heading } from './Heading'
 import { tokens } from '@/tokens'
 
-export const linkStyles: TextStyle = {
+const linkStyles: TextStyle = {
   color: tokens.linkColor,
   textDecorationLine: 'underline',
 }
@@ -14,7 +14,7 @@ type LinkProps = {
 
 type HeadingLinkProps = LinkProps & {
   color?: TextStyle['color']
-  marginBottom?: TextStyle['margin']
+  marginBottom?: string | number
 }
 
 export function HeadingLink({

@@ -6,17 +6,14 @@ type Props = {
   level?: 1 | 2 | 3 | 4 | 5 | 6
   align?: TextStyle['textAlign']
   color?: TextStyle['color']
-  marginBottom?: TextStyle['margin']
+  marginBottom?: string | number
   children?: React.ReactNode
 }
 
-export function Heading({
-  level = 1,
-  align,
-  color,
-  marginBottom = tokens.space * 2,
-  children,
-}: Props) {
+export function getHeadingStyles(
+  level: number,
+  marginBottom: string | number = tokens.space * 2
+) {
   let fontSize: number
   switch (level) {
     case 6:
@@ -38,10 +35,26 @@ export function Heading({
     default:
       fontSize = tokens.fontSize.base4
   }
-  const styles: TextStyle = {
-    fontWeight: 'bold',
+  return {
+    fontWeight: 'bold' as const,
     fontSize,
+    marginTop: marginBottom,
+    marginBottom,
   }
+}
+
+export function Heading({
+  level = 1,
+  align,
+  color,
+  marginBottom: marginBottomInput,
+  children,
+}: Props) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { marginTop, marginBottom, ...styles } = getHeadingStyles(
+    level,
+    marginBottomInput
+  )
   return (
     <P align={align} color={color} marginTop={0} marginBottom={marginBottom}>
       <Text style={styles}>{children}</Text>

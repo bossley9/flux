@@ -1,7 +1,10 @@
-import { Pressable, StyleSheet, View } from 'react-native'
+import { Pressable, StyleSheet, View, useWindowDimensions } from 'react-native'
 import { ScrollScreenContainer } from '@/components/ScrollScreenContainer'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import { HeadingLink, P, TextButton, RenderHtml } from '@/html'
+import { HeadingLink, P, TextButton } from '@/html'
+import { getHeadingStyles } from '@/html/Heading'
+import { getParagraphStyles } from '@/html/P'
+import RenderHtml from 'react-native-render-html'
 import { useState } from 'react'
 import {
   useMutationSetEntryRead,
@@ -18,6 +21,7 @@ export function EntryScreen({ route, navigation }: Props) {
   const { entry: originalEntry } = route.params
   const [starred, setStarred] = useState(originalEntry.starred)
   const [read, setRead] = useState(true)
+  const contentWidth = useWindowDimensions().width - tokens.space * 2
 
   const entry: Entry = {
     ...originalEntry,
@@ -82,7 +86,22 @@ export function EntryScreen({ route, navigation }: Props) {
         </Pressable>
       </View>
       <View>
-        <RenderHtml source={entry.content} />
+        <RenderHtml
+          contentWidth={contentWidth}
+          source={{ html: entry.content }}
+          tagsStyles={{
+            h1: getHeadingStyles(1),
+            h2: getHeadingStyles(2),
+            h3: getHeadingStyles(3),
+            h4: getHeadingStyles(4),
+            h5: getHeadingStyles(5),
+            h6: getHeadingStyles(6),
+            p: getParagraphStyles(),
+          }}
+          baseStyle={{
+            marginBottom: tokens.space * 8,
+          }}
+        />
       </View>
     </ScrollScreenContainer>
   )

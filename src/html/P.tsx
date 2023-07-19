@@ -5,10 +5,23 @@ type Props = {
   children?: React.ReactNode
   align?: TextStyle['textAlign']
   color?: TextStyle['color']
-  margin?: TextStyle['margin']
-  marginTop?: TextStyle['margin']
-  marginBottom?: TextStyle['margin']
+  margin?: string | number
+  marginTop?: string | number
+  marginBottom?: string | number
   style?: TextStyle
+}
+
+export function getParagraphStyles(
+  color: TextStyle['color'] = tokens.foregroundColor,
+  marginTop: string | number = tokens.space,
+  marginBottom: string | number = tokens.space
+) {
+  return {
+    fontSize: tokens.fontSize.base,
+    color,
+    marginTop,
+    marginBottom,
+  }
 }
 
 export function P({
@@ -16,17 +29,21 @@ export function P({
   align = 'left',
   color = tokens.foregroundColor,
   margin = tokens.space,
-  marginTop,
-  marginBottom,
+  marginTop: marginTopInput,
+  marginBottom: marginBottomInput,
   style: overrideStyles,
 }: Props) {
-  const style: TextStyle = {
-    fontSize: tokens.fontSize.base,
+  const { marginBottom, marginTop, ...restStyles } = getParagraphStyles(
     color,
+    marginTopInput ?? margin,
+    marginBottomInput ?? margin
+  )
+  const style = {
+    marginBottom: marginBottom,
+    marginTop: marginTop,
+    ...restStyles,
     textAlign: align,
-    marginTop: marginTop ?? margin,
-    marginBottom: marginBottom ?? margin,
     ...overrideStyles,
-  }
+  } as TextStyle
   return <Text style={style}>{children}</Text>
 }
