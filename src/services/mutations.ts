@@ -8,7 +8,7 @@ import {
 } from './mutationUtils'
 import * as keys from './keys'
 import { request } from './utils'
-import type { Entry, EntryStatus } from './types'
+import type { Feed, Entry, EntryStatus } from './types'
 
 export function useMutationToggleStar() {
   const queryClient = useQueryClient()
@@ -142,6 +142,25 @@ export function useMutationMarkAllRead() {
       })
       queryClient.invalidateQueries({
         queryKey: keys.getFeedCountersQueryKey({ userId }),
+      })
+    },
+  })
+}
+
+type UpdateFeedProps = Partial<Feed> & Pick<Feed, 'id'>
+export function useMutationUpdateFeed() {
+  const queryClient = useQueryClient()
+  const userId = useUserId()
+
+  return useMutation({
+    mutationFn: function ({ id, ...props }: UpdateFeedProps) {
+      return request<void>('PUT', `v1/feeds/${id}`, {
+        data: props,
+      })
+    },
+    onSuccess: function () {
+      queryClient.invalidateQueries({
+        queryKey: keys.getFeedsQueryKey({ userId }),
       })
     },
   })

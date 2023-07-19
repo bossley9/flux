@@ -5,6 +5,7 @@ import {
   View,
   ViewStyle,
 } from 'react-native'
+import { useState } from 'react'
 import {
   ListContainerOuterStyles,
   ListContainerHeaderStyles,
@@ -20,6 +21,7 @@ import { EntryCard } from '@/components/EntryCard'
 import {
   useMutationRefreshFeed,
   useMutationMarkAllRead,
+  useMutationUpdateFeed,
 } from '@/services/mutations'
 import { flattenEntryLists } from '@/utils'
 import type { Entry } from '@/services/types'
@@ -33,6 +35,9 @@ export function FeedScreen({ route }: Props) {
   const { mutate: refreshFeed, isLoading } = useMutationRefreshFeed()
   const { mutate: markAllRead, isLoading: isMarkingAllRead } =
     useMutationMarkAllRead()
+  const { mutateAsync: updateFeed, isLoading: isUpdatingFeed } =
+    useMutationUpdateFeed()
+  const [isDisabled, setIsDisabled] = useState(feed.disabled)
 
   function handleRefresh() {
     refreshFeed(feed.id)
@@ -40,6 +45,11 @@ export function FeedScreen({ route }: Props) {
 
   function handleMarkAllRead() {
     markAllRead(feed.id)
+  }
+
+  async function handleToggleFeed() {
+    await updateFeed({ id: feed.id, disabled: !isDisabled })
+    setIsDisabled(!isDisabled)
   }
 
   function handleOnEndReached() {
@@ -57,21 +67,28 @@ export function FeedScreen({ route }: Props) {
     (entry) => entry.status === 'unread'
   ).length
   const title = `${feed.title} (${unreadCount}/${entryList.total})`
+  const toggleFeedText = `${isDisabled ? 'Enable' : 'Disable'} feed`
 
   return (
     <View style={ListContainerOuterStyles}>
       <View style={ListContainerHeaderStyles}>
         <HeadingLink
           href={feed.site_url}
-          color={feed.disabled ? tokens.errorColor : undefined}
+          color={isDisabled ? tokens.errorColor : undefined}
           marginBottom={tokens.space}
         >
           {title}
         </HeadingLink>
       </View>
       <View style={ButtonContainerStyles}>
-        <ActionButton onPress={handleMarkAllRead} disabled={isMarkingAllRead}>
+        <ActionButton
+          onPress={handleMarkAllRead}
+          disabled={isMarkingAllRead || isUpdatingFeed}
+        >
           Mark all as read
+        </ActionButton>
+        <ActionButton onPress={handleToggleFeed} disabled={isUpdatingFeed}>
+          {toggleFeedText}
         </ActionButton>
       </View>
       <FlatList
@@ -80,7 +97,9 @@ export function FeedScreen({ route }: Props) {
         renderItem={renderItem}
         refreshControl={
           <RefreshControl
-            refreshing={isFetching || isLoading || isMarkingAllRead}
+            refreshing={
+              isFetching || isLoading || isMarkingAllRead || isUpdatingFeed
+            }
             onRefresh={handleRefresh}
             progressBackgroundColor={tokens.backgroundColor}
             colors={[tokens.lightColor]}
