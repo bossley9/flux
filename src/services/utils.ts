@@ -43,6 +43,9 @@ export async function request<T>(
   const url = constructURL(serverUrl, path, queryStringParams)
 
   console.log(method, url)
+  if (options?.data) {
+    console.log('\n' + JSON.stringify(options.data, null, 2))
+  }
   return axios.request({
     ...options,
     method,
