@@ -1,6 +1,7 @@
 import { StyleSheet, View } from 'react-native'
 import { ScrollScreenContainer } from '@/components/ScrollScreenContainer'
-import { Heading, P, MainButton } from '@/html'
+import { Heading, P } from '@/html'
+import { ActionButton } from '@/components/ActionButton'
 import { useQueryVersion } from '@/services/queries'
 import { useMutationLogout } from '@/services/auth'
 import { tokens } from '@/tokens'
@@ -20,9 +21,14 @@ export function SettingsScreen() {
     >
       <Heading level={1}>Settings</Heading>
       <View style={styles.content}>
-        <MainButton onPress={handleLogout}>Logout</MainButton>
+        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+          <ActionButton icon="logout" onPress={handleLogout}>
+            Logout
+          </ActionButton>
+        </View>
         <P align="center" margin={0}>
-          Miniflux version {data ?? '0.0.00'}
+          Miniflux version{' '}
+          <P style={{ fontWeight: 'bold' }}>{data ?? '0.0.00'}</P>
         </P>
       </View>
     </ScrollScreenContainer>
@@ -39,6 +45,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
+    gap: tokens.space,
     alignContent: 'center',
     justifyContent: 'center',
   },
