@@ -30,7 +30,8 @@ export function MainScreen() {
     headerShown: false,
     tabBarStyle: {
       backgroundColor: tokens.backgroundColor,
-      elevation: 0,
+      borderTopWidth: 0,
+      elevation: -10,
     },
     orientation: 'portrait',
     // prevent unnecessary rerenders
