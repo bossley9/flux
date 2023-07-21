@@ -40,12 +40,13 @@ function MarkReadContainer() {
         alignItems: 'center',
         backgroundColor: tokens.darkColor,
         borderColor: tokens.darkColor,
+        paddingRight: tokens.space * 2,
       }}
     >
       <Icon
         style={{ marginRight: tokens.space / 2 }}
         name="mail"
-        size={32}
+        size={20}
         color={tokens.foregroundColor}
       />
       <P color={tokens.foregroundColor}>Mark as read</P>
