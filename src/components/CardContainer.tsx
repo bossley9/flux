@@ -23,7 +23,7 @@ export function CardContainer({
 }
 
 const styles: ViewStyle = {
-  minHeight: 100,
+  minHeight: 120,
   padding: tokens.space,
   marginBottom: tokens.space * 2,
   borderRadius: tokens.radius,
