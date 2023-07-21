@@ -82,12 +82,17 @@ export function FeedScreen({ route }: Props) {
       </View>
       <View style={ButtonContainerStyles}>
         <ActionButton
+          icon="mail-outline"
           onPress={handleMarkAllRead}
           disabled={isMarkingAllRead || isUpdatingFeed}
         >
           Mark all as read
         </ActionButton>
-        <ActionButton onPress={handleToggleFeed} disabled={isUpdatingFeed}>
+        <ActionButton
+          icon={isDisabled ? 'check-circle-outline' : 'block'}
+          onPress={handleToggleFeed}
+          disabled={isUpdatingFeed}
+        >
           {toggleFeedText}
         </ActionButton>
       </View>

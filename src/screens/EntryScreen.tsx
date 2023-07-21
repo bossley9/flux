@@ -1,6 +1,6 @@
-import { Pressable, StyleSheet, View, useWindowDimensions } from 'react-native'
+import { StyleSheet, View, useWindowDimensions } from 'react-native'
 import { ScrollScreenContainer } from '@/components/ScrollScreenContainer'
-import Icon from 'react-native-vector-icons/MaterialIcons'
+import { ActionButton } from '@/components/ActionButton'
 import { HeadingLink, P, TextButton } from '@/html'
 import { getHeadingStyles } from '@/html/Heading'
 import { getParagraphStyles } from '@/html/P'
@@ -65,25 +65,21 @@ export function EntryScreen({ route, navigation }: Props) {
           {feed?.title ?? entry.author} ({formatPubDate(entry.published_at)})
         </TextButton>
       </View>
-      <View style={styles.actionBar}>
-        <Pressable style={styles.iconTextPair} onPress={handleToggleStar}>
-          <Icon
-            style={{ marginRight: tokens.space / 4 }}
-            name={starred ? 'star' : 'star-outline'}
-            size={32}
-            color={tokens.primaryColor}
-          />
-          <P color={tokens.primaryColor}>{starred ? 'Unstar' : 'Star'}</P>
-        </Pressable>
-        <Pressable style={styles.iconTextPair} onPress={handleToggleRead}>
-          <Icon
-            style={{ marginRight: tokens.space / 2 }}
-            name={read ? 'mail' : 'mail-outline'}
-            size={32}
-            color={tokens.primaryColor}
-          />
-          <P color={tokens.primaryColor}>Mark {read ? 'unread' : 'read'}</P>
-        </Pressable>
+      <View style={{ flexDirection: 'row' }}>
+        <ActionButton
+          primary
+          icon={starred ? 'star' : 'star-outline'}
+          onPress={handleToggleStar}
+        >
+          {starred ? 'Unstar' : 'Star'}
+        </ActionButton>
+        <ActionButton
+          primary
+          icon={read ? 'mail' : 'mail-outline'}
+          onPress={handleToggleRead}
+        >
+          {`Mark ${read ? 'unread' : 'read'}`}
+        </ActionButton>
       </View>
       <View>
         <RenderHtml
@@ -114,14 +110,6 @@ const styles = StyleSheet.create({
     paddingRight: tokens.space,
   },
   meta: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  actionBar: {
-    flexDirection: 'row',
-  },
-  iconTextPair: {
-    marginRight: tokens.space * 2,
     flexDirection: 'row',
     alignItems: 'center',
   },
