@@ -1,9 +1,10 @@
-import { sortEntriesByPubdate } from '@/utils'
+import { sortEntriesByDatekey } from '@/utils'
 import type { Updater, InfiniteData } from '@tanstack/react-query'
 import type { Entry, EntryList, FeedCounters } from '@/services/types'
 
 export function createInfiniteEntryAdd(
-  entry: Entry
+  entry: Entry,
+  datekey: 'published_at' | 'changed_at' = 'published_at'
 ): Updater<
   InfiniteData<EntryList> | undefined,
   InfiniteData<EntryList> | undefined
@@ -18,15 +19,12 @@ export function createInfiniteEntryAdd(
       pages:
         prevData.pages.map((page) => {
           const entries = page.entries
-          // because entries are sorted by publish date (newest to oldest),
-          // we can assume that if the entry's publish date is newer than the
-          // oldest entry's publish date, it belongs in this page.
-          const pagePublishDate = new Date(
-            entries[entries.length - 1].published_at
-          )
-          const entryPublishDate = new Date(entry.published_at)
-          const belongsInPage =
-            entryPublishDate.getTime() - pagePublishDate.getTime() > 0
+          // because entries are sorted by datekey (newest to oldest),
+          // we can assume that if the entry's datekey is newer than the
+          // oldest entry's datekey, it belongs in this page.
+          const pageDate = new Date(entries[entries.length - 1][datekey])
+          const entryDate = new Date(entry[datekey])
+          const belongsInPage = entryDate.getTime() - pageDate.getTime() > 0
 
           if (!belongsInPage) {
             return {
@@ -36,7 +34,7 @@ export function createInfiniteEntryAdd(
           }
 
           entries.push(entry)
-          entries.sort(sortEntriesByPubdate)
+          entries.sort((a, b) => sortEntriesByDatekey(a, b, datekey))
 
           return {
             total: page.total + 1,

@@ -9,7 +9,10 @@ import {
   ListEmptyPlaceholder,
   ListFooter,
 } from '@/components/ListContainer'
+import { EntryCardUnderlay } from '@/components/EntryCardUnderlay'
+import Swipeable from 'react-native-gesture-handler/Swipeable'
 import { useQueryClient } from '@tanstack/react-query'
+import { useMutationSetEntryRead } from '@/services/mutations'
 import { useInfiniteQueryEntries, useUserId } from '@/services/queries'
 import * as keys from '@/services/keys'
 import { tokens } from '@/tokens'
@@ -26,6 +29,7 @@ export function HistoryScreen() {
   const { data, isFetching, hasNextPage, fetchNextPage } =
     useInfiniteQueryEntries(entryOptions)
   const queryClient = useQueryClient()
+  const { mutate: setEntryRead } = useMutationSetEntryRead()
   const userId = useUserId()
 
   function handleRefresh() {
@@ -41,7 +45,20 @@ export function HistoryScreen() {
   function renderItem({
     item: entry,
   }: ListRenderItemInfo<Entry>): React.ReactElement {
-    return <EntryCard key={entry.id} entry={entry} />
+    function handleSwipeableOpen() {
+      setEntryRead({ entry, newStatus: 'unread' })
+    }
+
+    return (
+      <Swipeable
+        renderRightActions={() => (
+          <EntryCardUnderlay icon="mail-outline" text="Mark as unread" />
+        )}
+        onSwipeableWillOpen={handleSwipeableOpen}
+      >
+        <EntryCard key={entry.id} entry={entry} />
+      </Swipeable>
+    )
   }
 
   const entryList = flattenEntryLists(data?.pages ?? [])

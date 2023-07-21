@@ -9,10 +9,8 @@ import {
   ListEmptyPlaceholder,
   ListFooter,
 } from '@/components/ListContainer'
-import { CardContainer } from '@/components/CardContainer'
+import { EntryCardUnderlay } from '@/components/EntryCardUnderlay'
 import Swipeable from 'react-native-gesture-handler/Swipeable'
-import Icon from 'react-native-vector-icons/MaterialIcons'
-import { P } from '@/html'
 import { useQueryClient } from '@tanstack/react-query'
 import { useMutationSetEntryRead } from '@/services/mutations'
 import {
@@ -29,30 +27,6 @@ import { EntryCard } from '@/components/EntryCard'
 import { flattenEntryLists } from '@/utils'
 import type { FetchEntriesOptions } from '@/services/keys'
 import type { Entry } from '@/services/types'
-
-function MarkReadContainer() {
-  return (
-    <CardContainer
-      style={{
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-        alignItems: 'center',
-        backgroundColor: tokens.darkColor,
-        borderColor: tokens.darkColor,
-        paddingRight: tokens.space * 2,
-      }}
-    >
-      <Icon
-        style={{ marginRight: tokens.space / 2 }}
-        name="mail"
-        size={20}
-        color={tokens.foregroundColor}
-      />
-      <P color={tokens.foregroundColor}>Mark as read</P>
-    </CardContainer>
-  )
-}
 
 export function UnreadScreen() {
   const entryOptions: FetchEntriesOptions = {
@@ -98,7 +72,9 @@ export function UnreadScreen() {
 
     return (
       <Swipeable
-        renderRightActions={MarkReadContainer}
+        renderRightActions={() => (
+          <EntryCardUnderlay icon="mail" text="Mark as read" />
+        )}
         onSwipeableWillOpen={handleSwipeableOpen}
       >
         <EntryCard key={entry.id} entry={entry} />

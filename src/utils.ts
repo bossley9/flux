@@ -27,8 +27,12 @@ export function flattenEntryLists(entryLists: EntryList[]): EntryList {
   }
 }
 
-export function sortEntriesByPubdate(a: Entry, b: Entry) {
-  return new Date(b.published_at).getTime() - new Date(a.published_at).getTime()
+export function sortEntriesByDatekey(
+  a: Entry,
+  b: Entry,
+  datekey: 'published_at' | 'changed_at'
+) {
+  return new Date(b[datekey]).getTime() - new Date(a[datekey]).getTime()
 }
 
 export function normalizeTitle(title: string): string {

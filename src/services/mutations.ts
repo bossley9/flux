@@ -18,7 +18,11 @@ export function useMutationToggleStar() {
       return request<void>('PUT', `v1/entries/${entry.id}/bookmark`)
     },
     onMutate: function (entry) {
-      const newEntry: Entry = { ...entry, starred: !entry.starred }
+      const newEntry: Entry = {
+        ...entry,
+        starred: !entry.starred,
+        changed_at: new Date().toISOString(),
+      }
       if (entry.starred) {
         queryClient.setQueryData(
           keys.getEntriesInfiniteQueryKey({ userId, starred: 'true' }),
@@ -85,7 +89,11 @@ export function useMutationSetEntryRead() {
       })
     },
     onMutate: function ({ entry, newStatus }) {
-      const newEntry: Entry = { ...entry, status: newStatus }
+      const newEntry: Entry = {
+        ...entry,
+        status: newStatus,
+        changed_at: new Date().toISOString(),
+      }
 
       queryClient.setQueryData(
         keys.getFeedEntriesInfiniteQueryKey({ userId, feedId: entry.feed_id }),
@@ -104,8 +112,12 @@ export function useMutationSetEntryRead() {
 
       if (newStatus === 'read') {
         queryClient.setQueryData(
-          keys.getEntriesInfiniteQueryKey({ userId, status: 'read' }),
-          createInfiniteEntryAdd(newEntry)
+          keys.getEntriesInfiniteQueryKey({
+            userId,
+            status: 'read',
+            order: 'changed_at',
+          }),
+          createInfiniteEntryAdd(newEntry, 'changed_at')
         )
         queryClient.setQueryData(
           keys.getEntriesInfiniteQueryKey({ userId, status: 'unread' }),
@@ -117,7 +129,11 @@ export function useMutationSetEntryRead() {
           createInfiniteEntryAdd(newEntry)
         )
         queryClient.setQueryData(
-          keys.getEntriesInfiniteQueryKey({ userId, status: 'read' }),
+          keys.getEntriesInfiniteQueryKey({
+            userId,
+            status: 'read',
+            order: 'changed_at',
+          }),
           createInfiniteEntryDelete(entry.id)
         )
       }
