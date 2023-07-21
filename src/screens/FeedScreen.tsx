@@ -7,13 +7,11 @@ import {
 } from 'react-native'
 import { useState } from 'react'
 import {
-  ListContainerOuterStyles,
-  ListContainerHeaderStyles,
+  ListContainer,
   ListEmptyPlaceholder,
   ListFooter,
 } from '@/components/ListContainer'
 import { ActionButton } from '@/components/ActionButton'
-import { HeadingLink } from '@/html'
 import { useInfiniteQueryFeedEntries } from '@/services/queries'
 import { RootScreen, RootScreenProps } from '@/navigation'
 import { tokens } from '@/tokens'
@@ -70,16 +68,7 @@ export function FeedScreen({ route }: Props) {
   const toggleFeedText = `${isDisabled ? 'Enable' : 'Disable'} feed`
 
   return (
-    <View style={ListContainerOuterStyles}>
-      <View style={ListContainerHeaderStyles}>
-        <HeadingLink
-          href={feed.site_url}
-          color={isDisabled ? tokens.errorColor : undefined}
-          marginBottom={tokens.space}
-        >
-          {title}
-        </HeadingLink>
-      </View>
+    <ListContainer title={title} href={feed.site_url} isDisabled={isDisabled}>
       <View style={ButtonContainerStyles}>
         <ActionButton
           icon="mail-outline"
@@ -124,7 +113,7 @@ export function FeedScreen({ route }: Props) {
           </>
         }
       />
-    </View>
+    </ListContainer>
   )
 }
 

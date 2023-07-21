@@ -1,34 +1,46 @@
 import { View, ViewStyle } from 'react-native'
 import { CardContainer } from '@/components/CardContainer'
-import { Heading, P } from '@/html'
+import { Heading, HeadingLink, P } from '@/html'
 import { tokens } from '@/tokens'
 
 type Props = {
   title: string
+  href?: string
+  isDisabled?: boolean
   children: React.ReactNode
 }
 
-export function ListContainer({ title, children }: Props) {
+export function ListContainer({ title, href, isDisabled, children }: Props) {
+  const listContainerOuterStyles: ViewStyle = {
+    flex: 1,
+    marginTop: 40 + tokens.space, // phone notification/camera offset
+    backgroundColor: tokens.backgroundColor,
+  }
+  const listContainerHeaderStyles: ViewStyle = {
+    paddingLeft: tokens.space,
+    paddingRight: tokens.space,
+  }
+
   return (
-    <View style={ListContainerOuterStyles}>
-      <View style={ListContainerHeaderStyles}>
-        <Heading level={1} marginBottom={tokens.space}>
-          {title}
-        </Heading>
+    <View style={listContainerOuterStyles}>
+      <View style={listContainerHeaderStyles}>
+        {href ? (
+          <HeadingLink
+            href={href}
+            color={isDisabled ? tokens.errorColor : undefined}
+            marginBottom={tokens.space}
+          >
+            {title}
+          </HeadingLink>
+        ) : (
+          <Heading level={1} marginBottom={tokens.space}>
+            {title}
+          </Heading>
+        )}
       </View>
       {children}
     </View>
   )
-}
-
-export const ListContainerOuterStyles: ViewStyle = {
-  flex: 1,
-  marginTop: 40 + tokens.space, // phone notification/camera offset
-  backgroundColor: tokens.backgroundColor,
-}
-export const ListContainerHeaderStyles: ViewStyle = {
-  paddingLeft: tokens.space,
-  paddingRight: tokens.space,
 }
 
 type ListEmptyPlaceholderProps = {
