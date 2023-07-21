@@ -3,7 +3,7 @@ import { CardContainer } from '@/components/CardContainer'
 import { useNavigation } from '@react-navigation/native'
 import { Heading, P, TextButton } from '@/html'
 import { useMutationSetEntryRead } from '@/services/mutations'
-import { formatPubDate } from '@/utils'
+import { formatPubDate, normalizeTitle } from '@/utils'
 import { tokens } from '@/tokens'
 import type { Entry } from '@/services/types'
 import { RootScreen, RootScreenNavigationProp } from '@/navigation'
@@ -44,7 +44,9 @@ export function EntryCard({ entry, displayStatus }: Props) {
   return (
     <CardContainer onPress={handleOpenEntry} style={displayStatusStyles}>
       <View style={styles.wrapper}>
-        <Heading level={3}>{entry.title}</Heading>
+        <Heading level={3} style={{ minHeight: tokens.space * 5 }}>
+          {normalizeTitle(entry.title)}
+        </Heading>
         <View style={styles.footer}>
           <TextButton onPress={handleOpenFeed}>
             <P margin={0}>{entry.feed?.title || entry.author}</P>

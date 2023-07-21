@@ -8,6 +8,7 @@ type Props = {
   color?: TextStyle['color']
   marginBottom?: string | number
   children?: React.ReactNode
+  style?: TextStyle
 }
 
 export function getHeadingStyles(
@@ -49,6 +50,7 @@ export function Heading({
   color,
   marginBottom: marginBottomInput,
   children,
+  style,
 }: Props) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { marginTop, marginBottom, ...styles } = getHeadingStyles(
@@ -56,7 +58,13 @@ export function Heading({
     marginBottomInput
   )
   return (
-    <P align={align} color={color} marginTop={0} marginBottom={marginBottom}>
+    <P
+      align={align}
+      color={color}
+      marginTop={0}
+      marginBottom={marginBottom}
+      style={style}
+    >
       <Text style={styles}>{children}</Text>
     </P>
   )

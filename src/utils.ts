@@ -30,3 +30,11 @@ export function flattenEntryLists(entryLists: EntryList[]): EntryList {
 export function sortEntriesByPubdate(a: Entry, b: Entry) {
   return new Date(b.published_at).getTime() - new Date(a.published_at).getTime()
 }
+
+export function normalizeTitle(title: string): string {
+  const titleMaxLen = 66
+  const lineTitle = title.replace(/\n/g, ' ')
+  return lineTitle.length > titleMaxLen
+    ? lineTitle.slice(0, titleMaxLen).replace(/ $/, '') + '...'
+    : lineTitle
+}
