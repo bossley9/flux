@@ -2,8 +2,6 @@ import { StyleSheet, View, useWindowDimensions } from 'react-native'
 import { ScrollScreenContainer } from '@/components/ScrollScreenContainer'
 import { ActionButton } from '@/components/ActionButton'
 import { HeadingLink, P, TextButton } from '@/html'
-import { getHeadingStyles } from '@/html/Heading'
-import { getParagraphStyles } from '@/html/P'
 import RenderHtml from 'react-native-render-html'
 import { useState } from 'react'
 import {
@@ -12,6 +10,7 @@ import {
 } from '@/services/mutations'
 import { RootScreen, RootScreenProps } from '@/navigation'
 import { formatPubDate } from '@/utils'
+import { tagsStyles } from '@/html/tagsStyles'
 import { tokens } from '@/tokens'
 import type { Entry } from '@/services/types'
 
@@ -85,16 +84,9 @@ export function EntryScreen({ route, navigation }: Props) {
         <RenderHtml
           contentWidth={contentWidth}
           source={{ html: entry.content }}
-          tagsStyles={{
-            h1: getHeadingStyles(1),
-            h2: getHeadingStyles(2),
-            h3: getHeadingStyles(3),
-            h4: getHeadingStyles(4),
-            h5: getHeadingStyles(5),
-            h6: getHeadingStyles(6),
-            p: getParagraphStyles(),
-          }}
+          tagsStyles={tagsStyles}
           baseStyle={{
+            marginTop: tokens.space * 2,
             marginBottom: tokens.space * 8,
           }}
         />
