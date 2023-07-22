@@ -2,8 +2,8 @@ import {
   FlatList,
   ListRenderItemInfo,
   RefreshControl,
+  StyleSheet,
   View,
-  ViewStyle,
 } from 'react-native'
 import { useState } from 'react'
 import {
@@ -69,7 +69,7 @@ export function FeedScreen({ route }: Props) {
 
   return (
     <ListContainer title={title} href={feed.site_url} isDisabled={isDisabled}>
-      <View style={ButtonContainerStyles}>
+      <View style={styles.actionButtonContainer}>
         <ActionButton
           icon="mail-outline"
           onPress={handleMarkAllRead}
@@ -86,7 +86,7 @@ export function FeedScreen({ route }: Props) {
         </ActionButton>
       </View>
       <FlatList
-        style={styles}
+        style={styles.list}
         data={entryList.entries}
         renderItem={renderItem}
         refreshControl={
@@ -109,7 +109,7 @@ export function FeedScreen({ route }: Props) {
         ListFooterComponent={
           <>
             <ListFooter showSkeleton={Boolean(hasNextPage)} />
-            <View style={{ height: tokens.space * 2 }} />
+            <View style={styles.listFooter} />
           </>
         }
       />
@@ -117,11 +117,15 @@ export function FeedScreen({ route }: Props) {
   )
 }
 
-const styles: ViewStyle = { padding: tokens.space }
-
-const ButtonContainerStyles: ViewStyle = {
-  flexDirection: 'row',
-  paddingLeft: tokens.space,
-  paddingRight: tokens.space,
-  paddingBottom: tokens.space,
-}
+const styles = StyleSheet.create({
+  actionButtonContainer: {
+    flexDirection: 'row',
+    paddingLeft: tokens.space,
+    paddingRight: tokens.space,
+    paddingBottom: tokens.space,
+  },
+  list: {
+    padding: tokens.space,
+  },
+  listFooter: { height: tokens.space * 2 },
+})

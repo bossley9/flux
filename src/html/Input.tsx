@@ -1,5 +1,5 @@
 import { ForwardedRef, forwardRef } from 'react'
-import { TextInput, TextInputProps, ViewStyle } from 'react-native'
+import { StyleSheet, TextInput, TextInputProps } from 'react-native'
 import { P } from './P'
 import { tokens } from '@/tokens'
 
@@ -14,18 +14,20 @@ function BaseInput(
   return (
     <>
       <P>{name}</P>
-      <TextInput ref={ref} {...restProps} style={styles} />
+      <TextInput ref={ref} {...restProps} style={styles.input} />
     </>
   )
 }
 
 export const Input = forwardRef(BaseInput)
 
-const styles: ViewStyle = {
-  marginTop: tokens.space / 4,
-  padding: tokens.space,
-  borderRadius: tokens.radius,
-  borderWidth: 1.5,
-  borderColor: tokens.foregroundColor,
-  marginBottom: tokens.space,
-}
+const styles = StyleSheet.create({
+  input: {
+    marginTop: tokens.space / 4,
+    padding: tokens.space,
+    borderRadius: tokens.radius,
+    borderWidth: 1.5,
+    borderColor: tokens.foregroundColor,
+    marginBottom: tokens.space,
+  },
+})

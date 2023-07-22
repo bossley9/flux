@@ -1,4 +1,4 @@
-import { ViewStyle } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { CardContainer } from '@/components/CardContainer'
 import { useNavigation } from '@react-navigation/native'
 import { Heading, P } from '@/html'
@@ -14,21 +14,14 @@ type Props = {
 
 export function FeedCard({ feed, unreadCount }: Props) {
   const navigation = useNavigation<RootScreenNavigationProp<RootScreen.Feed>>()
+  const styles = makeStyles({ isRead: unreadCount === 0 })
 
   function handleOpenFeed() {
     navigation.navigate(RootScreen.Feed, { feed })
   }
 
-  let readStyles: ViewStyle | undefined
-  if (unreadCount === 0) {
-    readStyles = {
-      backgroundColor: tokens.darkColor,
-      borderColor: tokens.darkColor,
-    }
-  }
-
   return (
-    <CardContainer onPress={handleOpenFeed} style={readStyles}>
+    <CardContainer onPress={handleOpenFeed} style={styles.container}>
       <Heading
         level={3}
         marginBottom={0}
@@ -43,3 +36,16 @@ export function FeedCard({ feed, unreadCount }: Props) {
     </CardContainer>
   )
 }
+
+type StyleProps = {
+  isRead: boolean
+}
+const makeStyles = ({ isRead }: StyleProps) =>
+  StyleSheet.create({
+    container: {
+      ...(isRead && {
+        backgroundColor: tokens.darkColor,
+        borderColor: tokens.darkColor,
+      }),
+    },
+  })

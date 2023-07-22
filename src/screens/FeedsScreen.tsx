@@ -1,7 +1,7 @@
 import {
   FlatList,
   RefreshControl,
-  ViewStyle,
+  StyleSheet,
   ListRenderItemInfo,
 } from 'react-native'
 import {
@@ -53,7 +53,7 @@ export function FeedsScreen() {
   return (
     <ListContainer title={title}>
       <FlatList
-        style={styles}
+        style={styles.list}
         data={feeds}
         extraData={feedCounters}
         renderItem={renderItem}
@@ -77,4 +77,8 @@ export function FeedsScreen() {
   )
 }
 
-const styles: ViewStyle = { padding: tokens.space }
+const styles = StyleSheet.create({
+  list: {
+    padding: tokens.space,
+  },
+})

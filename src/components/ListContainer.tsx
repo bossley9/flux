@@ -1,4 +1,4 @@
-import { View, ViewStyle } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { CardContainer } from '@/components/CardContainer'
 import { Heading, HeadingLink, P } from '@/html'
 import { tokens } from '@/tokens'
@@ -11,19 +11,9 @@ type Props = {
 }
 
 export function ListContainer({ title, href, isDisabled, children }: Props) {
-  const listContainerOuterStyles: ViewStyle = {
-    flex: 1,
-    marginTop: 40 + tokens.space, // phone notification/camera offset
-    backgroundColor: tokens.backgroundColor,
-  }
-  const listContainerHeaderStyles: ViewStyle = {
-    paddingLeft: tokens.space,
-    paddingRight: tokens.space,
-  }
-
   return (
-    <View style={listContainerOuterStyles}>
-      <View style={listContainerHeaderStyles}>
+    <View style={listStyles.container}>
+      <View style={listStyles.containerHeader}>
         {href ? (
           <HeadingLink
             href={href}
@@ -43,6 +33,18 @@ export function ListContainer({ title, href, isDisabled, children }: Props) {
   )
 }
 
+const listStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: 40 + tokens.space, // phone notification/camera offset
+    backgroundColor: tokens.backgroundColor,
+  },
+  containerHeader: {
+    paddingLeft: tokens.space,
+    paddingRight: tokens.space,
+  },
+})
+
 type ListEmptyPlaceholderProps = {
   isLoading: boolean
   message: string
@@ -57,13 +59,16 @@ export function ListEmptyPlaceholder({
 type ListFooterProps = { showSkeleton: boolean }
 export function ListFooter({ showSkeleton }: ListFooterProps) {
   return showSkeleton ? (
-    <CardContainer
-      style={{
-        backgroundColor: tokens.darkColor,
-        borderColor: tokens.darkColor,
-      }}
-    />
+    <CardContainer style={footerStyles.container} />
   ) : (
-    <View style={{ height: tokens.space * 2 }} />
+    <View style={footerStyles.footerSpace} />
   )
 }
+
+const footerStyles = StyleSheet.create({
+  container: {
+    backgroundColor: tokens.darkColor,
+    borderColor: tokens.darkColor,
+  },
+  footerSpace: { height: tokens.space * 2 },
+})

@@ -1,20 +1,48 @@
 import { P } from './P'
-import { Text, TextStyle } from 'react-native'
+import { StyleSheet, Text, TextStyle } from 'react-native'
 import { tokens } from '@/tokens'
 
 type Props = {
   level?: 1 | 2 | 3 | 4 | 5 | 6
   align?: TextStyle['textAlign']
   color?: TextStyle['color']
-  marginBottom?: string | number
+  marginBottom?: TextStyle['margin']
   children?: React.ReactNode
   style?: TextStyle
 }
 
-export function getHeadingStyles(
-  level: number,
-  marginBottom: string | number = tokens.space * 2
-) {
+export function Heading({
+  level = 1,
+  align,
+  color,
+  marginBottom: marginBottomInput,
+  children,
+  style,
+}: Props) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { marginTop, marginBottom, ...styles } = makeStyles({
+    level,
+    marginBottom: marginBottomInput,
+  }).text
+  return (
+    <P
+      align={align}
+      color={color}
+      marginTop={0}
+      marginBottom={marginBottom}
+      style={style}
+    >
+      <Text style={styles}>{children}</Text>
+    </P>
+  )
+}
+
+type StyleProps = {
+  level: number
+  marginBottom?: TextStyle['margin']
+}
+export const makeStyles = ({ level, marginBottom }: StyleProps) => {
+  const margin = marginBottom ?? tokens.space * 2
   let fontSize: number
   switch (level) {
     case 6:
@@ -36,36 +64,12 @@ export function getHeadingStyles(
     default:
       fontSize = tokens.fontSize.base4
   }
-  return {
-    fontWeight: 'bold' as const,
-    fontSize,
-    marginTop: marginBottom,
-    marginBottom,
-  }
-}
-
-export function Heading({
-  level = 1,
-  align,
-  color,
-  marginBottom: marginBottomInput,
-  children,
-  style,
-}: Props) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { marginTop, marginBottom, ...styles } = getHeadingStyles(
-    level,
-    marginBottomInput
-  )
-  return (
-    <P
-      align={align}
-      color={color}
-      marginTop={0}
-      marginBottom={marginBottom}
-      style={style}
-    >
-      <Text style={styles}>{children}</Text>
-    </P>
-  )
+  return StyleSheet.create({
+    text: {
+      fontWeight: 'bold',
+      fontSize,
+      marginTop: margin,
+      marginBottom: margin,
+    },
+  })
 }

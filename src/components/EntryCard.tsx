@@ -1,4 +1,4 @@
-import { StyleSheet, View, ViewStyle } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { CardContainer } from '@/components/CardContainer'
 import { useNavigation } from '@react-navigation/native'
 import { Heading, P, TextButton } from '@/html'
@@ -17,16 +17,11 @@ export function EntryCard({ entry, displayStatus }: Props) {
   const navigation = useNavigation<RootScreenNavigationProp<RootScreen.Main>>()
   const { mutate: setEntryRead } = useMutationSetEntryRead()
 
-  let displayStatusStyles: ViewStyle | undefined
-  if (
-    displayStatus &&
-    (entry.status === 'read' || entry.status === 'removed')
-  ) {
-    displayStatusStyles = {
-      backgroundColor: tokens.darkColor,
-      borderColor: tokens.darkColor,
-    }
-  }
+  const styles = makeStyles({
+    isInactive: Boolean(
+      displayStatus && (entry.status === 'read' || entry.status === 'removed')
+    ),
+  })
 
   function handleOpenEntry() {
     if (entry.status === 'unread') {
@@ -42,9 +37,9 @@ export function EntryCard({ entry, displayStatus }: Props) {
   }
 
   return (
-    <CardContainer onPress={handleOpenEntry} style={displayStatusStyles}>
+    <CardContainer onPress={handleOpenEntry} style={styles.container}>
       <View style={styles.wrapper}>
-        <Heading level={3} style={{ minHeight: tokens.space * 5 }}>
+        <Heading level={3} style={styles.heading}>
           {normalizeTitle(entry.title)}
         </Heading>
         <View style={styles.footer}>
@@ -58,13 +53,27 @@ export function EntryCard({ entry, displayStatus }: Props) {
   )
 }
 
-const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1,
-    justifyContent: 'space-between',
-  },
-  footer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-})
+type StyleProps = {
+  isInactive: boolean
+}
+const makeStyles = ({ isInactive }: StyleProps) => {
+  return StyleSheet.create({
+    container: {
+      ...(isInactive && {
+        backgroundColor: tokens.darkColor,
+        borderColor: tokens.darkColor,
+      }),
+    },
+    wrapper: {
+      flex: 1,
+      justifyContent: 'space-between',
+    },
+    heading: {
+      minHeight: tokens.space * 5,
+    },
+    footer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+    },
+  })
+}

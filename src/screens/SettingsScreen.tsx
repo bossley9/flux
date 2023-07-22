@@ -21,14 +21,13 @@ export function SettingsScreen() {
     >
       <Heading level={1}>Settings</Heading>
       <View style={styles.content}>
-        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+        <View style={styles.actionContainer}>
           <ActionButton icon="logout" onPress={handleLogout}>
             Logout
           </ActionButton>
         </View>
         <P align="center" margin={0}>
-          Miniflux version{' '}
-          <P style={{ fontWeight: 'bold' }}>{data ?? '0.0.00'}</P>
+          Miniflux version <P style={styles.version}>{data ?? '0.0.00'}</P>
         </P>
       </View>
     </ScrollScreenContainer>
@@ -49,4 +48,6 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     justifyContent: 'center',
   },
+  actionContainer: { flexDirection: 'row', justifyContent: 'center' },
+  version: { fontWeight: 'bold' },
 })

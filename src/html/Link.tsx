@@ -1,11 +1,6 @@
-import { Linking, Pressable, Text, TextStyle } from 'react-native'
+import { Linking, Pressable, StyleSheet, Text, TextStyle } from 'react-native'
 import { Heading } from './Heading'
 import { tokens } from '@/tokens'
-
-const linkStyles: TextStyle = {
-  color: tokens.linkColor,
-  textDecorationLine: 'underline',
-}
 
 type LinkProps = {
   href: string
@@ -14,7 +9,7 @@ type LinkProps = {
 
 type HeadingLinkProps = LinkProps & {
   color?: TextStyle['color']
-  marginBottom?: string | number
+  marginBottom?: TextStyle['margin']
 }
 
 export function HeadingLink({
@@ -46,7 +41,14 @@ export function TextButton({ onPress, children }: TextButtonProps) {
   }
   return (
     <Pressable onPress={handlePress}>
-      <Text style={linkStyles}>{children}</Text>
+      <Text style={textButtonStyles.text}>{children}</Text>
     </Pressable>
   )
 }
+
+const textButtonStyles = StyleSheet.create({
+  text: {
+    color: tokens.linkColor,
+    textDecorationLine: 'underline',
+  },
+})

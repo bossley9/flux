@@ -1,3 +1,4 @@
+import { StyleSheet } from 'react-native'
 import { CardContainer } from '@/components/CardContainer'
 import { P } from '@/html'
 import Icon from 'react-native-vector-icons/MaterialIcons'
@@ -10,19 +11,9 @@ type Props = {
 
 export function EntryCardUnderlay({ icon, text }: Props) {
   return (
-    <CardContainer
-      style={{
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-        alignItems: 'center',
-        backgroundColor: tokens.darkColor,
-        borderColor: tokens.darkColor,
-        paddingRight: tokens.space * 2,
-      }}
-    >
+    <CardContainer style={styles.container}>
       <Icon
-        style={{ marginRight: tokens.space / 2 }}
+        style={styles.icon}
         name={icon}
         size={20}
         color={tokens.foregroundColor}
@@ -31,3 +22,18 @@ export function EntryCardUnderlay({ icon, text }: Props) {
     </CardContainer>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    backgroundColor: tokens.darkColor,
+    borderColor: tokens.darkColor,
+    paddingRight: tokens.space * 2,
+  },
+  icon: {
+    marginRight: tokens.space / 2,
+  },
+})

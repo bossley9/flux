@@ -1,4 +1,4 @@
-import { Pressable, PressableProps, ViewStyle } from 'react-native'
+import { Pressable, PressableProps, StyleSheet } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { P } from '@/html/P'
 import { tokens } from '@/tokens'
@@ -19,34 +19,22 @@ export function ActionButton({
   children,
 }: Props) {
   const defaultColor = primary ? tokens.primaryColor : tokens.foregroundColor
-  const buttonStyles: ViewStyle = {
-    borderColor: disabled ? tokens.lightColor : defaultColor,
-    borderWidth: 1.5,
-    padding: tokens.space / 2,
-    paddingLeft: tokens.space,
-    paddingRight: tokens.space,
-    borderRadius: tokens.radius,
-    marginRight: tokens.space,
-    flexDirection: 'row',
-  }
-  const activeStyles: ViewStyle = {
-    backgroundColor: tokens.darkColor,
-  }
+  const styles = makeStyles({ isDisabled: Boolean(disabled), defaultColor })
   return (
     <Pressable
       onPress={onPress}
       disabled={disabled}
       android_disableSound={true}
       style={({ pressed }) => ({
-        ...buttonStyles,
-        ...(pressed && activeStyles),
+        ...styles.container,
+        ...(pressed && styles.containerActive),
       })}
     >
       {icon && (
         <Icon
           name={icon}
           size={20}
-          style={{ marginRight: tokens.space / 2 }}
+          style={styles.icon}
           color={disabled ? tokens.lightColor : defaultColor}
         />
       )}
@@ -60,3 +48,28 @@ export function ActionButton({
     </Pressable>
   )
 }
+
+type StyleProps = {
+  defaultColor: string
+  isDisabled: boolean
+}
+const makeStyles = ({ defaultColor, isDisabled }: StyleProps) =>
+  StyleSheet.create({
+    container: {
+      borderColor: isDisabled ? tokens.lightColor : defaultColor,
+      borderWidth: 1.5,
+      padding: tokens.space / 2,
+      paddingLeft: tokens.space,
+      paddingRight: tokens.space,
+      borderRadius: tokens.radius,
+      marginRight: tokens.space,
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    containerActive: {
+      backgroundColor: tokens.darkColor,
+    },
+    icon: {
+      marginRight: tokens.space / 2,
+    },
+  })

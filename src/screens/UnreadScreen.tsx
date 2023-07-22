@@ -1,7 +1,7 @@
 import {
   FlatList,
   RefreshControl,
-  ViewStyle,
+  StyleSheet,
   ListRenderItemInfo,
 } from 'react-native'
 import {
@@ -88,7 +88,7 @@ export function UnreadScreen() {
   return (
     <ListContainer title={title}>
       <FlatList
-        style={styles}
+        style={styles.list}
         data={entryList.entries}
         renderItem={renderItem}
         refreshControl={
@@ -112,4 +112,8 @@ export function UnreadScreen() {
   )
 }
 
-const styles: ViewStyle = { padding: tokens.space }
+const styles = StyleSheet.create({
+  list: {
+    padding: tokens.space,
+  },
+})

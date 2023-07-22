@@ -1,4 +1,4 @@
-import { Pressable, PressableProps, ViewStyle } from 'react-native'
+import { Pressable, PressableProps, StyleSheet, ViewStyle } from 'react-native'
 import { P } from './P'
 import { tokens } from '@/tokens'
 
@@ -12,24 +12,16 @@ type Props = {
 export function MainButton({
   onPress,
   disabled,
-  horizontalMargin = tokens.space * 4,
+  horizontalMargin,
   children,
 }: Props) {
-  const buttonStyles: ViewStyle = {
-    backgroundColor: tokens.primaryColor,
-    padding: tokens.space,
-    borderRadius: tokens.radius,
-    marginTop: tokens.space,
-    marginBottom: tokens.space,
-    marginLeft: horizontalMargin,
-    marginRight: horizontalMargin,
-  }
+  const styles = makeStyles({ horizontalMargin })
   return (
     <Pressable
       onPress={onPress}
       disabled={disabled}
       android_disableSound={true}
-      style={buttonStyles}
+      style={styles.container}
     >
       <P
         align="center"
@@ -40,4 +32,22 @@ export function MainButton({
       </P>
     </Pressable>
   )
+}
+
+type StyleProps = {
+  horizontalMargin?: ViewStyle['margin']
+}
+const makeStyles = ({ horizontalMargin }: StyleProps) => {
+  const margin = horizontalMargin ?? tokens.space * 4
+  return StyleSheet.create({
+    container: {
+      backgroundColor: tokens.primaryColor,
+      padding: tokens.space,
+      borderRadius: tokens.radius,
+      marginTop: tokens.space,
+      marginBottom: tokens.space,
+      marginLeft: margin,
+      marginRight: margin,
+    },
+  })
 }

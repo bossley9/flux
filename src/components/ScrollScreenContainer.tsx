@@ -19,18 +19,9 @@ export function ScrollScreenContainer({
   onRefresh,
   ...restProps
 }: Props) {
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      marginTop: 40 + tokens.space, // phone notification/camera offset
-      backgroundColor: tokens.backgroundColor,
-      ...style,
-    },
-  })
-
   return (
     <ScrollView
-      style={styles.container}
+      style={{ ...styles.container, ...style }}
       refreshControl={
         <RefreshControl
           enabled={Boolean(refreshEnabled)}
@@ -46,3 +37,11 @@ export function ScrollScreenContainer({
     </ScrollView>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: 40 + tokens.space, // phone notification/camera offset
+    backgroundColor: tokens.backgroundColor,
+  },
+})
