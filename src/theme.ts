@@ -1,4 +1,6 @@
-export const tokens = {
+export type Theme = typeof tokens
+
+const tokens = {
   backgroundColor: '#f8f9fb',
   darkColor: '#e5e9f0',
   foregroundColor: '#4c566a',
@@ -21,4 +23,8 @@ export const tokens = {
   fontFamily: {
     code: 'monospace',
   },
+}
+
+export function useTheme() {
+  return tokens
 }

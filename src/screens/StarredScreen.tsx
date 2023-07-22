@@ -1,7 +1,7 @@
 import {
   FlatList,
   RefreshControl,
-  ViewStyle,
+  StyleSheet,
   ListRenderItemInfo,
 } from 'react-native'
 import {
@@ -12,7 +12,7 @@ import {
 import { useQueryClient } from '@tanstack/react-query'
 import { useInfiniteQueryEntries, useUserId } from '@/services/queries'
 import * as keys from '@/services/keys'
-import { tokens } from '@/tokens'
+import { useTheme, type Theme } from '@/theme'
 import { EntryCard } from '@/components/EntryCard'
 import { flattenEntryLists } from '@/utils'
 import type { FetchEntriesOptions } from '@/services/keys'
@@ -26,6 +26,8 @@ export function StarredScreen() {
     useInfiniteQueryEntries(entryOptions)
   const queryClient = useQueryClient()
   const userId = useUserId()
+  const tokens = useTheme()
+  const styles = makeStyles({ tokens })
 
   function handleRefresh() {
     queryClient.invalidateQueries(
@@ -49,7 +51,7 @@ export function StarredScreen() {
   return (
     <ListContainer title={title}>
       <FlatList
-        style={styles}
+        style={styles.list}
         data={entryList.entries}
         renderItem={renderItem}
         refreshControl={
@@ -73,4 +75,12 @@ export function StarredScreen() {
   )
 }
 
-const styles: ViewStyle = { padding: tokens.space }
+type StyleProps = {
+  tokens: Theme
+}
+const makeStyles = ({ tokens }: StyleProps) =>
+  StyleSheet.create({
+    list: {
+      padding: tokens.space,
+    },
+  })

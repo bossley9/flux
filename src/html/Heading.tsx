@@ -1,6 +1,6 @@
 import { P } from './P'
 import { StyleSheet, Text, TextStyle } from 'react-native'
-import { tokens } from '@/tokens'
+import { useTheme, Theme } from '@/theme'
 
 type Props = {
   level?: 1 | 2 | 3 | 4 | 5 | 6
@@ -19,8 +19,10 @@ export function Heading({
   children,
   style,
 }: Props) {
+  const tokens = useTheme()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { marginTop, marginBottom, ...styles } = makeStyles({
+    tokens,
     level,
     marginBottom: marginBottomInput,
   }).text
@@ -38,10 +40,11 @@ export function Heading({
 }
 
 type StyleProps = {
+  tokens: Theme
   level: number
   marginBottom?: TextStyle['margin']
 }
-export const makeStyles = ({ level, marginBottom }: StyleProps) => {
+export const makeStyles = ({ tokens, level, marginBottom }: StyleProps) => {
   const margin = marginBottom ?? tokens.space * 2
   let fontSize: number
   switch (level) {

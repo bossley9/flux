@@ -22,7 +22,7 @@ import { useEffect } from 'react'
 import { useAppFocusEffect } from '@/useAppFocusEffect'
 import { useMutationLogout } from '@/services/auth'
 import * as keys from '@/services/keys'
-import { tokens } from '@/tokens'
+import { useTheme, type Theme } from '@/theme'
 import { EntryCard } from '@/components/EntryCard'
 import { flattenEntryLists } from '@/utils'
 import type { FetchEntriesOptions } from '@/services/keys'
@@ -39,6 +39,8 @@ export function UnreadScreen() {
   const queryClient = useQueryClient()
   const { mutate: setEntryRead } = useMutationSetEntryRead()
   const userId = useUserId()
+  const tokens = useTheme()
+  const styles = makeStyles({ tokens })
 
   useEffect(() => {
     if (isError) {
@@ -112,8 +114,12 @@ export function UnreadScreen() {
   )
 }
 
-const styles = StyleSheet.create({
-  list: {
-    padding: tokens.space,
-  },
-})
+type StyleProps = {
+  tokens: Theme
+}
+const makeStyles = ({ tokens }: StyleProps) =>
+  StyleSheet.create({
+    list: {
+      padding: tokens.space,
+    },
+  })

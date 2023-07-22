@@ -1,6 +1,6 @@
 import { Pressable, PressableProps, StyleSheet, ViewStyle } from 'react-native'
 import { P } from './P'
-import { tokens } from '@/tokens'
+import { useTheme, type Theme } from '@/theme'
 
 type Props = {
   onPress: PressableProps['onPress']
@@ -15,7 +15,8 @@ export function MainButton({
   horizontalMargin,
   children,
 }: Props) {
-  const styles = makeStyles({ horizontalMargin })
+  const tokens = useTheme()
+  const styles = makeStyles({ tokens, horizontalMargin })
   return (
     <Pressable
       onPress={onPress}
@@ -35,9 +36,10 @@ export function MainButton({
 }
 
 type StyleProps = {
+  tokens: Theme
   horizontalMargin?: ViewStyle['margin']
 }
-const makeStyles = ({ horizontalMargin }: StyleProps) => {
+const makeStyles = ({ tokens, horizontalMargin }: StyleProps) => {
   const margin = horizontalMargin ?? tokens.space * 4
   return StyleSheet.create({
     container: {

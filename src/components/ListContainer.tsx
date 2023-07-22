@@ -1,7 +1,7 @@
 import { StyleSheet, View } from 'react-native'
 import { CardContainer } from '@/components/CardContainer'
 import { Heading, HeadingLink, P } from '@/html'
-import { tokens } from '@/tokens'
+import { useTheme, type Theme } from '@/theme'
 
 type Props = {
   title: string
@@ -11,9 +11,11 @@ type Props = {
 }
 
 export function ListContainer({ title, href, isDisabled, children }: Props) {
+  const tokens = useTheme()
+  const styles = makeListStyles({ tokens })
   return (
-    <View style={listStyles.container}>
-      <View style={listStyles.containerHeader}>
+    <View style={styles.container}>
+      <View style={styles.containerHeader}>
         {href ? (
           <HeadingLink
             href={href}
@@ -33,17 +35,21 @@ export function ListContainer({ title, href, isDisabled, children }: Props) {
   )
 }
 
-const listStyles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: 40 + tokens.space, // phone notification/camera offset
-    backgroundColor: tokens.backgroundColor,
-  },
-  containerHeader: {
-    paddingLeft: tokens.space,
-    paddingRight: tokens.space,
-  },
-})
+type ListStyleProps = {
+  tokens: Theme
+}
+const makeListStyles = ({ tokens }: ListStyleProps) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      marginTop: 40 + tokens.space, // phone notification/camera offset
+      backgroundColor: tokens.backgroundColor,
+    },
+    containerHeader: {
+      paddingLeft: tokens.space,
+      paddingRight: tokens.space,
+    },
+  })
 
 type ListEmptyPlaceholderProps = {
   isLoading: boolean
@@ -58,17 +64,22 @@ export function ListEmptyPlaceholder({
 
 type ListFooterProps = { showSkeleton: boolean }
 export function ListFooter({ showSkeleton }: ListFooterProps) {
+  const styles = makeFooterStyles({ tokens: useTheme() })
   return showSkeleton ? (
-    <CardContainer style={footerStyles.container} />
+    <CardContainer style={styles.container} />
   ) : (
-    <View style={footerStyles.footerSpace} />
+    <View style={styles.footerSpace} />
   )
 }
 
-const footerStyles = StyleSheet.create({
-  container: {
-    backgroundColor: tokens.darkColor,
-    borderColor: tokens.darkColor,
-  },
-  footerSpace: { height: tokens.space * 2 },
-})
+type FooterStyleProps = {
+  tokens: Theme
+}
+const makeFooterStyles = ({ tokens }: FooterStyleProps) =>
+  StyleSheet.create({
+    container: {
+      backgroundColor: tokens.darkColor,
+      borderColor: tokens.darkColor,
+    },
+    footerSpace: { height: tokens.space * 2 },
+  })

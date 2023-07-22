@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native'
 import { CardContainer } from '@/components/CardContainer'
 import { P } from '@/html'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import { tokens } from '@/tokens'
+import { useTheme, type Theme } from '@/theme'
 
 type Props = {
   icon: string
@@ -10,6 +10,8 @@ type Props = {
 }
 
 export function EntryCardUnderlay({ icon, text }: Props) {
+  const tokens = useTheme()
+  const styles = makeStyles({ tokens })
   return (
     <CardContainer style={styles.container}>
       <Icon
@@ -23,17 +25,21 @@ export function EntryCardUnderlay({ icon, text }: Props) {
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    backgroundColor: tokens.darkColor,
-    borderColor: tokens.darkColor,
-    paddingRight: tokens.space * 2,
-  },
-  icon: {
-    marginRight: tokens.space / 2,
-  },
-})
+type StyleProps = {
+  tokens: Theme
+}
+const makeStyles = ({ tokens }: StyleProps) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+      alignItems: 'center',
+      backgroundColor: tokens.darkColor,
+      borderColor: tokens.darkColor,
+      paddingRight: tokens.space * 2,
+    },
+    icon: {
+      marginRight: tokens.space / 2,
+    },
+  })

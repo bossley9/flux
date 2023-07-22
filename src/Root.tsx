@@ -9,7 +9,7 @@ import * as NavigationBar from 'expo-navigation-bar'
 import { useEffect } from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { RootScreen } from '@/navigation'
-import { tokens } from '@/tokens'
+import { useTheme } from '@/theme'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import type { NativeStackNavigationOptions } from '@react-navigation/native-stack'
 import type { RootStackParamList } from '@/navigation'
@@ -31,23 +31,24 @@ function setupNavigationBar() {
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
-const screenOptions: NativeStackNavigationOptions = {
-  headerShown: false,
-  headerStyle: {
-    backgroundColor: tokens.backgroundColor,
-  },
-  statusBarColor: tokens.backgroundColor,
-  statusBarStyle: 'dark',
-  animation: 'none',
-  orientation: 'portrait',
-  // prevent unnecessary rerenders
-  freezeOnBlur: true,
-}
-
 export function Root() {
+  const tokens = useTheme()
   useEffect(() => {
     setupNavigationBar()
   }, [])
+
+  const screenOptions: NativeStackNavigationOptions = {
+    headerShown: false,
+    headerStyle: {
+      backgroundColor: tokens.backgroundColor,
+    },
+    statusBarColor: tokens.backgroundColor,
+    statusBarStyle: 'dark',
+    animation: 'none',
+    orientation: 'portrait',
+    // prevent unnecessary rerenders
+    freezeOnBlur: true,
+  }
 
   return (
     <NavigationContainer>

@@ -14,7 +14,7 @@ import {
 import { ActionButton } from '@/components/ActionButton'
 import { useInfiniteQueryFeedEntries } from '@/services/queries'
 import { RootScreen, RootScreenProps } from '@/navigation'
-import { tokens } from '@/tokens'
+import { useTheme, type Theme } from '@/theme'
 import { EntryCard } from '@/components/EntryCard'
 import {
   useMutationRefreshFeed,
@@ -28,6 +28,7 @@ type Props = RootScreenProps<RootScreen.Feed>
 
 export function FeedScreen({ route }: Props) {
   const { feed } = route.params
+  const tokens = useTheme()
   const { data, isFetching, hasNextPage, fetchNextPage } =
     useInfiniteQueryFeedEntries({ feedId: feed.id })
   const { mutate: refreshFeed, isLoading } = useMutationRefreshFeed()
@@ -36,6 +37,7 @@ export function FeedScreen({ route }: Props) {
   const { mutateAsync: updateFeed, isLoading: isUpdatingFeed } =
     useMutationUpdateFeed()
   const [isDisabled, setIsDisabled] = useState(feed.disabled)
+  const styles = makeStyles({ tokens })
 
   function handleRefresh() {
     refreshFeed(feed.id)
@@ -117,15 +119,19 @@ export function FeedScreen({ route }: Props) {
   )
 }
 
-const styles = StyleSheet.create({
-  actionButtonContainer: {
-    flexDirection: 'row',
-    paddingLeft: tokens.space,
-    paddingRight: tokens.space,
-    paddingBottom: tokens.space,
-  },
-  list: {
-    padding: tokens.space,
-  },
-  listFooter: { height: tokens.space * 2 },
-})
+type StyleProps = {
+  tokens: Theme
+}
+const makeStyles = ({ tokens }: StyleProps) =>
+  StyleSheet.create({
+    actionButtonContainer: {
+      flexDirection: 'row',
+      paddingLeft: tokens.space,
+      paddingRight: tokens.space,
+      paddingBottom: tokens.space,
+    },
+    list: {
+      padding: tokens.space,
+    },
+    listFooter: { height: tokens.space * 2 },
+  })

@@ -1,7 +1,7 @@
 import { Pressable, PressableProps, StyleSheet } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { P } from '@/html/P'
-import { tokens } from '@/tokens'
+import { useTheme, type Theme } from '@/theme'
 
 type Props = {
   onPress: PressableProps['onPress']
@@ -18,8 +18,13 @@ export function ActionButton({
   disabled,
   children,
 }: Props) {
+  const tokens = useTheme()
   const defaultColor = primary ? tokens.primaryColor : tokens.foregroundColor
-  const styles = makeStyles({ isDisabled: Boolean(disabled), defaultColor })
+  const styles = makeStyles({
+    tokens,
+    isDisabled: Boolean(disabled),
+    defaultColor,
+  })
   return (
     <Pressable
       onPress={onPress}
@@ -50,10 +55,11 @@ export function ActionButton({
 }
 
 type StyleProps = {
+  tokens: Theme
   defaultColor: string
   isDisabled: boolean
 }
-const makeStyles = ({ defaultColor, isDisabled }: StyleProps) =>
+const makeStyles = ({ tokens, defaultColor, isDisabled }: StyleProps) =>
   StyleSheet.create({
     container: {
       borderColor: isDisabled ? tokens.lightColor : defaultColor,

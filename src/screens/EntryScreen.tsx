@@ -1,8 +1,8 @@
-import { StyleSheet, View, useWindowDimensions } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { ScrollScreenContainer } from '@/components/ScrollScreenContainer'
 import { ActionButton } from '@/components/ActionButton'
 import { HeadingLink, P, TextButton } from '@/html'
-import RenderHtml from 'react-native-render-html'
+import { RenderHtml } from '@/html/RenderHtml'
 import { useState } from 'react'
 import {
   useMutationSetEntryRead,
@@ -10,8 +10,7 @@ import {
 } from '@/services/mutations'
 import { RootScreen, RootScreenProps } from '@/navigation'
 import { formatPubDate } from '@/utils'
-import { tagsStyles } from '@/html/tagsStyles'
-import { tokens } from '@/tokens'
+import { useTheme, type Theme } from '@/theme'
 import type { Entry } from '@/services/types'
 
 type Props = RootScreenProps<RootScreen.Entry>
@@ -20,7 +19,7 @@ export function EntryScreen({ route, navigation }: Props) {
   const { entry: originalEntry } = route.params
   const [starred, setStarred] = useState(originalEntry.starred)
   const [read, setRead] = useState(true)
-  const contentWidth = useWindowDimensions().width - tokens.space * 2
+  const styles = makeStyles({ tokens: useTheme() })
 
   const entry: Entry = {
     ...originalEntry,
@@ -81,28 +80,24 @@ export function EntryScreen({ route, navigation }: Props) {
         </ActionButton>
       </View>
       <View>
-        <RenderHtml
-          contentWidth={contentWidth}
-          source={{ html: entry.content }}
-          tagsStyles={tagsStyles}
-          baseStyle={{
-            marginTop: tokens.space * 2,
-            marginBottom: tokens.space * 8,
-          }}
-        />
+        <RenderHtml html={entry.content} />
       </View>
     </ScrollScreenContainer>
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingLeft: tokens.space,
-    paddingRight: tokens.space,
-  },
-  meta: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-})
+type StyleProps = {
+  tokens: Theme
+}
+const makeStyles = ({ tokens }: StyleProps) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      paddingLeft: tokens.space,
+      paddingRight: tokens.space,
+    },
+    meta: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+  })

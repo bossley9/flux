@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native'
 import { Heading, P } from '@/html'
 import { formatPubDate } from '@/utils'
 import { RootScreen, RootScreenNavigationProp } from '@/navigation'
-import { tokens } from '@/tokens'
+import { useTheme, type Theme } from '@/theme'
 import type { Feed } from '@/services/types'
 
 type Props = {
@@ -14,7 +14,8 @@ type Props = {
 
 export function FeedCard({ feed, unreadCount }: Props) {
   const navigation = useNavigation<RootScreenNavigationProp<RootScreen.Feed>>()
-  const styles = makeStyles({ isRead: unreadCount === 0 })
+  const tokens = useTheme()
+  const styles = makeStyles({ tokens, isRead: unreadCount === 0 })
 
   function handleOpenFeed() {
     navigation.navigate(RootScreen.Feed, { feed })
@@ -38,9 +39,10 @@ export function FeedCard({ feed, unreadCount }: Props) {
 }
 
 type StyleProps = {
+  tokens: Theme
   isRead: boolean
 }
-const makeStyles = ({ isRead }: StyleProps) =>
+const makeStyles = ({ tokens, isRead }: StyleProps) =>
   StyleSheet.create({
     container: {
       ...(isRead && {

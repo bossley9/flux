@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native'
 import { Heading, P, TextButton } from '@/html'
 import { useMutationSetEntryRead } from '@/services/mutations'
 import { formatPubDate, normalizeTitle } from '@/utils'
-import { tokens } from '@/tokens'
+import { useTheme, type Theme } from '@/theme'
 import type { Entry } from '@/services/types'
 import { RootScreen, RootScreenNavigationProp } from '@/navigation'
 
@@ -18,6 +18,7 @@ export function EntryCard({ entry, displayStatus }: Props) {
   const { mutate: setEntryRead } = useMutationSetEntryRead()
 
   const styles = makeStyles({
+    tokens: useTheme(),
     isInactive: Boolean(
       displayStatus && (entry.status === 'read' || entry.status === 'removed')
     ),
@@ -55,8 +56,9 @@ export function EntryCard({ entry, displayStatus }: Props) {
 
 type StyleProps = {
   isInactive: boolean
+  tokens: Theme
 }
-const makeStyles = ({ isInactive }: StyleProps) => {
+const makeStyles = ({ isInactive, tokens }: StyleProps) => {
   return StyleSheet.create({
     container: {
       ...(isInactive && {

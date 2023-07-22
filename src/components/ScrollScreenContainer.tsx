@@ -1,5 +1,5 @@
 import { RefreshControl, StyleSheet, ScrollView } from 'react-native'
-import { tokens } from '@/tokens'
+import { useTheme, Theme } from '@/theme'
 
 type ScrollViewProps = React.ComponentProps<typeof ScrollView>
 
@@ -19,6 +19,8 @@ export function ScrollScreenContainer({
   onRefresh,
   ...restProps
 }: Props) {
+  const tokens = useTheme()
+  const styles = makeStyles({ tokens })
   return (
     <ScrollView
       style={{ ...styles.container, ...style }}
@@ -38,10 +40,14 @@ export function ScrollScreenContainer({
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: 40 + tokens.space, // phone notification/camera offset
-    backgroundColor: tokens.backgroundColor,
-  },
-})
+type StyleProps = {
+  tokens: Theme
+}
+const makeStyles = ({ tokens }: StyleProps) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      marginTop: 40 + tokens.space, // phone notification/camera offset
+      backgroundColor: tokens.backgroundColor,
+    },
+  })

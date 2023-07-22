@@ -16,7 +16,7 @@ import {
   useQueryFeedCounters,
 } from '@/services/queries'
 import * as keys from '@/services/keys'
-import { tokens } from '@/tokens'
+import { useTheme, type Theme } from '@/theme'
 import { FeedCard } from '@/components/FeedCard'
 import type { Feed } from '@/services/types'
 
@@ -25,11 +25,13 @@ function sortByTitle(a: Feed, b: Feed): number {
 }
 
 export function FeedsScreen() {
+  const tokens = useTheme()
   const { data, isFetching } = useQueryFeeds()
   const queryClient = useQueryClient()
   const userId = useUserId()
   const { data: feedCounters, isFetching: isFetchingCounters } =
     useQueryFeedCounters()
+  const styles = makeStyles({ tokens })
 
   function handleRefresh() {
     queryClient.invalidateQueries({
@@ -77,8 +79,12 @@ export function FeedsScreen() {
   )
 }
 
-const styles = StyleSheet.create({
-  list: {
-    padding: tokens.space,
-  },
-})
+type StyleProps = {
+  tokens: Theme
+}
+const makeStyles = ({ tokens }: StyleProps) =>
+  StyleSheet.create({
+    list: {
+      padding: tokens.space,
+    },
+  })

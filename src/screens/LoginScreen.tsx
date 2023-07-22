@@ -3,12 +3,14 @@ import { useRef, useState } from 'react'
 import { StyleSheet, TextInput, View } from 'react-native'
 import { ErrorText, Heading, Input, MainButton, P } from '@/html'
 import { useMutationLogin } from '@/services/auth'
-import { tokens } from '@/tokens'
+import { useTheme, type Theme } from '@/theme'
 
 export function LoginScreen() {
+  const tokens = useTheme()
   const apiKeyInputRef = useRef<TextInput>(null)
   const [serverUrl, setServerUrl] = useState('https://reader.miniflux.app')
   const [apiKey, setApiKey] = useState('')
+  const styles = makeStyles({ tokens })
 
   const { mutate: login, isLoading, isError, error } = useMutationLogin()
 
@@ -48,15 +50,19 @@ export function LoginScreen() {
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingLeft: tokens.space,
-    paddingRight: tokens.space,
-  },
-  form: {
-    padding: tokens.space * 2,
-    marginTop: tokens.space * 2,
-    marginBottom: tokens.space * 2,
-  },
-})
+type StyleProps = {
+  tokens: Theme
+}
+const makeStyles = ({ tokens }: StyleProps) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      paddingLeft: tokens.space,
+      paddingRight: tokens.space,
+    },
+    form: {
+      padding: tokens.space * 2,
+      marginTop: tokens.space * 2,
+      marginBottom: tokens.space * 2,
+    },
+  })

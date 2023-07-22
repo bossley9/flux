@@ -4,11 +4,12 @@ import { Heading, P } from '@/html'
 import { ActionButton } from '@/components/ActionButton'
 import { useQueryVersion } from '@/services/queries'
 import { useMutationLogout } from '@/services/auth'
-import { tokens } from '@/tokens'
+import { useTheme, type Theme } from '@/theme'
 
 export function SettingsScreen() {
   const { mutate: logout } = useMutationLogout()
   const { data } = useQueryVersion()
+  const styles = makeStyles({ tokens: useTheme() })
 
   function handleLogout() {
     logout()
@@ -34,20 +35,24 @@ export function SettingsScreen() {
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    paddingLeft: tokens.space,
-    paddingRight: tokens.space,
-  },
-  contentContainer: {
-    flex: 1,
-  },
-  content: {
-    flex: 1,
-    gap: tokens.space,
-    alignContent: 'center',
-    justifyContent: 'center',
-  },
-  actionContainer: { flexDirection: 'row', justifyContent: 'center' },
-  version: { fontWeight: 'bold' },
-})
+type StyleProps = {
+  tokens: Theme
+}
+const makeStyles = ({ tokens }: StyleProps) =>
+  StyleSheet.create({
+    container: {
+      paddingLeft: tokens.space,
+      paddingRight: tokens.space,
+    },
+    contentContainer: {
+      flex: 1,
+    },
+    content: {
+      flex: 1,
+      gap: tokens.space,
+      alignContent: 'center',
+      justifyContent: 'center',
+    },
+    actionContainer: { flexDirection: 'row', justifyContent: 'center' },
+    version: { fontWeight: 'bold' },
+  })

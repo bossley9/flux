@@ -1,13 +1,10 @@
 import { Linking, Pressable, StyleSheet, Text, TextStyle } from 'react-native'
 import { Heading } from './Heading'
-import { tokens } from '@/tokens'
+import { useTheme, type Theme } from '@/theme'
 
-type LinkProps = {
+type HeadingLinkProps = {
   href: string
   children?: React.ReactNode
-}
-
-type HeadingLinkProps = LinkProps & {
   color?: TextStyle['color']
   marginBottom?: TextStyle['margin']
 }
@@ -18,6 +15,7 @@ export function HeadingLink({
   marginBottom,
   children,
 }: HeadingLinkProps) {
+  const tokens = useTheme()
   function handlePress() {
     Linking.openURL(href)
   }
@@ -36,19 +34,24 @@ type TextButtonProps = {
 }
 
 export function TextButton({ onPress, children }: TextButtonProps) {
+  const styles = makeStyles({ tokens: useTheme() })
   function handlePress() {
     onPress()
   }
   return (
     <Pressable onPress={handlePress}>
-      <Text style={textButtonStyles.text}>{children}</Text>
+      <Text style={styles.text}>{children}</Text>
     </Pressable>
   )
 }
 
-const textButtonStyles = StyleSheet.create({
-  text: {
-    color: tokens.linkColor,
-    textDecorationLine: 'underline',
-  },
-})
+type StyleProps = {
+  tokens: Theme
+}
+const makeStyles = ({ tokens }: StyleProps) =>
+  StyleSheet.create({
+    text: {
+      color: tokens.linkColor,
+      textDecorationLine: 'underline',
+    },
+  })

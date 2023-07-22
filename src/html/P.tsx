@@ -1,5 +1,5 @@
 import { StyleSheet, Text, TextStyle } from 'react-native'
-import { tokens } from '@/tokens'
+import { useTheme, type Theme } from '@/theme'
 
 type Props = {
   children?: React.ReactNode
@@ -15,15 +15,18 @@ export function P({
   children,
   align = 'left',
   color,
-  margin = tokens.space,
+  margin,
   marginTop: marginTopInput,
   marginBottom: marginBottomInput,
   style: overrideStyles,
 }: Props) {
+  const tokens = useTheme()
+  const baseMargin = margin ?? tokens.space
   const { marginBottom, marginTop, ...restStyles } = makeStyles({
+    tokens,
     color,
-    marginTop: marginTopInput ?? margin,
-    marginBottom: marginBottomInput ?? margin,
+    marginTop: marginTopInput ?? baseMargin,
+    marginBottom: marginBottomInput ?? baseMargin,
   }).text
   const style = {
     marginBottom: marginBottom,
@@ -36,11 +39,17 @@ export function P({
 }
 
 type StyleProps = {
+  tokens: Theme
   color?: TextStyle['color']
   marginTop?: TextStyle['margin']
   marginBottom?: TextStyle['margin']
 }
-export const makeStyles = ({ color, marginTop, marginBottom }: StyleProps) => {
+export const makeStyles = ({
+  tokens,
+  color,
+  marginTop,
+  marginBottom,
+}: StyleProps) => {
   return StyleSheet.create({
     text: {
       fontSize: tokens.fontSize.base,

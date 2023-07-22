@@ -15,13 +15,14 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useMutationSetEntryRead } from '@/services/mutations'
 import { useInfiniteQueryEntries, useUserId } from '@/services/queries'
 import * as keys from '@/services/keys'
-import { tokens } from '@/tokens'
+import { useTheme, type Theme } from '@/theme'
 import { EntryCard } from '@/components/EntryCard'
 import { flattenEntryLists } from '@/utils'
 import type { FetchEntriesOptions } from '@/services/keys'
 import type { Entry } from '@/services/types'
 
 export function HistoryScreen() {
+  const tokens = useTheme()
   const entryOptions: FetchEntriesOptions = {
     status: 'read',
     order: 'changed_at',
@@ -31,6 +32,7 @@ export function HistoryScreen() {
   const queryClient = useQueryClient()
   const { mutate: setEntryRead } = useMutationSetEntryRead()
   const userId = useUserId()
+  const styles = makeStyles({ tokens })
 
   function handleRefresh() {
     queryClient.invalidateQueries(
@@ -91,8 +93,12 @@ export function HistoryScreen() {
   )
 }
 
-const styles = StyleSheet.create({
-  list: {
-    padding: tokens.space,
-  },
-})
+type StyleProps = {
+  tokens: Theme
+}
+const makeStyles = ({ tokens }: StyleProps) =>
+  StyleSheet.create({
+    list: {
+      padding: tokens.space,
+    },
+  })
